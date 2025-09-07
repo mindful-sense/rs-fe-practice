@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**Области хранения данных:**
 
-## Getting Started
+- база данных на @libsql/client.
+- BFF.
+- redux store.
 
-First, run the development server:
+**Сущности приложения:**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- пользователь: БД (список пользователей), BFF (сессия текущего), store
+  (отображение в браузере).
+- роль пользователя: БД (список ролей), BFF (сессия пользователя с ролью),
+  store (использование на клиенте).
+- статья: БД (список статей), store (отображение в браузере).
+- комментарии: БД (список комментариев), store (отображение в браузере).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Таблицы БД:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- пользователи — users: id / login / password / registred_at / role_id.
+- роли — roles: id / name.
+- статьи — posts: id / title / image_url / content / published_at.
+- комментарии — comments: id / author_id / post_id / content.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Схема состояния на BFF:**
 
-## Learn More
+- сессия текущего пользователя: login / password / role.
 
-To learn more about Next.js, take a look at the following resources:
+**Схема для redux store (на клиенте):**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- user: id / login / role.
+- posts: массив post: id / title / imageUrl / publishedAt / commentsCount.
+- post: id / title / imageUrl / content / publishedAt / comments: массив
+  comment: id / author / content / publishedAt.
+- users: массив user: id / login / registredAt / role.
