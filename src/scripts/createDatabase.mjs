@@ -6,7 +6,6 @@ const roles = [
   { id: 1, name: "Admin" },
   { id: 2, name: "Moderator" },
   { id: 3, name: "Reader" },
-  { id: 4, name: "Guest" },
 ];
 
 const users = [
@@ -137,10 +136,10 @@ const posts = [
 ];
 
 const sqls = [
-  "DROP TABLE IF EXISTS roles;",
-  "DROP TABLE IF EXISTS users;",
-  "DROP TABLE IF EXISTS posts;",
   "DROP TABLE IF EXISTS comments;",
+  "DROP TABLE IF EXISTS posts;",
+  "DROP TABLE IF EXISTS users;",
+  "DROP TABLE IF EXISTS roles;",
   `CREATE TABLE roles (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL
