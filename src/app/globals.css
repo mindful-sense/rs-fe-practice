@@ -6,8 +6,12 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --bg-page: var(--background);
+  --color-black: var(--foreground);
+}
+
+@theme {
+  --color-white: #fdfcff;
 }
 
 /* @media (prefers-color-scheme: dark) {
