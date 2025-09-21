@@ -48,7 +48,7 @@ const eslintConfig = [
                 "index",
                 "object",
               ],
-              "newlines-between": "always",
+              // "newlines-between": "always",
               alphabetize: { order: "asc", caseInsensitive: true },
             },
           ],
