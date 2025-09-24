@@ -12,6 +12,7 @@
 
 @theme {
   --color-white: #fdfcff;
+  --color-accent: #470ff4;
 }
 
 /* @media (prefers-color-scheme: dark) {
