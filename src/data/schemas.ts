@@ -6,8 +6,3 @@ export const APIWeatherData = z.looseObject({
 });
 
 export const APIWeatherDataError = z.looseObject({ message: z.string() });
-
-export const WeatherData = z.strictObject({
-  temperature: z.number(),
-  description: z.string(),
-});

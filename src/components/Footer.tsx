@@ -1,34 +1,10 @@
-"use client";
-import { useEffect, useState } from "react";
-import { WeatherData } from "@/data/schemas";
+import { getWeather } from "@/data/queries";
 
 const CITY = "London";
 
-export function Footer() {
-  const [dataTemp, setDataTemp] = useState<number | undefined>();
-  const [dataDesc, setDataDesc] = useState<string | undefined>();
-
+export async function Footer() {
   const now = new Date();
-
-  useEffect(() => {
-    async function getWeather() {
-      try {
-        const response = await fetch(`/api/weather?city=${CITY}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch weather data");
-        }
-
-        const { temperature, description } = WeatherData.parse(
-          await response.json(),
-        );
-        setDataTemp(temperature);
-        setDataDesc(description);
-      } catch (error) {
-        console.error(`Error while fetching weather data: ${error}.`);
-      }
-    }
-    getWeather();
-  }, []);
+  const weather = await getWeather(CITY);
 
   return (
     <footer className="fixed bottom-5 left-1/2 flex h-14 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-5 text-sm/4 font-medium backdrop-blur-md">
@@ -54,9 +30,13 @@ export function Footer() {
             }).format(now)}
           </time>
         </p>
-        <p>
-          {dataTemp?.toFixed(1)}℃, {dataDesc}
-        </p>
+        {weather ? (
+          <p>
+            {weather.temperature.toFixed(1)}℃, {weather.description}
+          </p>
+        ) : (
+          <p>Weather data unavalaible</p>
+        )}
       </div>
     </footer>
   );
