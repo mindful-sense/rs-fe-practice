@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components";
+import { Button } from "../Button";
 import { Logo } from "./Logo";
 
 export function Header() {

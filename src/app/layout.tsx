@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import type { Metadata } from "next";
 import { Host_Grotesk } from "next/font/google";
-import { Header } from "@/components";
+import { Header, Footer } from "@/components";
 import "./globals.css";
 
 config.autoAddCss = false;
@@ -25,6 +25,7 @@ export default function RootLayout({
       <body className={`${hostGrotesk.className} bg-page antialiased`}>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
