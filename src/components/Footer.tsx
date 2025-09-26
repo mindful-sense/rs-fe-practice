@@ -1,4 +1,5 @@
 import { getWeather } from "@/data/queries";
+import { capitalizeWords } from "@/utils/capitalizeWords";
 
 const CITY = "London";
 
@@ -32,7 +33,8 @@ export async function Footer() {
         </p>
         {weather ? (
           <p>
-            {weather.temperature.toFixed(1)}℃, {weather.description}
+            {weather.temperature.toFixed(1)}℃,{" "}
+            {capitalizeWords(weather.description) ?? "No Weather Description"}
           </p>
         ) : (
           <p>Weather data unavalaible</p>
