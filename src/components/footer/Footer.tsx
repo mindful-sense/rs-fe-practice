@@ -19,7 +19,7 @@ export async function Footer() {
         <address>
           <a
             href="mailto:arsen.is.working@gmail.com"
-            className="hover:text-accent not-italic transition-colors duration-500"
+            className="hover:text-accent focus:text-accent not-italic outline-0 transition-colors duration-300"
           >
             arsen.is.working@gmail.com
           </a>

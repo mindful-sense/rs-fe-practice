@@ -1,6 +1,6 @@
 import * as z from "zod";
 import { weatherDataSchema, weatherErrorSchema } from "./schema";
-import { Weather } from "./types";
+import { type Weather } from "./types";
 import { buildWeatherUrl } from "./utils";
 
 export async function getWeather(city: string): Promise<Weather | null> {

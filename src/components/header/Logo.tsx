@@ -7,7 +7,7 @@ export function Logo() {
     <Link
       href="/"
       rel="home"
-      className="hover:text-accent transition-colors duration-500"
+      className="hover:text-accent focus:text-accent outline-0 transition-colors duration-300"
     >
       <FontAwesomeIcon icon={faCode} size="lg" className="mr-1" />
       <strong className="text-xl/5 font-extrabold tracking-tight">

@@ -11,7 +11,7 @@ export function Header() {
         <ul className="flex gap-4">
           {NAV_ITEMS.map((page) => (
             <li key={page.href}>
-              <Link href={page.href}>
+              <Link href={page.href} className="focus:outline-0">
                 <Button intent={page.intent}>{page.label}</Button>
               </Link>
             </li>
