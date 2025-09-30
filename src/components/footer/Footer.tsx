@@ -1,11 +1,16 @@
-import { getWeather } from "@/data/queries";
-import { capitalizeWords } from "@/utils/capitalizeWords";
-
-const CITY = "London";
+import { CITY, DATE_FORMAT_OPTIONS } from "./constants";
+import { getWeather } from "./getWeather.query";
+import { capitalizeWords, formatTemperature } from "./utils";
 
 export async function Footer() {
   const now = new Date();
   const weather = await getWeather(CITY);
+
+  const dateTime = now.toISOString().split("T")[0];
+  const formattedDate = new Intl.DateTimeFormat(
+    "en-GB",
+    DATE_FORMAT_OPTIONS,
+  ).format(now);
 
   return (
     <footer className="fixed bottom-5 left-1/2 flex h-14 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-5 text-sm/4 font-medium backdrop-blur-md">
@@ -23,18 +28,12 @@ export async function Footer() {
 
       <div className="text-right">
         <p>
-          <span>{CITY}, </span>
-          <time dateTime={now.toISOString().slice(0, 10)}>
-            {new Intl.DateTimeFormat("en-GB", {
-              month: "short",
-              day: "2-digit",
-            }).format(now)}
-          </time>
+          {CITY}, <time dateTime={dateTime}>{formattedDate}</time>
         </p>
         {weather ? (
           <p>
-            {weather.temperature.toFixed(1)}℃,{" "}
-            {capitalizeWords(weather.description) ?? "No Weather Description"}
+            {formatTemperature(weather.temperature)},{" "}
+            {capitalizeWords(weather.description)}
           </p>
         ) : (
           <p>Weather data unavalaible</p>

@@ -22,8 +22,6 @@ interface Props
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
     VariantProps<typeof buttonVariants> {}
 
-<button className="font-sm h-10 cursor-pointer rounded-lg px-4 font-medium text-black transition duration-500"></button>;
-
 export function Button({ className, intent, ...props }: Props) {
   return (
     <button
