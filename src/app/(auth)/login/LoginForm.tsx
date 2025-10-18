@@ -1,5 +1,4 @@
-import { Button } from "@/components";
-import { Input } from "./Input";
+import { Button, Input } from "@/components/ui";
 
 export function LoginForm() {
   return (

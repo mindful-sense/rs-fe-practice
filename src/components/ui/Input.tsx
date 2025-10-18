@@ -1,11 +1,12 @@
 import { type ReactNode } from "react";
-import { type InputType } from "./types";
+
+type InputType = HTMLInputElement["type"];
 
 interface Props {
   id: string;
   type: InputType;
-  placeholder?: string | undefined;
   children: ReactNode;
+  placeholder?: string;
 }
 
 export function Input({ id, type, placeholder, children }: Props) {

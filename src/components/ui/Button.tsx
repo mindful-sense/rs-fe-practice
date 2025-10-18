@@ -2,6 +2,10 @@ import { type VariantProps, cva } from "class-variance-authority";
 import { type ButtonHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
+interface Props
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
+    VariantProps<typeof buttonVariants> {}
+
 const buttonVariants = cva(
   "focus:outline-accent h-10 w-auto cursor-pointer rounded-lg px-4 text-sm font-medium text-black outline-2 outline-offset-2 outline-transparent transition-colors duration-300",
   {
@@ -21,10 +25,6 @@ const buttonVariants = cva(
     },
   },
 );
-
-interface Props
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
-    VariantProps<typeof buttonVariants> {}
 
 export function Button({ className, intent, size, ...props }: Props) {
   return (

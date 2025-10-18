@@ -1,7 +1,11 @@
 import Link from "next/link";
-import { Button } from "@/components/Button";
-import { NAV_ITEMS } from "./constants";
+import { Button } from "@/components/ui/Button";
 import { Logo } from "./Logo";
+
+export const NAV_ITEMS = [
+  { href: "/login", label: "Sign In", intent: "inline" },
+  { href: "/register", label: "Sign Up", intent: "primary" },
+] as const;
 
 export function Header() {
   return (
@@ -9,10 +13,10 @@ export function Header() {
       <Logo />
       <nav>
         <ul className="flex gap-4">
-          {NAV_ITEMS.map((page) => (
-            <li key={page.href}>
-              <Link href={page.href} className="focus:outline-0">
-                <Button intent={page.intent}>{page.label}</Button>
+          {NAV_ITEMS.map(({ href, label, intent }) => (
+            <li key={href}>
+              <Link href={href} className="focus:outline-0">
+                <Button intent={intent}>{label}</Button>
               </Link>
             </li>
           ))}
