@@ -25,7 +25,13 @@ export const createUser = async (
     ],
   });
 
-  return creationUserSchema.parse(rows[0]);
+  const result = creationUserSchema.safeParse(rows[0]);
+
+  if (!result.success) {
+    throw new Error("Failed to create a new user");
+  }
+
+  return result.data;
 };
 
 export const isLoginTaken = async (login: string): Promise<boolean> => {
@@ -48,7 +54,13 @@ export const getUserForAuth = async (
     return null;
   }
 
-  return authUserSchema.parse(rows[0]);
+  const result = authUserSchema.safeParse(rows[0]);
+
+  if (!result.success) {
+    throw new Error(`Failed to fetch the user ${login}`);
+  }
+
+  return result.data;
 };
 
 export const getPublicUser = async (
@@ -69,5 +81,11 @@ export const getPublicUser = async (
     return null;
   }
 
-  return publicUserSchema.parse(rows[0]);
+  const result = publicUserSchema.safeParse(rows[0]);
+
+  if (!result.success) {
+    throw new Error(`Failed to verify the user`);
+  }
+
+  return result.data;
 };

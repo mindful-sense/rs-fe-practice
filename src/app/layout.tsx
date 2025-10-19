@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import type { Metadata } from "next";
 import { Host_Grotesk } from "next/font/google";
-import { Header, Footer } from "@/components";
+import { Header, Footer } from "@/components/core";
 import "./globals.css";
 
 config.autoAddCss = false;

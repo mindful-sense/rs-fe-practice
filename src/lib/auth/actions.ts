@@ -9,7 +9,7 @@ import { getErrorMessage } from "../utils";
 import { signupSchema, signinSchema } from "./schema";
 import { createSession, deleteSession } from "./session";
 
-type FieldErrors = Record<string, { message: string } | null>;
+type FieldErrors = Record<string, string | null>;
 
 interface ValidationError {
   formData: FormData;
@@ -33,13 +33,13 @@ const SALT_ROUNDS = 10;
 
 const formatZodErrors = (error: z.ZodError): FieldErrors => {
   const formattedErrors: FieldErrors = { ...DEFAULT_FIELD_ERRORS };
-  const flattenError = z.flattenError(error).fieldErrors;
+  const fieldErrors = z.flattenError(error).fieldErrors;
 
-  for (const [field, messages] of Object.entries(flattenError)) {
+  Object.entries(fieldErrors).forEach(([field, messages]) => {
     if (Array.isArray(messages) && messages.length > 0) {
-      formattedErrors[field] = { message: messages[0] };
+      formattedErrors[field] = messages.join(". ");
     }
-  }
+  });
 
   return formattedErrors;
 };
