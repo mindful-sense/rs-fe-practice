@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Back } from "./Back";
@@ -22,9 +22,9 @@ export function Header() {
           <ul className="flex gap-4">
             {NAV_ITEMS.map(({ href, label, intent }) => (
               <li key={href}>
-                <Link href={href} tabIndex={-1}>
-                  <Button intent={intent}>{label}</Button>
-                </Link>
+                <Button href={href} intent={intent}>
+                  {label}
+                </Button>
               </li>
             ))}
           </ul>

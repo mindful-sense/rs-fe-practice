@@ -1,13 +1,10 @@
 import { type VariantProps, cva } from "class-variance-authority";
-import { type ButtonHTMLAttributes } from "react";
+import Link from "next/link";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface Props
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
-    VariantProps<typeof buttonVariants> {}
-
 const buttonVariants = cva(
-  "focus:outline-accent h-10 w-auto cursor-pointer rounded-lg px-4 text-sm font-medium text-black outline-2 outline-offset-2 outline-transparent transition-colors duration-300",
+  "focus:outline-accent flex h-10 w-auto cursor-pointer items-center rounded-lg px-4 text-sm font-medium text-black outline-2 outline-offset-2 outline-transparent transition-colors duration-300",
   {
     variants: {
       intent: {
@@ -26,11 +23,30 @@ const buttonVariants = cva(
   },
 );
 
-export function Button({ className, intent, size, ...props }: Props) {
-  return (
-    <button
-      className={twMerge(buttonVariants({ intent, size, className }))}
-      {...props}
-    />
-  );
+interface ButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
+    VariantProps<typeof buttonVariants> {
+  href?: string;
+}
+
+interface LinkProps
+  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">,
+    VariantProps<typeof buttonVariants> {
+  href: string;
+}
+
+export function Button({
+  className,
+  intent,
+  size,
+  ...props
+}: ButtonProps | LinkProps) {
+  const classes = twMerge(buttonVariants({ intent, size, className }));
+
+  if (props.href) {
+    const { href, ...rest } = props as LinkProps;
+    return <Link href={href} className={classes} {...rest} />;
+  }
+
+  return <button className={classes} {...(props as ButtonProps)} />;
 }
