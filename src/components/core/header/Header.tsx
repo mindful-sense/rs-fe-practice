@@ -1,21 +1,16 @@
-"use client";
-
-import { useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui";
 import { Back } from "./Back";
 import { Logo } from "./Logo";
 
-export const NAV_ITEMS = [
+const NAV_ITEMS = [
   { href: "/login", label: "Sign In", intent: "inline" },
   { href: "/register", label: "Sign Up", intent: "primary" },
 ] as const;
 
 export function Header() {
-  const [isBackBtnVisible, setIsBackBtnVisible] = useState(true);
-
   return (
     <header className="fixed top-5 left-1/2 flex h-14 w-124 -translate-x-1/2 justify-center gap-2">
-      {isBackBtnVisible && <Back />}
+      <Back />
       <div className="flex w-98 items-center justify-between rounded-2xl bg-white/70 pr-2 pl-5 backdrop-blur-md">
         <Logo />
         <nav>

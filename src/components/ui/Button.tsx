@@ -23,15 +23,17 @@ const buttonVariants = cva(
   },
 );
 
+type BaseProps = VariantProps<typeof buttonVariants>;
+
 interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
-    VariantProps<typeof buttonVariants> {
+    BaseProps {
   href?: string;
 }
 
 interface LinkProps
   extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">,
-    VariantProps<typeof buttonVariants> {
+    BaseProps {
   href: string;
 }
 
