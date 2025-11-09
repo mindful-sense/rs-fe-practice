@@ -1,29 +1,29 @@
+import { PATHS } from "@/config/constants";
 import { Button } from "@/components/ui";
-import { Back } from "./Back";
-import { Logo } from "./Logo";
+import { Back, Logo, NavButtons } from "./components";
 
-const NAV_ITEMS = [
-  { href: "/login", label: "Sign In", intent: "inline" },
-  { href: "/register", label: "Sign Up", intent: "primary" },
+const AUTH_NAV_ITEMS = [
+  { href: PATHS.LOGIN, label: "Sign In", intent: "inline" },
+  { href: PATHS.REGISTER, label: "Sign Up", intent: "primary" },
 ] as const;
 
 export function Header() {
   return (
-    <header className="fixed top-5 left-1/2 flex h-14 w-124 -translate-x-1/2 justify-center gap-2">
+    <header className="fixed top-5 left-1/2 z-50 flex h-13 -translate-x-1/2 justify-center gap-2">
       <Back />
-      <div className="flex w-98 items-center justify-between rounded-2xl bg-white/70 pr-2 pl-5 backdrop-blur-md">
+
+      <div className="flex items-center justify-between gap-37 rounded-2xl bg-white/70 px-4 shadow-xs shadow-black/3 backdrop-blur-md">
         <Logo />
-        <nav>
-          <ul className="flex gap-4">
-            {NAV_ITEMS.map(({ href, label, intent }) => (
-              <li key={href}>
-                <Button href={href} intent={intent}>
-                  {label}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+
+        <NavButtons>
+          {AUTH_NAV_ITEMS.map(({ href, label, intent }) => (
+            <li key={href}>
+              <Button href={href} intent={intent}>
+                {label}
+              </Button>
+            </li>
+          ))}
+        </NavButtons>
       </div>
     </header>
   );

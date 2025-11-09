@@ -1,43 +1,37 @@
 "use server";
 
-import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import * as z from "zod";
+import bcrypt from "bcrypt";
 
-import { createUser, getUserForAuth, isLoginTaken } from "../db/queries";
-import { getErrorMessage } from "../utils";
-import { signupSchema, signinSchema } from "./schema";
+import { createUser, getUserForAuth, isLoginTaken } from "@/lib/db/queries";
+import { getErrorMessage } from "@/lib/utils";
+
+import {
+  type ActionState,
+  type ErrorFields,
+  signupSchema,
+  signinSchema,
+} from "@/features/auth/lib";
+
+import { getDefaultFieldErrors } from "./constants";
 import { createSession, deleteSession } from "./session";
-
-type FieldErrors = Record<string, string | null>;
 
 interface ValidationError {
   formData: FormData;
-  errors?: z.ZodError | FieldErrors;
+  errors?: z.ZodError | ErrorFields;
   error?: string;
 }
 
-interface ActionState {
-  ok: boolean;
-  formData: FormData;
-  errors: FieldErrors;
-  error?: string;
-}
-
-const DEFAULT_FIELD_ERRORS: FieldErrors = {
-  login: null,
-  password: null,
-  passwordConfirm: null,
-};
 const SALT_ROUNDS = 10;
 
-const formatZodErrors = (error: z.ZodError): FieldErrors => {
-  const formattedErrors: FieldErrors = { ...DEFAULT_FIELD_ERRORS };
+const formatZodErrors = (error: z.ZodError): ErrorFields => {
+  const formattedErrors: ErrorFields = getDefaultFieldErrors();
   const fieldErrors = z.flattenError(error).fieldErrors;
 
   Object.entries(fieldErrors).forEach(([field, messages]) => {
     if (Array.isArray(messages) && messages.length > 0) {
-      formattedErrors[field] = messages.join(". ");
+      formattedErrors[field] = { message: messages.join(". ") };
     }
   });
 
@@ -47,7 +41,7 @@ const formatZodErrors = (error: z.ZodError): FieldErrors => {
 const handleValidationError = ({
   formData,
   error,
-  errors = DEFAULT_FIELD_ERRORS,
+  errors = getDefaultFieldErrors(),
 }: ValidationError): ActionState => ({
   ok: false,
   formData,
@@ -60,13 +54,19 @@ const handleAuth = async <T extends z.ZodObject>(
   schema: T,
   callback: (data: z.infer<T>) => Promise<ActionState>,
 ) => {
-  const result = schema.safeParse(Object.fromEntries(formData));
+  const data: Record<string, unknown> = {};
+
+  Object.keys(schema.shape).forEach((key) => {
+    data[key] = formData.get(key);
+  });
+
+  const result = schema.safeParse(data);
 
   if (!result.success) {
     return handleValidationError({
       formData,
       errors: result.error,
-      error: "Unable to proceed. Please enter valid data",
+      error: "Entered invalid data",
     });
   }
 
@@ -102,6 +102,8 @@ export const signin = async (
 ): Promise<ActionState> =>
   await handleAuth(formData, signinSchema, async ({ login, password }) => {
     try {
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const user = await getUserForAuth(login);
 
       if (!user) {

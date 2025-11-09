@@ -1,11 +1,9 @@
 import "server-only";
 
-import { type JWTPayload, jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
-
-import { getWeekDate } from "@/utils";
+import { type JWTPayload, jwtVerify, SignJWT } from "jose";
 
 interface CookieOptions {
   httpOnly: boolean;
@@ -30,6 +28,8 @@ const COOKIE_OPTIONS: Omit<CookieOptions, "expires"> = {
 const SESSION_ALGORITHM = "HS256";
 const SESSION_COOKIE_NAME = "session";
 const SESSION_DURATION = "7d";
+
+const getWeekDate = (): Date => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
 const getSessionKey = cache(() => {
   const secretKey = process.env.SESSION_SECRET;

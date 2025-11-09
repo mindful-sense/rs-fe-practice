@@ -1,13 +1,14 @@
 import * as z from "zod";
+import { createNonEmptyStringSchema, createRangeStringSchema } from "./utils";
+
 import {
   LOGIN_MIN_LENGTH,
   LOGIN_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PASSWORD_MAX_LENGTH,
-} from "../constants";
-import { createStringSchema } from "../utils";
+} from "./constants";
 
-const passwordSchema = createStringSchema(
+const passwordSchema = createRangeStringSchema(
   PASSWORD_MIN_LENGTH,
   PASSWORD_MAX_LENGTH,
   "Password",
@@ -20,7 +21,7 @@ const passwordSchema = createStringSchema(
 
 export const signupSchema = z
   .strictObject({
-    login: createStringSchema(LOGIN_MIN_LENGTH, LOGIN_MAX_LENGTH, "Login"),
+    login: createRangeStringSchema(LOGIN_MIN_LENGTH, LOGIN_MAX_LENGTH, "Login"),
     password: passwordSchema,
     passwordConfirm: z.string().trim(),
   })
@@ -32,7 +33,7 @@ export const signupSchema = z
 
 export const signinSchema = z
   .strictObject({
-    login: z.string().trim(),
-    password: z.string().trim(),
+    login: createNonEmptyStringSchema("username"),
+    password: createNonEmptyStringSchema("password"),
   })
   .required();

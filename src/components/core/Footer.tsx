@@ -1,5 +1,5 @@
+import { getTimestamp } from "@/lib/utils";
 import { fetchWeatherByCity } from "@/lib/api/weather";
-import { capitalizeWords, getTimestamp } from "@/utils";
 
 const CITY = "London";
 const CONTACT_EMAIL = "arsen.is.working@gmail.com";
@@ -8,6 +8,13 @@ const DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
   day: "2-digit",
 };
 const REGION = "en-GB";
+
+const capitalizeWords = (text: string): string =>
+  text
+    ?.trim()
+    .split(/\s+/)
+    .map((word) => `${word[0].toUpperCase()}${word.slice(1).toLowerCase()}`)
+    .join(" ") || "";
 
 const formatDate = (date: Date): string =>
   new Intl.DateTimeFormat(REGION, DATE_FORMAT_OPTIONS).format(date);
@@ -21,7 +28,7 @@ export async function Footer() {
   const weather = await fetchWeatherByCity(CITY);
 
   return (
-    <footer className="fixed bottom-5 left-1/2 flex h-14 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-5 text-sm/4 font-medium backdrop-blur-md">
+    <footer className="fixed bottom-5 left-1/2 flex h-13 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-4 text-sm/4 shadow-xs shadow-black/3 backdrop-blur-md">
       <div>
         <h3>For Inquiries:</h3>
         <address>
@@ -38,14 +45,12 @@ export async function Footer() {
         <p>
           {CITY}, <time dateTime={dateTime}>{formattedDate}</time>
         </p>
-        {weather ? (
+        {weather ?
           <p>
             {formatTemperature(weather.temperature)},{" "}
             {capitalizeWords(weather.description)}
           </p>
-        ) : (
-          <p>Weather data unavailable</p>
-        )}
+        : <p>Weather data unavailable</p>}
       </div>
     </footer>
   );

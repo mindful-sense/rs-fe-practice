@@ -1,4 +1,4 @@
-import { getErrorMessage } from "../utils";
+import { getErrorMessage } from "@/lib/utils";
 import { weatherDataSchema, weatherErrorSchema } from "./schema";
 
 interface Weather {

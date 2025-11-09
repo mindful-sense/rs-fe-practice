@@ -11,10 +11,15 @@
 }
 
 @theme {
-  --color-white: #fdfcff;
+  --color-white: #ffffff;
   --color-accent: #470ff4;
+  --color-accent-disabled: #a9a5b4;
   --color-neutral-*: initial;
-  --color-neutral-50: #bfbbcb;
+  --color-neutral-50: #edecf0;
+  --color-neutral-100: #bfbbcb;
+  --color-neutral-200: #918ca3;
+  --color-danger-50: #de0034;
+  --color-danger-100: #c7002f;
 }
 
 /* @media (prefers-color-scheme: dark) {

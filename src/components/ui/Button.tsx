@@ -1,17 +1,17 @@
-import { type VariantProps, cva } from "class-variance-authority";
 import Link from "next/link";
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
+import { type ComponentPropsWithoutRef } from "react";
+import { type VariantProps, cva } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
 
 const buttonVariants = cva(
-  "focus:outline-accent flex h-10 w-auto cursor-pointer items-center rounded-lg px-4 text-sm font-medium text-black outline-2 outline-offset-2 outline-transparent transition-colors duration-300",
+  "focus:outline-accent disabled:bg-accent-disabled flex h-9 w-auto cursor-pointer items-center justify-center rounded-lg px-4 text-center text-sm text-black outline-2 outline-offset-2 outline-transparent transition-colors duration-300",
   {
     variants: {
       intent: {
         primary: "hover:bg-accent bg-black text-white",
         secondary: "",
         inline:
-          "hover:text-accent focus:text-accent px-0 focus:outline-transparent",
+          "hover:text-accent focus:text-accent inline px-0 focus:outline-transparent",
       },
       size: {
         full: "w-full h-12 rounded-xl text-base",
@@ -25,14 +25,12 @@ const buttonVariants = cva(
 
 type BaseProps = VariantProps<typeof buttonVariants>;
 
-interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
-    BaseProps {
+interface ButtonProps extends ComponentPropsWithoutRef<"button">, BaseProps {
   href?: string;
 }
 
 interface LinkProps
-  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">,
+  extends Omit<ComponentPropsWithoutRef<"a">, "href">,
     BaseProps {
   href: string;
 }

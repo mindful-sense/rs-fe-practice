@@ -1,9 +1,0 @@
-{
-  "endOfLine": "auto",
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "printWidth": 80,
-  "semi": true,
-  "tabWidth": 2,
-  "trailingComma": "all",
-  "useTabs": false
-}

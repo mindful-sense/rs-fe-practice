@@ -1,7 +1,8 @@
-import { ROLE_ID } from "@/constants";
-import { getTimestamp } from "@/utils";
-import { verifySession } from "../auth/session";
+import { ROLE } from "@/config";
+import { verifySession } from "@/features/auth/lib/session";
+import { getTimestamp } from "@/lib/utils";
 import { client } from "./db";
+
 import {
   type AuthUser,
   type CreationUser,
@@ -21,7 +22,7 @@ export const createUser = async (
       login,
       password,
       getTimestamp({ date: new Date(), withTime: false }),
-      ROLE_ID.READER,
+      ROLE.READER,
     ],
   });
 

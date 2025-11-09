@@ -1,23 +1,24 @@
 import * as z from "zod";
-import { ROLE_ID } from "@/constants";
+import { ROLE } from "@/config";
+import { createRangeStringSchema } from "@/features/auth/lib/utils";
+
 import {
   LOGIN_MIN_LENGTH,
   LOGIN_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PASSWORD_MAX_LENGTH,
-} from "../constants";
-import { createStringSchema } from "../utils";
+} from "@/features/auth/lib/constants";
 
 const userDBSchema = z.strictObject({
   id: z.int().positive(),
-  login: createStringSchema(LOGIN_MIN_LENGTH, LOGIN_MAX_LENGTH, "Login"),
-  password: createStringSchema(
+  login: createRangeStringSchema(LOGIN_MIN_LENGTH, LOGIN_MAX_LENGTH, "Login"),
+  password: createRangeStringSchema(
     PASSWORD_MIN_LENGTH,
     PASSWORD_MAX_LENGTH,
     "Password",
   ),
   registered_at: z.string(),
-  role_id: z.enum(ROLE_ID),
+  role_id: z.enum(ROLE),
 });
 
 export const authUserSchema = userDBSchema

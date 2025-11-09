@@ -1,3 +1,4 @@
+upgrade next.js&react, use pnpm, finishing login, refactor.
 **Области хранения данных:**
 
 - база данных на @libsql/client.
