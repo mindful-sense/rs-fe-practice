@@ -1,4 +1,4 @@
-import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { type PublicUser } from "@/lib/db/schema";
 
 const initialState: PublicUser[] = [];
@@ -9,4 +9,5 @@ const usersSlice = createSlice({
   reducers: {},
 });
 
+export const {} = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;

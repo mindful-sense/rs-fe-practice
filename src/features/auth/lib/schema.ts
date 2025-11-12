@@ -37,3 +37,5 @@ export const signinSchema = z
     password: createNonEmptyStringSchema("password"),
   })
   .required();
+
+export type SigninFields = z.infer<typeof signinSchema>;

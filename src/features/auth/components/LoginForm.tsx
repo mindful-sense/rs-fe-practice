@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useActionState } from "react";
+import {
+  type BaseSyntheticEvent,
+  useEffect,
+  useActionState,
+  startTransition,
+} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PATHS } from "@/config/constants";
+import { ROUTE_PATHS } from "@/config";
 
 import {
   Button,
@@ -14,30 +19,25 @@ import {
 } from "@/components/ui";
 
 import {
-  type ActionState,
-  getDefaultFieldErrors,
+  type SigninFields,
+  DEFAULT_FIELD_VALUES,
+  createDefaultActionState,
   signin,
   signinSchema,
 } from "@/features/auth/lib";
 
-const DEFAULT_FIELD_VALUES = {
-  login: "",
-  password: "",
-};
-
-const getDefaultActionState = (): ActionState => ({
-  ok: true,
-  formData: new FormData(),
-  errors: getDefaultFieldErrors(),
-  error: "",
+const getFieldValues = (formData: FormData): SigninFields => ({
+  login: String(formData.get("login") ?? DEFAULT_FIELD_VALUES.login),
+  password: String(formData.get("password") ?? DEFAULT_FIELD_VALUES.password),
 });
 
 export function LoginForm() {
   const [actionState, formAction, isPending] = useActionState(
     signin,
-    getDefaultActionState(),
+    createDefaultActionState(),
   );
   const { formData, errors } = actionState;
+  const { login, password } = getFieldValues(formData);
 
   const {
     handleSubmit,
@@ -45,7 +45,7 @@ export function LoginForm() {
     formState: { errors: clientErrors },
     setError,
     clearErrors,
-  } = useForm({
+  } = useForm<SigninFields>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
       ...DEFAULT_FIELD_VALUES,
@@ -68,10 +68,20 @@ export function LoginForm() {
     }
   }, [actionState, setError]);
 
+  const onSubmit = (_data: SigninFields, e?: BaseSyntheticEvent) => {
+    const formEl = e?.target as HTMLFormElement | undefined;
+
+    if (formEl) {
+      startTransition(() => {
+        formAction(new FormData(formEl));
+      });
+    }
+  };
+
   return (
     <form
       action={formAction}
-      onSubmit={handleSubmit(() => {})}
+      onSubmit={handleSubmit(onSubmit)}
       noValidate
       className="flex flex-col gap-6"
     >
@@ -81,7 +91,7 @@ export function LoginForm() {
             id="login"
             type="text"
             placeholder="your_username"
-            defaultValue={(formData.get("login") ?? "") as string}
+            defaultValue={login}
             aria-invalid={
               (clientErrors.login ?? errors.login) ? "true" : "false"
             }
@@ -104,7 +114,7 @@ export function LoginForm() {
             id="password"
             type="password"
             placeholder=" "
-            defaultValue={(formData.get("password") ?? "") as string}
+            defaultValue={password}
             aria-invalid={
               (clientErrors.password ?? errors.password) ? "true" : "false"
             }
@@ -130,7 +140,11 @@ export function LoginForm() {
 
         <p className="text-center text-sm">
           Don&apos;t have an account?{" "}
-          <Button href={PATHS.REGISTER} intent="inline" className="underline">
+          <Button
+            href={ROUTE_PATHS.REGISTER}
+            intent="inline"
+            decoration="underline"
+          >
             Sign Up
           </Button>
         </p>

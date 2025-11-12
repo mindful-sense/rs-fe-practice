@@ -1,4 +1,4 @@
-import { getErrorMessage } from "@/lib/utils";
+import { getErrorMessage, getEnvVar } from "@/lib/utils";
 import { weatherDataSchema, weatherErrorSchema } from "./schema";
 
 interface Weather {
@@ -29,12 +29,7 @@ export const fetchWeatherByCity = async (
       throw new Error("City name is required");
     }
 
-    const apiKey = process.env.OPENWEATHER_API_KEY;
-
-    if (!apiKey) {
-      throw new Error("OPENWEATHER_API_KEY is not found");
-    }
-
+    const apiKey = getEnvVar("OPENWEATHER_API_KEY");
     const response = await fetch(getApiUrl(trimmedCity, apiKey), {
       next: { revalidate: API_REVALIDATION_SECONDS },
     });

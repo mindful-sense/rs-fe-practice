@@ -1,4 +1,4 @@
-import { type ErrorField } from "@/features/auth/lib/types";
+import { type ErrorField } from "@/features/auth/lib";
 
 interface Props {
   errorId: string;

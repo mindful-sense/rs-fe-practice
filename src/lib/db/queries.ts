@@ -1,6 +1,9 @@
-import { ROLE } from "@/config";
-import { verifySession } from "@/features/auth/lib/session";
+import * as z from "zod";
+import { type Row } from "@libsql/client";
+
+import { ROLES } from "@/config";
 import { getTimestamp } from "@/lib/utils";
+import { verifySession } from "@/features/auth/lib/session";
 import { client } from "./db";
 
 import {
@@ -12,27 +15,34 @@ import {
   publicUserSchema,
 } from "./schema";
 
+const parseSingleRow = <Schema extends z.ZodPipe>(
+  schema: Schema,
+  row: Row,
+  error: string,
+): z.core.output<Schema> => {
+  const result = schema.safeParse(row);
+
+  if (!result.success) {
+    throw new Error(error);
+  }
+
+  return result.data;
+};
+
 export const createUser = async (
   login: string,
   password: string,
 ): Promise<CreationUser> => {
   const { rows } = await client.execute({
     sql: "INSERT INTO users(login, password, registered_at, role_id) VALUES (?, ?, ?, ?) RETURNING id",
-    args: [
-      login,
-      password,
-      getTimestamp({ date: new Date(), withTime: false }),
-      ROLE.READER,
-    ],
+    args: [login, password, getTimestamp(new Date()), ROLES.READER],
   });
 
-  const result = creationUserSchema.safeParse(rows[0]);
-
-  if (!result.success) {
-    throw new Error("Failed to create a new user");
-  }
-
-  return result.data;
+  return parseSingleRow(
+    creationUserSchema,
+    rows[0],
+    "Failed to create a new user",
+  );
 };
 
 export const isLoginTaken = async (login: string): Promise<boolean> => {
@@ -55,13 +65,11 @@ export const getUserForAuth = async (
     return null;
   }
 
-  const result = authUserSchema.safeParse(rows[0]);
-
-  if (!result.success) {
-    throw new Error(`Failed to fetch the user ${login}`);
-  }
-
-  return result.data;
+  return parseSingleRow(
+    authUserSchema,
+    rows[0],
+    `Failed to fetch the user ${login}`,
+  );
 };
 
 export const getPublicUser = async (
@@ -74,7 +82,7 @@ export const getPublicUser = async (
   }
 
   const { rows } = await client.execute({
-    sql: "SELECT id, login, registered_at, role_id FROM users WHERE id = ? LIMIT 1",
+    sql: "SELECT id, login, role_id FROM users WHERE id = ? LIMIT 1",
     args: [userId],
   });
 
@@ -82,11 +90,5 @@ export const getPublicUser = async (
     return null;
   }
 
-  const result = publicUserSchema.safeParse(rows[0]);
-
-  if (!result.success) {
-    throw new Error(`Failed to verify the user`);
-  }
-
-  return result.data;
+  return parseSingleRow(publicUserSchema, rows[0], "Failed to verify the user");
 };

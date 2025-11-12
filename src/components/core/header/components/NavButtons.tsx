@@ -2,12 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import { type ReactNode } from "react";
-import { PATHS } from "@/config/constants";
+import { isAuthRoutePath } from "@/config";
 
 export function NavButtons({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
-  if (Object.values(PATHS).includes(pathname)) {
+  if (isAuthRoutePath(pathname)) {
     return null;
   }
 

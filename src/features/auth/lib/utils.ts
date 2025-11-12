@@ -9,10 +9,10 @@ export const createRangeStringSchema = (
     .string()
     .trim()
     .min(min, {
-      message: `${fieldName} must be at least ${min} characters long`,
+      error: `${fieldName} must be at least ${min} characters long`,
     })
     .max(max, {
-      message: `${fieldName} must be at most ${max} characters long`,
+      error: `${fieldName} must be at most ${max} characters long`,
     });
 
 export const createNonEmptyStringSchema = (fieldName: string): z.ZodString =>

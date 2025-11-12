@@ -9,12 +9,14 @@ const buttonVariants = cva(
     variants: {
       intent: {
         primary: "hover:bg-accent bg-black text-white",
-        secondary: "",
         inline:
-          "hover:text-accent focus:text-accent inline px-0 focus:outline-transparent",
+          "hover:text-accent focus:text-accent inline-flex px-0 focus:outline-transparent",
       },
       size: {
         full: "w-full h-12 rounded-xl text-base",
+      },
+      decoration: {
+        underline: "underline",
       },
     },
     defaultVariants: {
@@ -25,28 +27,30 @@ const buttonVariants = cva(
 
 type BaseProps = VariantProps<typeof buttonVariants>;
 
-interface ButtonProps extends ComponentPropsWithoutRef<"button">, BaseProps {
-  href?: string;
+interface ButtonProps
+  extends Omit<ComponentPropsWithoutRef<"button">, "className">,
+    BaseProps {
+  href?: never;
 }
 
 interface LinkProps
-  extends Omit<ComponentPropsWithoutRef<"a">, "href">,
+  extends Omit<ComponentPropsWithoutRef<"a">, "href" | "className">,
     BaseProps {
   href: string;
 }
 
-export function Button({
-  className,
-  intent,
-  size,
-  ...props
-}: ButtonProps | LinkProps) {
-  const classes = twMerge(buttonVariants({ intent, size, className }));
+type Props = ButtonProps | LinkProps;
 
-  if (props.href) {
-    const { href, ...rest } = props as LinkProps;
-    return <Link href={href} className={classes} {...rest} />;
+const isLinkProps = (props: Props): props is LinkProps =>
+  "href" in props && typeof props.href === "string";
+
+export function Button(props: Props) {
+  const { intent, size, decoration } = props;
+  const classes = twMerge(buttonVariants({ intent, size, decoration }));
+
+  if (isLinkProps(props)) {
+    return <Link className={classes} {...props} />;
   }
 
-  return <button className={classes} {...(props as ButtonProps)} />;
+  return <button className={classes} {...props} />;
 }

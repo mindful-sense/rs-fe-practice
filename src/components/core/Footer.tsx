@@ -1,31 +1,19 @@
-import { getTimestamp } from "@/lib/utils";
 import { fetchWeatherByCity } from "@/lib/api/weather";
+import {
+  getTimestamp,
+  capitalizeWords,
+  formatDate,
+  formatTemperature,
+} from "@/lib/utils";
 
-const CITY = "London";
+const DEFAULT_CITY = "London";
 const CONTACT_EMAIL = "arsen.is.working@gmail.com";
-const DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
-  month: "short",
-  day: "2-digit",
-};
-const REGION = "en-GB";
-
-const capitalizeWords = (text: string): string =>
-  text
-    ?.trim()
-    .split(/\s+/)
-    .map((word) => `${word[0].toUpperCase()}${word.slice(1).toLowerCase()}`)
-    .join(" ") || "";
-
-const formatDate = (date: Date): string =>
-  new Intl.DateTimeFormat(REGION, DATE_FORMAT_OPTIONS).format(date);
-
-const formatTemperature = (celsius: number): string => `${celsius.toFixed(1)}℃`;
 
 export async function Footer() {
   const now = new Date();
-  const dateTime = getTimestamp({ date: now, withTime: true });
+  const dateTime = getTimestamp(now, true);
   const formattedDate = formatDate(now);
-  const weather = await fetchWeatherByCity(CITY);
+  const weather = await fetchWeatherByCity(DEFAULT_CITY);
 
   return (
     <footer className="fixed bottom-5 left-1/2 flex h-13 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-4 text-sm/4 shadow-xs shadow-black/3 backdrop-blur-md">
@@ -43,14 +31,13 @@ export async function Footer() {
 
       <div className="text-right">
         <p>
-          {CITY}, <time dateTime={dateTime}>{formattedDate}</time>
+          {DEFAULT_CITY}, <time dateTime={dateTime}>{formattedDate}</time>
         </p>
-        {weather ?
-          <p>
-            {formatTemperature(weather.temperature)},{" "}
-            {capitalizeWords(weather.description)}
-          </p>
-        : <p>Weather data unavailable</p>}
+        <p>
+          {weather
+            ? `${formatTemperature(weather.temperature)}${capitalizeWords(weather.description)}`
+            : "Weather data unavailable"}
+        </p>
       </div>
     </footer>
   );

@@ -1,10 +1,10 @@
-import { PATHS } from "@/config/constants";
+import { ROUTE_PATHS } from "@/config";
 import { Button } from "@/components/ui";
 import { Back, Logo, NavButtons } from "./components";
 
 const AUTH_NAV_ITEMS = [
-  { href: PATHS.LOGIN, label: "Sign In", intent: "inline" },
-  { href: PATHS.REGISTER, label: "Sign Up", intent: "primary" },
+  { href: ROUTE_PATHS.LOGIN, label: "Sign In", intent: "inline" },
+  { href: ROUTE_PATHS.REGISTER, label: "Sign Up", intent: "primary" },
 ] as const;
 
 export function Header() {

@@ -1,7 +1,4 @@
 import { createClient } from "@libsql/client";
+import { getEnvVar } from "@/lib/utils";
 
-if (!process.env.DB_URL) {
-  throw new Error("DB_URL variable is not set");
-}
-
-export const client = createClient({ url: process.env.DB_URL });
+export const client = createClient({ url: getEnvVar("DB_URL") });

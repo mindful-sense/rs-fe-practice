@@ -4,29 +4,23 @@ import { redirect } from "next/navigation";
 import * as z from "zod";
 import bcrypt from "bcrypt";
 
+import { ROUTE_PATHS } from "@/config";
 import { createUser, getUserForAuth, isLoginTaken } from "@/lib/db/queries";
 import { getErrorMessage } from "@/lib/utils";
+import { createSession, deleteSession } from "./session";
 
 import {
   type ActionState,
   type ErrorFields,
   signupSchema,
   signinSchema,
+  createDefaultFieldErrors,
 } from "@/features/auth/lib";
-
-import { getDefaultFieldErrors } from "./constants";
-import { createSession, deleteSession } from "./session";
-
-interface ValidationError {
-  formData: FormData;
-  errors?: z.ZodError | ErrorFields;
-  error?: string;
-}
 
 const SALT_ROUNDS = 10;
 
 const formatZodErrors = (error: z.ZodError): ErrorFields => {
-  const formattedErrors: ErrorFields = getDefaultFieldErrors();
+  const formattedErrors: ErrorFields = createDefaultFieldErrors();
   const fieldErrors = z.flattenError(error).fieldErrors;
 
   Object.entries(fieldErrors).forEach(([field, messages]) => {
@@ -41,24 +35,30 @@ const formatZodErrors = (error: z.ZodError): ErrorFields => {
 const handleValidationError = ({
   formData,
   error,
-  errors = getDefaultFieldErrors(),
-}: ValidationError): ActionState => ({
+  errors = createDefaultFieldErrors(),
+}: {
+  formData: FormData;
+  error: string;
+  errors?: z.ZodError | ErrorFields;
+}): ActionState => ({
   ok: false,
   formData,
-  errors: errors instanceof z.ZodError ? formatZodErrors(errors) : errors,
   error,
+  errors: errors instanceof z.ZodError ? formatZodErrors(errors) : errors,
 });
 
-const handleAuth = async <T extends z.ZodObject>(
+const handleAuth = async <Schema extends z.ZodObject>(
   formData: FormData,
-  schema: T,
-  callback: (data: z.infer<T>) => Promise<ActionState>,
-) => {
-  const data: Record<string, unknown> = {};
-
-  Object.keys(schema.shape).forEach((key) => {
-    data[key] = formData.get(key);
-  });
+  schema: Schema,
+  callback: (data: z.infer<Schema>) => Promise<ActionState>,
+): Promise<ActionState> => {
+  const data = Object.keys(schema.shape).reduce<Record<string, string>>(
+    (acc, key) => {
+      const value = formData.get(key);
+      return { ...acc, [key]: typeof value === "string" ? value : "" };
+    },
+    {},
+  );
 
   const result = schema.safeParse(data);
 
@@ -93,7 +93,7 @@ export const signup = async (
         error: getErrorMessage(error),
       });
     }
-    redirect("/");
+    redirect(ROUTE_PATHS.HOME);
   });
 
 export const signin = async (
@@ -102,7 +102,7 @@ export const signin = async (
 ): Promise<ActionState> =>
   await handleAuth(formData, signinSchema, async ({ login, password }) => {
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const user = await getUserForAuth(login);
 
@@ -120,10 +120,10 @@ export const signin = async (
     } catch (error) {
       return handleValidationError({ formData, error: getErrorMessage(error) });
     }
-    redirect("/");
+    redirect(ROUTE_PATHS.HOME);
   });
 
 export const signout = async (): Promise<void> => {
   await deleteSession();
-  redirect("/login");
+  redirect(ROUTE_PATHS.LOGIN);
 };
