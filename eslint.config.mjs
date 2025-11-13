@@ -6,6 +6,24 @@ import prettier from "eslint-config-prettier";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          vars: "all",
+          args: "after-used",
+          caughtErrors: "all",
+          ignoreRestSiblings: true,
+          ignoreUsingDeclarations: false,
+          reportUsedIgnorePattern: false,
+          varsIgnorePattern: "^_",
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
   prettier,
   // Override default ignores of eslint-config-next.
   globalIgnores([

@@ -74,7 +74,7 @@ const handleAuth = async <Schema extends z.ZodObject>(
 };
 
 export const signup = async (
-  prevState: ActionState,
+  _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> =>
   await handleAuth(formData, signupSchema, async ({ login, password }) => {
@@ -86,7 +86,7 @@ export const signup = async (
       const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
       const createdUser = await createUser(login, hashedPassword);
 
-      await createSession(createdUser.userId);
+      await createSession(createdUser);
     } catch (error) {
       return handleValidationError({
         formData,
@@ -97,7 +97,7 @@ export const signup = async (
   });
 
 export const signin = async (
-  prevState: ActionState,
+  _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> =>
   await handleAuth(formData, signinSchema, async ({ login, password }) => {
@@ -116,7 +116,8 @@ export const signin = async (
         throw new Error("Invalid password");
       }
 
-      await createSession(user.userId);
+      const { password: _, ...userWithoutPassword } = user;
+      await createSession(userWithoutPassword);
     } catch (error) {
       return handleValidationError({ formData, error: getErrorMessage(error) });
     }

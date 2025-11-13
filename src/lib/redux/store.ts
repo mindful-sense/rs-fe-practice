@@ -6,7 +6,7 @@ import {
   postsReducer,
 } from "./features";
 
-export const makeStore = () =>
+export const makeStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
     reducer: {
       user: userReducer,
@@ -14,8 +14,9 @@ export const makeStore = () =>
       post: postReducer,
       posts: postsReducer,
     },
+    preloadedState: preloadedState as RootState | undefined,
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
+export type RootState = { user: ReturnType<typeof userReducer> };
 export type AppDispatch = AppStore["dispatch"];

@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { type JWTPayload, jwtVerify, SignJWT } from "jose";
+import { type PublicUser } from "@/lib/db/schema";
 
 interface CookieOptions {
   httpOnly: boolean;
@@ -13,8 +14,7 @@ interface CookieOptions {
   expires: Date;
 }
 
-interface SessionPayload extends JWTPayload {
-  userId: string;
+interface SessionPayload extends PublicUser, JWTPayload {
   expiresAt: Date;
 }
 
@@ -64,9 +64,18 @@ const decrypt = async (session?: string): Promise<SessionPayload | null> => {
   return payload;
 };
 
-export const createSession = async (userId: string): Promise<void> => {
+export const createSession = async ({
+  userId,
+  login,
+  roleId,
+}: PublicUser): Promise<void> => {
   const expiresAt = getWeekDate();
-  const session = await encrypt({ userId, expiresAt });
+  const session = await encrypt({
+    userId,
+    login,
+    roleId,
+    expiresAt,
+  });
 
   (await cookies()).set(SESSION_COOKIE_NAME, session, {
     ...COOKIE_OPTIONS,
@@ -101,5 +110,28 @@ export const verifySession = cache(async () => {
     redirect("/login");
   }
 
-  return { isAuthorized: true, userId: session.userId };
+  return {
+    isAuthorized: true,
+    userId: session.userId,
+    login: session.login,
+    roleId: session.roleId,
+  };
+});
+
+export const readSession = cache(async () => {
+  const cookie = (await cookies()).get(SESSION_COOKIE_NAME)?.value;
+  const session = await decrypt(cookie);
+
+  if (!session?.userId) {
+    return null;
+  }
+
+  return {
+    isAuthorized: true,
+    user: {
+      userId: session.userId,
+      login: session.login,
+      roleId: session.roleId,
+    },
+  };
 });

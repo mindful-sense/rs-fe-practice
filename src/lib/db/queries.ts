@@ -8,10 +8,8 @@ import { client } from "./db";
 
 import {
   type AuthUser,
-  type CreationUser,
   type PublicUser,
   authUserSchema,
-  creationUserSchema,
   publicUserSchema,
 } from "./schema";
 
@@ -32,14 +30,14 @@ const parseSingleRow = <Schema extends z.ZodPipe>(
 export const createUser = async (
   login: string,
   password: string,
-): Promise<CreationUser> => {
+): Promise<PublicUser> => {
   const { rows } = await client.execute({
-    sql: "INSERT INTO users(login, password, registered_at, role_id) VALUES (?, ?, ?, ?) RETURNING id",
+    sql: "INSERT INTO users(login, password, registered_at, role_id) VALUES (?, ?, ?, ?) RETURNING id, login, role_id",
     args: [login, password, getTimestamp(new Date()), ROLES.READER],
   });
 
   return parseSingleRow(
-    creationUserSchema,
+    publicUserSchema,
     rows[0],
     "Failed to create a new user",
   );
@@ -57,7 +55,7 @@ export const getUserForAuth = async (
   login: string,
 ): Promise<AuthUser | null> => {
   const { rows } = await client.execute({
-    sql: "SELECT id, password FROM users WHERE login = ? LIMIT 1",
+    sql: "SELECT id, login, role_id, password FROM users WHERE login = ? LIMIT 1",
     args: [login],
   });
 
@@ -90,5 +88,5 @@ export const getPublicUser = async (
     return null;
   }
 
-  return parseSingleRow(publicUserSchema, rows[0], "Failed to verify the user");
+  return parseSingleRow(publicUserSchema, rows[0], "Failed to get the user");
 };

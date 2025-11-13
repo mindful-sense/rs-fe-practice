@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { isRole } from "@/config";
+import { type Role, isRole } from "@/config";
 import { createRangeStringSchema } from "@/features/auth/lib/utils";
 
 import {
@@ -21,19 +21,21 @@ const userDBSchema = z.strictObject({
     "Password",
   ),
   registered_at: z.string().nonempty(),
-  role_id: z.int().refine(isRole, { error: "Invalid role id" }),
+  role_id: z.custom<Role>(
+    (value) =>
+      typeof value === "number" && Number.isInteger(value) && isRole(value),
+    { error: "Invalid role id" },
+  ),
 });
 
 export const authUserSchema = userDBSchema
-  .pick({ id: true, password: true })
+  .omit({ registered_at: true })
   .transform((data) => ({
     userId: data.id,
+    login: data.login,
     password: data.password,
+    roleId: data.role_id,
   }));
-
-export const creationUserSchema = userDBSchema
-  .pick({ id: true })
-  .transform((data) => ({ userId: data.id }));
 
 export const publicUserSchema = userDBSchema
   .omit({ password: true })
@@ -44,5 +46,4 @@ export const publicUserSchema = userDBSchema
   }));
 
 export type AuthUser = z.infer<typeof authUserSchema>;
-export type CreationUser = z.infer<typeof creationUserSchema>;
 export type PublicUser = z.infer<typeof publicUserSchema>;

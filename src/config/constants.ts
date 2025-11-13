@@ -21,14 +21,16 @@ const makeTypeGuard = <const Tuple extends readonly (string | number)[]>(
   values: Tuple,
 ) => {
   type Element = Tuple[number];
-  const set = new Set(values);
+  const set = new Set(values as readonly Element[]);
 
   return (value: unknown): value is Element => set.has(value as Element);
 };
 
-export const isRole = makeTypeGuard(Object.values(ROLES));
-export const isRoutePath = makeTypeGuard(Object.values(ROUTE_PATHS));
+export const isRole = makeTypeGuard(Object.values(ROLES) as readonly Role[]);
+export const isRoutePath = makeTypeGuard(
+  Object.values(ROUTE_PATHS) as readonly RoutePath[],
+);
 export const isAuthRoutePath = makeTypeGuard([
   ROUTE_PATHS.LOGIN,
   ROUTE_PATHS.REGISTER,
-]);
+] as readonly AuthRoutePath[]);

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ROLES } from "@/config";
 import { type PublicUser } from "@/lib/db/schema";
 
-const initialState: PublicUser = {
+export const initialUserState: PublicUser = {
   userId: "",
   login: "",
   roleId: ROLES.GUEST,
@@ -10,9 +10,11 @@ const initialState: PublicUser = {
 
 const userSlice = createSlice({
   name: "user",
-  initialState,
-  reducers: {},
+  initialState: initialUserState,
+  reducers: {
+    resetUser: () => initialUserState,
+  },
 });
 
-export const {} = userSlice.actions;
+export const { resetUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
