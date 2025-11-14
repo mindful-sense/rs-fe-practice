@@ -6,6 +6,7 @@ config.autoAddCss = false;
 import { Header } from "@/components/core";
 import { StoreProvider, initialUserState } from "@/lib/redux";
 import { readSession } from "@/features/auth/lib/session";
+import { AppShell } from "./AppShell";
 import { hostGrotesk } from "./_ui/fonts";
 import "./globals.css";
 
@@ -31,7 +32,7 @@ export default async function RootLayout({
       >
         <Header />
         <StoreProvider preloadedState={preloadedState}>
-          {children}
+          <AppShell>{children}</AppShell>
         </StoreProvider>
       </body>
     </html>
