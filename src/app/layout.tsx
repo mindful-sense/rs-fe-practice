@@ -4,9 +4,9 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 
 import { Header } from "@/components/core";
-import { StoreProvider, initialUserState } from "@/lib/redux";
-import { readSession } from "@/features/auth/lib/session";
-import { AppShell } from "./AppShell";
+import { StoreProvider, initialUserState } from "@/lib/shared";
+import { readSession } from "@/features/auth/server";
+import { SessionRefresher } from "@/features/auth/client";
 import { hostGrotesk } from "./_ui/fonts";
 import "./globals.css";
 
@@ -32,7 +32,7 @@ export default async function RootLayout({
       >
         <Header />
         <StoreProvider preloadedState={preloadedState}>
-          <AppShell>{children}</AppShell>
+          <SessionRefresher>{children}</SessionRefresher>
         </StoreProvider>
       </body>
     </html>

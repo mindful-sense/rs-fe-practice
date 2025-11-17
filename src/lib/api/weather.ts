@@ -1,14 +1,16 @@
-import { getErrorMessage, getEnvVar } from "@/lib/utils";
+import "server-only";
+import { getEnvVar } from "@/lib/server";
+import { getErrorMessage } from "@/lib/shared";
 import { weatherDataSchema, weatherErrorSchema } from "./schema";
+
+const API_BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+const API_UNITS = "metric";
+const API_REVALIDATION_SECONDS = 600;
 
 interface Weather {
   temperature: number;
   description: string;
 }
-
-const API_BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
-const API_UNITS = "metric";
-const API_REVALIDATION_SECONDS = 600;
 
 const getApiUrl = (city: string, apiKey: string): string => {
   const params = new URLSearchParams({

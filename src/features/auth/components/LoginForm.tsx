@@ -8,8 +8,8 @@ import {
 } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ROUTE_PATHS } from "@/config";
 
+import { ROUTE_PATHS } from "@/config";
 import {
   Button,
   FieldError,
@@ -17,16 +17,38 @@ import {
   FormField,
   Input,
 } from "@/components/ui";
-
 import {
-  type SigninFields,
+  type SignInFields,
   DEFAULT_FIELD_VALUES,
   createDefaultActionState,
   signin,
-  signinSchema,
-} from "@/features/auth/lib";
+  signInSchema,
+} from "@/features/auth/shared";
 
-const getFieldValues = (formData: FormData): SigninFields => ({
+const LOGIN_FIELDS: Array<{
+  id: keyof SignInFields;
+  label: string;
+  type: "text" | "password";
+  placeholder: string;
+  errorId: string;
+}> = [
+  {
+    id: "login",
+    label: "Username",
+    type: "text",
+    placeholder: "your_username",
+    errorId: "login-error",
+  },
+  {
+    id: "password",
+    label: "Password",
+    type: "password",
+    placeholder: " ",
+    errorId: "password-error",
+  },
+];
+
+const getFieldValues = (formData: FormData): SignInFields => ({
   login: String(formData.get("login") ?? DEFAULT_FIELD_VALUES.login),
   password: String(formData.get("password") ?? DEFAULT_FIELD_VALUES.password),
 });
@@ -37,7 +59,7 @@ export function LoginForm() {
     createDefaultActionState(),
   );
   const { formData, errors } = actionState;
-  const { login, password } = getFieldValues(formData);
+  const serverValues = getFieldValues(formData);
 
   const {
     handleSubmit,
@@ -45,17 +67,24 @@ export function LoginForm() {
     formState: { errors: clientErrors },
     setError,
     clearErrors,
-  } = useForm<SigninFields>({
-    resolver: zodResolver(signinSchema),
-    defaultValues: {
-      ...DEFAULT_FIELD_VALUES,
-      ...(Object.fromEntries(formData) ?? {}),
-    },
+  } = useForm<SignInFields>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: { ...getFieldValues(formData) },
   });
 
   const clearRootServerError = (): void => {
     if (clientErrors.root?.server) {
       clearErrors("root.server");
+    }
+  };
+
+  const onSubmit = (_data: SignInFields, event?: BaseSyntheticEvent): void => {
+    const formEl = event?.target as HTMLFormElement | undefined;
+
+    if (formEl) {
+      startTransition(() => {
+        formAction(new FormData(formEl));
+      });
     }
   };
 
@@ -68,16 +97,6 @@ export function LoginForm() {
     }
   }, [actionState, setError]);
 
-  const onSubmit = (_data: SigninFields, e?: BaseSyntheticEvent) => {
-    const formEl = e?.target as HTMLFormElement | undefined;
-
-    if (formEl) {
-      startTransition(() => {
-        formAction(new FormData(formEl));
-      });
-    }
-  };
-
   return (
     <form
       action={formAction}
@@ -86,51 +105,28 @@ export function LoginForm() {
       className="flex flex-col gap-6"
     >
       <fieldset className="flex flex-col gap-2">
-        <FormField>
-          <Input
-            id="login"
-            type="text"
-            placeholder="your_username"
-            defaultValue={login}
-            aria-invalid={
-              (clientErrors.login ?? errors.login) ? "true" : "false"
-            }
-            aria-describedby="login-error"
-            aria-required="true"
-            {...register("login", { onChange: clearRootServerError })}
-          >
-            Username
-          </Input>
+        {LOGIN_FIELDS.map(({ id, label, type, placeholder, errorId }) => (
+          <FormField key={id}>
+            <Input
+              id={id}
+              type={type}
+              placeholder={placeholder}
+              defaultValue={serverValues[id]}
+              aria-invalid={(clientErrors[id] ?? errors[id]) ? "true" : "false"}
+              aria-describedby={errorId}
+              aria-required="true"
+              {...register(id, { onChange: clearRootServerError })}
+            >
+              {label}
+            </Input>
 
-          <FieldError
-            errorId="login-error"
-            serverError={errors.login}
-            clientError={clientErrors.login}
-          />
-        </FormField>
-
-        <FormField>
-          <Input
-            id="password"
-            type="password"
-            placeholder=" "
-            defaultValue={password}
-            aria-invalid={
-              (clientErrors.password ?? errors.password) ? "true" : "false"
-            }
-            aria-describedby="password-error"
-            aria-required="true"
-            {...register("password", { onChange: clearRootServerError })}
-          >
-            Password
-          </Input>
-
-          <FieldError
-            errorId="password-error"
-            serverError={errors.password}
-            clientError={clientErrors.password}
-          />
-        </FormField>
+            <FieldError
+              errorId={errorId}
+              serverError={errors[id]}
+              clientError={clientErrors[id]}
+            />
+          </FormField>
+        ))}
       </fieldset>
 
       <div className="flex flex-col gap-3">

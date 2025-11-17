@@ -1,8 +1,5 @@
-import type {
-  ActionState,
-  ErrorFields,
-  SigninFields,
-} from "@/features/auth/lib";
+import type { SignInFields } from "./schema";
+import type { ActionState, ErrorFields } from "./types";
 
 export const LOGIN_MIN_LENGTH = 3;
 export const LOGIN_MAX_LENGTH = 30;
@@ -12,7 +9,7 @@ export const PASSWORD_MAX_LENGTH = 50;
 export const DEFAULT_FIELD_VALUES = {
   login: "",
   password: "",
-} as const satisfies SigninFields;
+} as const satisfies SignInFields;
 
 export const createDefaultFieldErrors = (): ErrorFields => ({
   login: null,

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { readSession } from "@/features/auth/lib/session";
+import { readSession } from "@/features/auth/server";
 
 export async function GET() {
   const session = await readSession();

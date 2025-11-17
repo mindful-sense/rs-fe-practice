@@ -1,10 +1,10 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { type ReactNode } from "react";
+import { type PropsWithChildren } from "react";
 import { isAuthRoutePath } from "@/config";
 
-export function NavButtons({ children }: { children: ReactNode }) {
+export function NavButtons({ children }: PropsWithChildren) {
   const pathname = usePathname();
 
   if (isAuthRoutePath(pathname)) {

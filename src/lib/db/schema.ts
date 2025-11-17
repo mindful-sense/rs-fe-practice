@@ -1,31 +1,22 @@
 import * as z from "zod";
 import { type Role, isRole } from "@/config";
-import { createRangeStringSchema } from "@/features/auth/lib/utils";
-
 import {
-  LOGIN_MIN_LENGTH,
-  LOGIN_MAX_LENGTH,
-  PASSWORD_MIN_LENGTH,
-  PASSWORD_MAX_LENGTH,
-} from "@/features/auth/lib/constants";
+  createLoginField,
+  createPasswordField,
+  createNonEmptyStringField,
+} from "@/features/auth/shared";
 
 const userDBSchema = z.strictObject({
   id: z
     .int()
     .positive()
     .transform((value) => String(value)),
-  login: createRangeStringSchema(LOGIN_MIN_LENGTH, LOGIN_MAX_LENGTH, "Login"),
-  password: createRangeStringSchema(
-    PASSWORD_MIN_LENGTH,
-    PASSWORD_MAX_LENGTH,
-    "Password",
-  ),
-  registered_at: z.string().nonempty(),
-  role_id: z.custom<Role>(
-    (value) =>
-      typeof value === "number" && Number.isInteger(value) && isRole(value),
-    { error: "Invalid role id" },
-  ),
+  login: createLoginField(),
+  password: createPasswordField(),
+  registered_at: createNonEmptyStringField(),
+  role_id: z
+    .int()
+    .refine(isRole, { error: "Invalid role id" }) as z.ZodType<Role>,
 });
 
 export const authUserSchema = userDBSchema
@@ -37,7 +28,7 @@ export const authUserSchema = userDBSchema
     roleId: data.role_id,
   }));
 
-export const publicUserSchema = userDBSchema
+export const userSchema = userDBSchema
   .omit({ password: true })
   .transform((data) => ({
     userId: data.id,
@@ -46,4 +37,4 @@ export const publicUserSchema = userDBSchema
   }));
 
 export type AuthUser = z.infer<typeof authUserSchema>;
-export type PublicUser = z.infer<typeof publicUserSchema>;
+export type User = z.infer<typeof userSchema>;

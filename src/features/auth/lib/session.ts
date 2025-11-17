@@ -1,45 +1,30 @@
 import "server-only";
-
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { type JWTPayload, jwtVerify, SignJWT } from "jose";
-import { type PublicUser } from "@/lib/db/schema";
+import { type User } from "@/lib/shared";
+import { getEnvVar } from "@/lib/server";
 
-interface CookieOptions {
-  httpOnly: boolean;
-  secure: boolean;
-  sameSite: "lax" | "strict" | "none";
-  path: string;
-  expires: Date;
-}
-
-interface SessionPayload extends PublicUser, JWTPayload {
+interface SessionPayload extends User, JWTPayload {
   expiresAt: Date;
 }
-
-const COOKIE_OPTIONS: Omit<CookieOptions, "expires"> = {
-  httpOnly: true,
-  secure: true,
-  sameSite: "lax",
-  path: "/",
-};
 
 const SESSION_ALGORITHM = "HS256";
 const SESSION_COOKIE_NAME = "session";
 const SESSION_DURATION = "7d";
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "lax",
+  path: "/",
+} as const;
 
 const getWeekDate = (): Date => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-const getSessionKey = cache(() => {
-  const secretKey = process.env.SESSION_SECRET;
-
-  if (!secretKey) {
-    throw new Error("SESSION_SECRET variable is not set");
-  }
-
-  return new TextEncoder().encode(secretKey);
-});
+const getSessionKey = cache(() =>
+  new TextEncoder().encode(getEnvVar("SESSION_SECRET")),
+);
 
 const encrypt = async (payload: SessionPayload): Promise<string> =>
   new SignJWT(payload)
@@ -64,18 +49,9 @@ const decrypt = async (session?: string): Promise<SessionPayload | null> => {
   return payload;
 };
 
-export const createSession = async ({
-  userId,
-  login,
-  roleId,
-}: PublicUser): Promise<void> => {
+export const createSession = async (user: User): Promise<void> => {
   const expiresAt = getWeekDate();
-  const session = await encrypt({
-    userId,
-    login,
-    roleId,
-    expiresAt,
-  });
+  const session = await encrypt({ ...user, expiresAt });
 
   (await cookies()).set(SESSION_COOKIE_NAME, session, {
     ...COOKIE_OPTIONS,
@@ -111,10 +87,8 @@ export const verifySession = cache(async () => {
   }
 
   return {
+    user: { ...session },
     isAuthorized: true,
-    userId: session.userId,
-    login: session.login,
-    roleId: session.roleId,
   };
 });
 
@@ -127,11 +101,7 @@ export const readSession = cache(async () => {
   }
 
   return {
+    user: { ...session },
     isAuthorized: true,
-    user: {
-      userId: session.userId,
-      login: session.login,
-      roleId: session.roleId,
-    },
   };
 });

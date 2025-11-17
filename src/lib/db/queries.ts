@@ -1,23 +1,21 @@
+import "server-only";
 import * as z from "zod";
 import { type Row } from "@libsql/client";
 
 import { ROLES } from "@/config";
-import { getTimestamp } from "@/lib/utils";
-import { verifySession } from "@/features/auth/lib/session";
+import { getTimestampWithoutTime } from "@/lib/shared";
 import { client } from "./db";
+import { type User, type AuthUser, authUserSchema, userSchema } from "./schema";
 
-import {
-  type AuthUser,
-  type PublicUser,
-  authUserSchema,
-  publicUserSchema,
-} from "./schema";
-
-const parseSingleRow = <Schema extends z.ZodPipe>(
-  schema: Schema,
-  row: Row,
-  error: string,
-): z.core.output<Schema> => {
+const parseSingleRow = <Schema extends z.ZodPipe>({
+  schema,
+  row,
+  error,
+}: {
+  schema: Schema;
+  row: Row;
+  error: string;
+}) => {
   const result = schema.safeParse(row);
 
   if (!result.success) {
@@ -27,20 +25,27 @@ const parseSingleRow = <Schema extends z.ZodPipe>(
   return result.data;
 };
 
-export const createUser = async (
-  login: string,
-  password: string,
-): Promise<PublicUser> => {
+export const createUser = async ({
+  login,
+  password,
+}: {
+  login: string;
+  password: string;
+}): Promise<User> => {
   const { rows } = await client.execute({
-    sql: "INSERT INTO users(login, password, registered_at, role_id) VALUES (?, ?, ?, ?) RETURNING id, login, role_id",
-    args: [login, password, getTimestamp(new Date()), ROLES.READER],
+    sql: `
+      INSERT INTO users(login, password, registered_at, role_id)
+      VALUES (?, ?, ?, ?)
+      RETURNING id, login, role_id
+    `,
+    args: [login, password, getTimestampWithoutTime(new Date()), ROLES.READER],
   });
 
-  return parseSingleRow(
-    publicUserSchema,
-    rows[0],
-    "Failed to create a new user",
-  );
+  return parseSingleRow({
+    schema: userSchema,
+    row: rows[0],
+    error: "Failed to create a new user",
+  });
 };
 
 export const isLoginTaken = async (login: string): Promise<boolean> => {
@@ -51,11 +56,16 @@ export const isLoginTaken = async (login: string): Promise<boolean> => {
   return rows.length > 0;
 };
 
-export const getUserForAuth = async (
+export const getAuthUserByLogin = async (
   login: string,
 ): Promise<AuthUser | null> => {
   const { rows } = await client.execute({
-    sql: "SELECT id, login, role_id, password FROM users WHERE login = ? LIMIT 1",
+    sql: `
+      SELECT id, login, role_id, password
+      FROM users
+      WHERE login = ?
+      LIMIT 1
+    `,
     args: [login],
   });
 
@@ -63,22 +73,14 @@ export const getUserForAuth = async (
     return null;
   }
 
-  return parseSingleRow(
-    authUserSchema,
-    rows[0],
-    `Failed to fetch the user ${login}`,
-  );
+  return parseSingleRow({
+    schema: authUserSchema,
+    row: rows[0],
+    error: `Failed to fetch the user ${login}`,
+  });
 };
 
-export const getPublicUser = async (
-  userId: string,
-): Promise<PublicUser | null> => {
-  const session = await verifySession();
-
-  if (!session) {
-    throw new Error("Failed to verify session");
-  }
-
+export const getUserById = async (userId: string): Promise<User | null> => {
   const { rows } = await client.execute({
     sql: "SELECT id, login, role_id FROM users WHERE id = ? LIMIT 1",
     args: [userId],
@@ -88,5 +90,9 @@ export const getPublicUser = async (
     return null;
   }
 
-  return parseSingleRow(publicUserSchema, rows[0], "Failed to get the user");
+  return parseSingleRow({
+    schema: userSchema,
+    row: rows[0],
+    error: "Failed to get the user",
+  });
 };

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { type PublicUser } from "@/lib/db/schema";
+import { type User } from "@/lib/db/schema";
 import { setUser, resetUser } from "./features";
 
 export const api = createApi({
@@ -7,7 +7,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/" }),
   tagTypes: ["Me"],
   endpoints: (builder) => ({
-    getMe: builder.query<PublicUser | null, void>({
+    getMe: builder.query<User | null, void>({
       query: () => "api/me",
       providesTags: ["Me"],
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {

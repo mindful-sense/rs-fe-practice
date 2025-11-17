@@ -1,8 +1,8 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ROLES } from "@/config";
-import { type PublicUser } from "@/lib/db/schema";
+import { type User } from "@/lib/db/schema";
 
-export const initialUserState: PublicUser = {
+export const initialUserState: User = {
   userId: "",
   login: "",
   roleId: ROLES.GUEST,
@@ -12,7 +12,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: initialUserState,
   reducers: {
-    setUser: (_state, action: PayloadAction<PublicUser>) => action.payload,
+    setUser: (_state, action: PayloadAction<User>) => action.payload,
     resetUser: () => initialUserState,
   },
 });

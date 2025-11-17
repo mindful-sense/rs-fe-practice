@@ -5,17 +5,13 @@ import * as z from "zod";
 import bcrypt from "bcrypt";
 
 import { ROUTE_PATHS } from "@/config";
-import { createUser, getUserForAuth, isLoginTaken } from "@/lib/db/queries";
-import { getErrorMessage } from "@/lib/utils";
-import { createSession, deleteSession } from "./session";
+import { createUser, isLoginTaken, getAuthUserByLogin } from "@/lib/server";
+import { getErrorMessage, getDelay } from "@/lib/shared";
 
-import {
-  type ActionState,
-  type ErrorFields,
-  signupSchema,
-  signinSchema,
-  createDefaultFieldErrors,
-} from "@/features/auth/lib";
+import { createDefaultFieldErrors } from "./constants";
+import { signUpSchema, signInSchema } from "./schema";
+import { createSession, deleteSession } from "./session";
+import type { ActionState, ErrorFields } from "./types";
 
 const SALT_ROUNDS = 10;
 
@@ -32,7 +28,7 @@ const formatZodErrors = (error: z.ZodError): ErrorFields => {
   return formattedErrors;
 };
 
-const handleValidationError = ({
+const createErrorState = ({
   formData,
   error,
   errors = createDefaultFieldErrors(),
@@ -47,81 +43,99 @@ const handleValidationError = ({
   errors: errors instanceof z.ZodError ? formatZodErrors(errors) : errors,
 });
 
-const handleAuth = async <Schema extends z.ZodObject>(
-  formData: FormData,
-  schema: Schema,
-  callback: (data: z.infer<Schema>) => Promise<ActionState>,
-): Promise<ActionState> => {
-  const data = Object.keys(schema.shape).reduce<Record<string, string>>(
-    (acc, key) => {
+const handleAuth = async <Schema extends z.ZodObject>({
+  formData,
+  schema,
+  handler,
+}: {
+  formData: FormData;
+  schema: Schema;
+  handler: (data: z.infer<Schema>) => Promise<ActionState>;
+}): Promise<ActionState> => {
+  const entries = Object.keys(schema.shape).reduce<Record<string, string>>(
+    (values, key) => {
       const value = formData.get(key);
-      return { ...acc, [key]: typeof value === "string" ? value : "" };
+      return { ...values, [key]: typeof value === "string" ? value : "" };
     },
     {},
   );
 
-  const result = schema.safeParse(data);
+  const result = schema.safeParse(entries);
 
   if (!result.success) {
-    return handleValidationError({
+    return createErrorState({
       formData,
       errors: result.error,
       error: "Entered invalid data",
     });
   }
 
-  return callback(result.data);
+  return handler(result.data);
 };
 
 export const signup = async (
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> =>
-  await handleAuth(formData, signupSchema, async ({ login, password }) => {
-    try {
-      if (await isLoginTaken(login)) {
-        throw new Error("This username is already taken");
+  await handleAuth({
+    formData,
+    schema: signUpSchema,
+    handler: async ({ login, password }) => {
+      try {
+        if (await isLoginTaken(login)) {
+          throw new Error("This username is already taken");
+        }
+
+        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+        const createdUser = await createUser({
+          login,
+          password: hashedPassword,
+        });
+
+        await createSession(createdUser);
+      } catch (error) {
+        return createErrorState({
+          formData,
+          error: getErrorMessage(error),
+        });
       }
-
-      const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-      const createdUser = await createUser(login, hashedPassword);
-
-      await createSession(createdUser);
-    } catch (error) {
-      return handleValidationError({
-        formData,
-        error: getErrorMessage(error),
-      });
-    }
-    redirect(ROUTE_PATHS.HOME);
+      redirect(ROUTE_PATHS.HOME);
+    },
   });
 
 export const signin = async (
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> =>
-  await handleAuth(formData, signinSchema, async ({ login, password }) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  await handleAuth({
+    formData,
+    schema: signInSchema,
+    handler: async ({ login, password }) => {
+      try {
+        await getDelay();
 
-      const user = await getUserForAuth(login);
+        const user = await getAuthUserByLogin(login);
 
-      if (!user) {
-        throw new Error("User is not found");
+        if (!user) {
+          throw new Error("User is not found");
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+          throw new Error("Invalid password");
+        }
+
+        const { password: _, ...userWithoutPassword } = user;
+        await createSession(userWithoutPassword);
+      } catch (error) {
+        return createErrorState({
+          formData,
+          error: getErrorMessage(error),
+        });
       }
-
-      const passwordMatch = await bcrypt.compare(password, user.password);
-
-      if (!passwordMatch) {
-        throw new Error("Invalid password");
-      }
-
-      const { password: _, ...userWithoutPassword } = user;
-      await createSession(userWithoutPassword);
-    } catch (error) {
-      return handleValidationError({ formData, error: getErrorMessage(error) });
-    }
-    redirect(ROUTE_PATHS.HOME);
+      redirect(ROUTE_PATHS.HOME);
+    },
   });
 
 export const signout = async (): Promise<void> => {

@@ -1,6 +1,6 @@
-import { type ReactNode } from "react";
+import { type PropsWithChildren } from "react";
 
-export function FormError({ children }: { children: ReactNode }) {
+export function FormError({ children }: PropsWithChildren) {
   return (
     <p
       role="alert"

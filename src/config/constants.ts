@@ -17,7 +17,7 @@ export type AuthRoutePath =
   | typeof ROUTE_PATHS.LOGIN
   | typeof ROUTE_PATHS.REGISTER;
 
-const makeTypeGuard = <const Tuple extends readonly (string | number)[]>(
+const createTypeGuard = <const Tuple extends readonly (string | number)[]>(
   values: Tuple,
 ) => {
   type Element = Tuple[number];
@@ -26,11 +26,11 @@ const makeTypeGuard = <const Tuple extends readonly (string | number)[]>(
   return (value: unknown): value is Element => set.has(value as Element);
 };
 
-export const isRole = makeTypeGuard(Object.values(ROLES) as readonly Role[]);
-export const isRoutePath = makeTypeGuard(
+export const isRole = createTypeGuard(Object.values(ROLES) as readonly Role[]);
+export const isRoutePath = createTypeGuard(
   Object.values(ROUTE_PATHS) as readonly RoutePath[],
 );
-export const isAuthRoutePath = makeTypeGuard([
+export const isAuthRoutePath = createTypeGuard([
   ROUTE_PATHS.LOGIN,
   ROUTE_PATHS.REGISTER,
 ] as readonly AuthRoutePath[]);
