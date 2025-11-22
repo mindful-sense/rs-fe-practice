@@ -6,7 +6,7 @@ export function FormError({ children }: PropsWithChildren) {
       role="alert"
       className="bg-danger-50 flex min-h-16 items-center justify-center rounded-2xl p-3 text-center text-white"
     >
-      Error: {children}
+      {children}
     </p>
   );
 }

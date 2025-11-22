@@ -1,7 +1,7 @@
 "use client";
 
 import { ROUTE_PATHS } from "@/config";
-import { type SignIn, signin, signInSchema } from "@/features/auth/shared";
+import { type SignUp, signup, signUpSchema } from "@/features/auth/shared";
 import { useActionForm } from "@/features/auth/client";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   FormField,
 } from "@/components/ui";
 
-export function LoginForm() {
+export function RegisterForm() {
   const {
     form: {
       register,
@@ -22,10 +22,10 @@ export function LoginForm() {
     state,
     action,
     isPending,
-  } = useActionForm<SignIn>({
-    defaultValues: { login: "", password: "" },
-    schema: signInSchema,
-    action: signin,
+  } = useActionForm<SignUp>({
+    defaultValues: { login: "", password: "", passwordConfirm: "" },
+    schema: signUpSchema,
+    action: signup,
   });
 
   return (
@@ -51,16 +51,25 @@ export function LoginForm() {
           aria-required="true"
           {...register("password")}
         />
+        <FormField
+          id="passwordConfirm"
+          type="password"
+          label="Repeat password"
+          placeholder=" "
+          defaultValue={state.fields?.passwordConfirm}
+          error={
+            errors.passwordConfirm?.message ||
+            state.errors?.passwordConfirm?.[0]
+          }
+          aria-required="true"
+          {...register("passwordConfirm")}
+        />
       </FieldSet>
 
-      <FormButtonBlock label="Sign In" isPending={isPending}>
-        Don&apos;t have an account?&nbsp;
-        <Button
-          href={ROUTE_PATHS.REGISTER}
-          intent="inline"
-          decoration="underline"
-        >
-          Sign Up
+      <FormButtonBlock label="Sign Up" isPending={isPending}>
+        Already have an account?&nbsp;
+        <Button href={ROUTE_PATHS.LOGIN} intent="inline" decoration="underline">
+          Sign In
         </Button>
       </FormButtonBlock>
 

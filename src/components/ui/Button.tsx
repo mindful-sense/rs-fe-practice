@@ -10,7 +10,7 @@ const buttonVariants = cva(
       intent: {
         primary: "hover:bg-accent bg-black text-white",
         inline:
-          "hover:text-accent focus:text-accent inline-flex px-0 focus:outline-transparent",
+          "hover:text-accent focus:text-accent inline-flex h-auto px-0 focus:outline-transparent",
       },
       size: {
         full: "w-full h-12 rounded-xl text-base",

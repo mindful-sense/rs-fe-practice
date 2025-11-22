@@ -1,7 +1,22 @@
-import { type ComponentPropsWithoutRef } from "react";
+import { type ComponentPropsWithRef } from "react";
+import { FieldError } from "./FieldError";
+import { Input } from "./Input";
 
-export function FormField(
-  props: Omit<ComponentPropsWithoutRef<"div">, "className">,
-) {
-  return <div {...props} className="flex flex-col gap-1" />;
+interface Props extends Omit<ComponentPropsWithRef<"input">, "className"> {
+  label: string;
+  error?: string;
+}
+
+export function FormField({ id, error, ...props }: Props) {
+  return (
+    <div className="flex flex-col gap-1">
+      <Input
+        id={id}
+        aria-invalid={!!error}
+        aria-describedby={`${id}-error`}
+        {...props}
+      />
+      <FieldError errorId={`${id}-error`} error={error} />
+    </div>
+  );
 }

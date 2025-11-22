@@ -1,19 +1,14 @@
 import * as z from "zod";
 import { type Role, isRole } from "@/config";
-import {
-  createLoginField,
-  createPasswordField,
-  createNonEmptyStringField,
-} from "@/features/auth/shared";
 
 const userDBSchema = z.strictObject({
   id: z
     .int()
     .positive()
     .transform((value) => String(value)),
-  login: createLoginField(),
-  password: createPasswordField(),
-  registered_at: createNonEmptyStringField(),
+  login: z.string().nonempty(),
+  password: z.string().nonempty(),
+  registered_at: z.string().nonempty(),
   role_id: z
     .int()
     .refine(isRole, { error: "Invalid role id" }) as z.ZodType<Role>,

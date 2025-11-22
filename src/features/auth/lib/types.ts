@@ -1,10 +1,5 @@
-export type ErrorField = { message?: string } | null;
-
-export type ErrorFields = Record<string, ErrorField>;
-
-export interface ActionState {
-  ok: boolean;
-  formData: FormData;
-  error: string;
-  errors: ErrorFields;
+export interface FormState<Data> {
+  message?: string;
+  fields?: Partial<Data>;
+  errors?: Partial<Record<keyof Data, string[]>>;
 }

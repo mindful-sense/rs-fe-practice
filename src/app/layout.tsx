@@ -5,8 +5,8 @@ config.autoAddCss = false;
 
 import { Header } from "@/components/core";
 import { StoreProvider, initialUserState } from "@/lib/shared";
-import { readSession } from "@/features/auth/server";
 import { SessionRefresher } from "@/features/auth/client";
+import { readSession } from "@/features/auth/server";
 import { hostGrotesk } from "./_ui/fonts";
 import "./globals.css";
 
@@ -28,7 +28,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${hostGrotesk.className} bg-page min-h-screen font-medium antialiased`}
+        className={`${hostGrotesk.className} bg-page font-medium antialiased`}
       >
         <Header />
         <StoreProvider preloadedState={preloadedState}>
