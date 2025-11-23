@@ -7,7 +7,7 @@ import { flattenError } from "zod";
 
 import { ROUTE_PATHS } from "@/config";
 import { createUser, getAuthUserByLogin, isLoginTaken } from "@/lib/server";
-import { getDelay, getErrorMessage } from "@/lib/shared";
+import { getErrorMessage } from "@/lib/shared";
 
 import { createSession, deleteSession } from "./session";
 import { type SignIn, type SignUp, signInSchema, signUpSchema } from "./schema";
@@ -33,8 +33,6 @@ export const signup = async (
   const { login, password } = parsed.data;
 
   try {
-    await getDelay();
-
     if (await isLoginTaken(login)) throw new Error("Username is already taken");
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -68,8 +66,6 @@ export const signin = async (
   const { login, password } = parsed.data;
 
   try {
-    await getDelay();
-
     const user = await getAuthUserByLogin(login);
     if (!user) throw new Error("User is not found");
 

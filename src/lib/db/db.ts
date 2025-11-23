@@ -1,5 +1,12 @@
 import "server-only";
-import { createClient } from "@libsql/client";
-import { getEnvVar } from "@/lib/server";
+import Database from "better-sqlite3";
+import path from "path";
 
-export const client = createClient({ url: getEnvVar("DB_URL") });
+const dbPath = path.join(process.cwd(), "src", "data", "blog.db");
+const db = new Database(dbPath, {
+  verbose: console.log,
+  fileMustExist: true,
+});
+db.pragma("journal_mode = WAL");
+
+export { db };

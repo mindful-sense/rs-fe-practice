@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const getDelay = async (ms = 1000): Promise<void> =>
+export const delay = async (ms = 500): Promise<void> =>
   await new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getErrorMessage = (error: unknown): string =>
