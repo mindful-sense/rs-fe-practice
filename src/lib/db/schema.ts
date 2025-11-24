@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { type Role, isRole } from "@/config";
+import { ROLES } from "@/config";
 
 const userDBSchema = z.strictObject({
   id: z
@@ -9,9 +9,7 @@ const userDBSchema = z.strictObject({
   login: z.string().nonempty(),
   password: z.string().nonempty(),
   registered_at: z.string().nonempty(),
-  role_id: z
-    .int()
-    .refine(isRole, { error: "Invalid role id" }) as z.ZodType<Role>,
+  role_id: z.enum(ROLES),
 });
 
 export const authUserSchema = userDBSchema
