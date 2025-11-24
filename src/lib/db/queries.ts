@@ -28,14 +28,17 @@ export const createUser = async ({
 }: {
   login: string;
   password: string;
-}): Promise<User> => {
+}): Promise<User | null> => {
   await delay();
 
+  const timestamp = getTimestampWithoutTime(new Date());
   const row = db
     .prepare(
       "INSERT INTO users(login, password, registered_at, role_id) VALUES (?, ?, ?, ?) RETURNING id, login, role_id",
     )
-    .get(login, password, getTimestampWithoutTime(new Date()), ROLES.READER);
+    .get(login, password, timestamp, ROLES.READER);
+
+  if (!row) return null;
 
   return parseSingleRow({
     schema: userSchema,

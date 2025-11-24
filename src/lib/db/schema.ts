@@ -24,7 +24,7 @@ export const authUserSchema = userDBSchema
   }));
 
 export const userSchema = userDBSchema
-  .omit({ password: true })
+  .omit({ password: true, registered_at: true })
   .transform((data) => ({
     userId: data.id,
     login: data.login,

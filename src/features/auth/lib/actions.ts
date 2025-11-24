@@ -9,11 +9,10 @@ import { ROUTE_PATHS } from "@/config";
 import { createUser, getAuthUserByLogin, isLoginTaken } from "@/lib/server";
 import { getErrorMessage } from "@/lib/shared";
 
+import { generateSalt, hashPassword } from "./core";
 import { createSession, deleteSession } from "./session";
 import { type SignIn, type SignUp, signInSchema, signUpSchema } from "./schema";
 import { type FormState } from "./types";
-
-const SALT_ROUNDS = 10;
 
 export const signup = async (
   _prevState: FormState<SignUp>,
@@ -35,14 +34,17 @@ export const signup = async (
   try {
     if (await isLoginTaken(login)) throw new Error("Username is already taken");
 
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const createdUser = await createUser({ login, password: hashedPassword });
+    const salt = generateSalt();
+    const hashedPassword = await hashPassword(password, salt);
 
-    await createSession(createdUser);
+    const createdUser = await createUser({ login, password: hashedPassword });
+    if (!createdUser) throw new Error("Unable to create account");
+
+    // await createSession(createdUser);
   } catch (error) {
     return {
       message: getErrorMessage(error),
-      fields: { login },
+      fields: { login } as Partial<SignUp>,
     };
   }
   redirect(ROUTE_PATHS.HOME);
