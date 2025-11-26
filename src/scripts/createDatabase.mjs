@@ -1,6 +1,13 @@
-import { createClient } from "@libsql/client";
+import Database from "better-sqlite3";
+import path from "path";
+import { nanoid } from "nanoid";
 
-const client = createClient({ url: "file:src/data/blog.db" });
+const dbPath = path.join(process.cwd(), "src", "data", "blog.db");
+const db = new Database(dbPath /* { verbose: console.log } */);
+db.pragma("journal_mode = WAL");
+
+const ADMIN_ID = nanoid();
+const POST_IDS = Array.from({ length: 12 }, () => nanoid());
 
 const roles = [
   { id: 1, name: "Admin" },
@@ -11,17 +18,20 @@ const roles = [
 
 const users = [
   {
-    id: 1,
+    id: ADMIN_ID,
     login: "john_doe",
-    password: "qwerty1234567890",
-    registeredAt: "2025-07-01",
+    password:
+      "b938ed3577d2708d8fbbbdd80d363b4dbaf1e997ce2c441567b7fffea775b825480d1d96db46e706491fff4c6972d0fd22351108022af9bb4972c750b3b4c5bb",
+    salt: "81d5ef2d2e32b9692916dba4215cc280",
     roleId: 1,
+    registeredAt: "2025-07-01",
+    updatedAt: "2025-07-01",
   },
 ];
 
 const posts = [
   {
-    id: 1,
+    id: POST_IDS[0],
     title: "The Modern Web Dev's Toolkit: Essential Extensions for VS Code",
     imageUrl:
       "https://fastly.picsum.photos/id/200/392/240.jpg?hmac=uWoeFlfmRy19iACTtfMwEOUOAt3iNZBYsw1u4DO00pM",
@@ -30,7 +40,7 @@ const posts = [
     publishedAt: "2025-08-01",
   },
   {
-    id: 2,
+    id: POST_IDS[1],
     title: "Beyond console.log(): A Guide to Advanced JavaScript Debugging",
     imageUrl:
       "https://fastly.picsum.photos/id/677/392/240.jpg?hmac=UygV-DBFkzxvOE9PHuSHSdP2SnC964JsTt8BAVZL7TI",
@@ -39,7 +49,7 @@ const posts = [
     publishedAt: "2025-08-02",
   },
   {
-    id: 3,
+    id: POST_IDS[2],
     title:
       "Demystifying Front-End Frameworks: React, Vue, and Angular Explained",
     imageUrl:
@@ -49,7 +59,7 @@ const posts = [
     publishedAt: "2025-08-03",
   },
   {
-    id: 4,
+    id: POST_IDS[3],
     title:
       "From Zero to Hero: Building a Full-Stack App with Node.js and Express",
     imageUrl:
@@ -59,7 +69,7 @@ const posts = [
     publishedAt: "2025-08-04",
   },
   {
-    id: 5,
+    id: POST_IDS[4],
     title: "The Art of the Pull Request: Best Practices for Code Collaboration",
     imageUrl:
       "https://fastly.picsum.photos/id/392/392/240.jpg?hmac=9h41o_XC39KDVQqLKpmLne_7wyTStum38Euf_gmTMbw",
@@ -68,7 +78,7 @@ const posts = [
     publishedAt: "2025-08-05",
   },
   {
-    id: 6,
+    id: POST_IDS[5],
     title: "CSS Grid vs. Flexbox: Knowing When to Use What",
     imageUrl:
       "https://fastly.picsum.photos/id/459/392/240.jpg?hmac=mEqy4ALTgvrDR-r1fNcM0-gKfndFwamnzmlIQzUcTYM",
@@ -77,7 +87,7 @@ const posts = [
     publishedAt: "2025-08-06",
   },
   {
-    id: 7,
+    id: POST_IDS[6],
     title:
       "An Introduction to Headless CMS: A Modern Approach to Content Management",
     imageUrl:
@@ -87,7 +97,7 @@ const posts = [
     publishedAt: "2025-08-07",
   },
   {
-    id: 8,
+    id: POST_IDS[7],
     title: "Optimizing Web Performance: A Practical Guide to Faster Websites",
     imageUrl:
       "https://fastly.picsum.photos/id/163/392/240.jpg?hmac=saF4jXul1TCKOgUWitCvrQyZLP-hOSFUDTnQQ0BFpNE",
@@ -96,7 +106,7 @@ const posts = [
     publishedAt: "2025-08-08",
   },
   {
-    id: 9,
+    id: POST_IDS[8],
     title:
       "Mastering Asynchronous JavaScript: Promises, Async/Await, and Beyond",
     imageUrl:
@@ -106,7 +116,7 @@ const posts = [
     publishedAt: "2025-08-09",
   },
   {
-    id: 10,
+    id: POST_IDS[9],
     title: "The Ultimate Guide to Git: From Basics to Branching Strategies",
     imageUrl:
       "https://fastly.picsum.photos/id/362/392/240.jpg?hmac=tX7aKWFJnOX8b5YnOuhayLLpq0JcSGCdGNkBjDSlFFs",
@@ -115,7 +125,7 @@ const posts = [
     publishedAt: "2025-08-10",
   },
   {
-    id: 11,
+    id: POST_IDS[10],
     title:
       "Web Accessibility (a11y) for Developers: Building Inclusive Experiences",
     imageUrl:
@@ -125,7 +135,7 @@ const posts = [
     publishedAt: "2025-08-11",
   },
   {
-    id: 12,
+    id: POST_IDS[11],
     title:
       "Introduction to Serverless Computing: A Developer's Guide to AWS Lambda",
     imageUrl:
@@ -136,61 +146,81 @@ const posts = [
   },
 ];
 
-const sqls = [
-  "DROP TABLE IF EXISTS comments;",
-  "DROP TABLE IF EXISTS posts;",
-  "DROP TABLE IF EXISTS users;",
-  "DROP TABLE IF EXISTS roles;",
-  `CREATE TABLE roles (
+const schema = `
+  DROP TABLE IF EXISTS comments;
+  DROP TABLE IF EXISTS posts;
+  DROP TABLE IF EXISTS sessions;
+  DROP TABLE IF EXISTS users;
+  DROP TABLE IF EXISTS roles;
+
+  CREATE TABLE roles (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL
-  );`,
-  `CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    login TEXT NOT NULL,
+  );
+
+  CREATE TABLE users (
+    id TEXT PRIMARY KEY,
+    login TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    registered_at TEXT NOT NULL,
+    salt TEXT NOT NULL,
     role_id INTEGER NOT NULL,
+    registered_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
     FOREIGN KEY (role_id) REFERENCES roles (id)
-  );`,
-  `CREATE TABLE posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+  );
+
+  CREATE TABLE sessions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    expires_at INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+  );
+
+  CREATE TABLE posts (
+    id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     image_url TEXT NOT NULL,
     content TEXT NOT NULL,
     published_at TEXT NOT NULL
-  );`,
-  `CREATE TABLE comments (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+  );
+
+  CREATE TABLE comments (
+    id TEXT PRIMARY KEY,
     content TEXT NOT NULL,
-    author_id INTEGER NOT NULL,
-    post_id INTEGER NOT NULL,
+    author_id TEXT NOT NULL,
+    post_id TEXT NOT NULL,
     FOREIGN KEY (author_id) REFERENCES users (id),
     FOREIGN KEY (post_id) REFERENCES posts (id)
-  );`,
-];
+  );
 
-roles.forEach(({ id, name }) =>
-  sqls.push({
-    sql: "INSERT INTO roles (id, name) VALUES (?, ?);",
-    args: [id, name],
-  }),
-);
+  CREATE INDEX IF NOT EXISTS idx_users_login ON users (login);
+  CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions (user_id);
+  CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions (expires_at);
+`;
 
-users.forEach(({ id, login, password, registeredAt, roleId }) =>
-  sqls.push({
-    sql: "INSERT INTO users (id, login, password, registered_at, role_id) VALUES (?, ?, ?, ?, ?);",
-    args: [id, login, password, registeredAt, roleId],
-  }),
-);
+console.log("Initializing schema...");
+db.exec(schema);
+console.log("Seeding data...");
 
-posts.forEach(({ id, title, imageUrl, content, publishedAt }) =>
-  sqls.push({
-    sql: "INSERT INTO posts (id, title, image_url, content, published_at) VALUES (?, ?, ?, ?, ?);",
-    args: [id, title, imageUrl, content, publishedAt],
-  }),
-);
+const insertRole = db.prepare(`
+  INSERT INTO roles (id, name)
+  VALUES (@id, @name)
+`);
+const insertUser = db.prepare(`
+  INSERT INTO users (id, login, password, salt, role_id, registered_at, updated_at)
+  VALUES (@id, @login, @password, @salt, @roleId, @registeredAt, @updatedAt);
+`);
+const insertPost = db.prepare(`
+  INSERT INTO posts (id, title, image_url, content, published_at)
+  VALUES (@id, @title, @imageUrl, @content, @publishedAt);
+`);
 
-await client.batch(sqls, "write");
-client.close();
+const seed = db.transaction(() => {
+  roles.forEach((role) => insertRole.run(role));
+  users.forEach((user) => insertUser.run(user));
+  posts.forEach((post) => insertPost.run(post));
+});
+
+seed();
+db.close();
 console.log("Database is created.");

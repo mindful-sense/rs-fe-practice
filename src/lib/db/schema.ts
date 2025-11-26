@@ -1,33 +1,25 @@
 import * as z from "zod";
 import { ROLES } from "@/config";
 
-const userDBSchema = z.strictObject({
-  id: z
-    .int()
-    .positive()
-    .transform((value) => String(value)),
-  login: z.string().nonempty(),
-  password: z.string().nonempty(),
-  registered_at: z.string().nonempty(),
-  role_id: z.enum(ROLES),
-});
-
-export const authUserSchema = userDBSchema
-  .omit({ registered_at: true })
+export const userSchema = z
+  .strictObject({
+    id: z.nanoid().nonempty(),
+    login: z.string().nonempty(),
+    password: z.string().nonempty(),
+    salt: z.string().nonempty(),
+    role_id: z.enum(ROLES),
+    registered_at: z.iso.date(),
+    updated_at: z.iso.date(),
+  })
   .transform((data) => ({
     userId: data.id,
     login: data.login,
     password: data.password,
+    salt: data.salt,
     roleId: data.role_id,
+    registeredAt: data.registered_at,
+    updatedAt: data.updated_at,
   }));
 
-export const userSchema = userDBSchema
-  .omit({ password: true, registered_at: true })
-  .transform((data) => ({
-    userId: data.id,
-    login: data.login,
-    roleId: data.role_id,
-  }));
-
-export type AuthUser = z.infer<typeof authUserSchema>;
 export type User = z.infer<typeof userSchema>;
+export type UserId = User["userId"];

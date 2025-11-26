@@ -4,13 +4,14 @@ import "server-only";
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { flattenError } from "zod";
+import { SqliteError } from "better-sqlite3";
 
 import { ROUTE_PATHS } from "@/config";
-import { createUser, getAuthUserByLogin, isLoginTaken } from "@/lib/server";
-import { getErrorMessage } from "@/lib/shared";
+import { insertUser, getUserForLogin } from "@/lib/server";
+import { delay, getErrorMessage } from "@/lib/shared";
 
-import { generateSalt, hashPassword } from "./core";
 import { createSession, deleteSession } from "./session";
+import { generateSalt, hashPassword } from "./passwordHasher";
 import { type SignIn, type SignUp, signInSchema, signUpSchema } from "./schema";
 import { type FormState } from "./types";
 
@@ -18,6 +19,8 @@ export const signup = async (
   _prevState: FormState<SignUp>,
   payload: FormData,
 ): Promise<FormState<SignUp>> => {
+  await delay();
+
   const formData = Object.fromEntries(payload);
   const parsed = signUpSchema.safeParse(formData);
 
@@ -32,16 +35,22 @@ export const signup = async (
   const { login, password } = parsed.data;
 
   try {
-    if (await isLoginTaken(login)) throw new Error("Username is already taken");
-
     const salt = generateSalt();
     const hashedPassword = await hashPassword(password, salt);
+    const userId = insertUser({ login, password: hashedPassword, salt });
 
-    const createdUser = await createUser({ login, password: hashedPassword });
-    if (!createdUser) throw new Error("Unable to create account");
-
-    // await createSession(createdUser);
-  } catch (error) {
+    await createSession(userId);
+  } catch (error: unknown) {
+    if (
+      error instanceof SqliteError &&
+      error.code === "SQLITE_CONSTRAINT_UNIQUE"
+    ) {
+      return {
+        message: "Username is already taken",
+        fields: { login } as Partial<SignUp>,
+      };
+    }
+    console.log("error:", error, typeof error);
     return {
       message: getErrorMessage(error),
       fields: { login } as Partial<SignUp>,
@@ -68,14 +77,12 @@ export const signin = async (
   const { login, password } = parsed.data;
 
   try {
-    const user = await getAuthUserByLogin(login);
-    if (!user) throw new Error("User is not found");
-
+    const user = getUserForLogin(login);
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) throw new Error("Invalid password");
 
-    const { password: _, ...userWithoutPassword } = user;
-    await createSession(userWithoutPassword);
+    const { userId } = user;
+    await createSession(userId);
   } catch (error) {
     return {
       message: getErrorMessage(error),
