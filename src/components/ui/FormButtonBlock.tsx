@@ -1,12 +1,15 @@
-import { type PropsWithChildren } from "react";
+import { type ReactNode } from "react";
 import { Button } from "./Button";
 
-interface Props extends PropsWithChildren {
+export function FormButtonBlock({
+  label,
+  isPending,
+  children,
+}: {
   label: string;
   isPending: boolean;
-}
-
-export function FormButtonBlock({ label, isPending, children }: Props) {
+  children: ReactNode;
+}) {
   return (
     <div className="flex flex-col gap-3">
       <Button type="submit" size="full" disabled={isPending}>

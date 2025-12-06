@@ -4,7 +4,7 @@ import { ROUTE_PATHS } from "@/config";
 import { type SignUp, signup, signUpSchema } from "@/features/auth/shared";
 import { useActionForm } from "@/features/auth/client";
 import {
-  Button,
+  LinkButton,
   FieldSet,
   Form,
   FormButtonBlock,
@@ -68,13 +68,17 @@ export function RegisterForm() {
 
       <FormButtonBlock label="Sign Up" isPending={isPending}>
         Already have an account?&nbsp;
-        <Button href={ROUTE_PATHS.LOGIN} intent="inline" decoration="underline">
+        <LinkButton
+          href={ROUTE_PATHS.LOGIN}
+          intent="inline"
+          decoration="underline"
+        >
           Sign In
-        </Button>
+        </LinkButton>
       </FormButtonBlock>
 
       {(errors.root?.message || state.message) && (
-        <FormError>{errors.root?.message || state.message}</FormError>
+        <FormError error={errors.root?.message || state.message} />
       )}
     </Form>
   );

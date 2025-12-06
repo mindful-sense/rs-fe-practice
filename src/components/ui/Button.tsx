@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { type ComponentProps } from "react";
+import { type ComponentProps, type ReactNode } from "react";
 import { type VariantProps, cva } from "class-variance-authority";
 import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,7 +35,7 @@ function Content({
   leftIcon,
   rightIcon,
   iconstyles,
-}: BaseProps & { children: React.ReactNode }) {
+}: BaseProps & { children: ReactNode }) {
   return (
     <>
       {leftIcon && <FontAwesomeIcon icon={leftIcon} className={iconstyles} />}
