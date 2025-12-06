@@ -9,6 +9,8 @@ export const ROUTE_PATHS = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
+  USERS: "/users",
+  POST: "/post",
 } as const satisfies Record<string, `/${string}`>;
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];

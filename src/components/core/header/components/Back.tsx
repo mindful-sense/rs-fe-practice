@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { ROUTE_PATHS } from "@/config";
@@ -9,15 +8,8 @@ import { ROUTE_PATHS } from "@/config";
 export function Back() {
   const router = useRouter();
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    setIsVisible(pathname !== ROUTE_PATHS.HOME);
-  }, [pathname]);
-
-  if (!isVisible) {
-    return null;
-  }
+  if (pathname === ROUTE_PATHS.HOME) return null;
 
   return (
     <button

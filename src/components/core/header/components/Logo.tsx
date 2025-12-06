@@ -6,7 +6,7 @@ export function Logo() {
   return (
     <Link
       href="/"
-      rel="home"
+      aria-label="devlog home"
       className="hover:text-accent focus:text-accent outline-0 transition-colors duration-300"
     >
       <FontAwesomeIcon icon={faCode} size="lg" className="mr-1" />
