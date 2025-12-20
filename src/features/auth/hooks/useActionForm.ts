@@ -1,68 +1,65 @@
 "use client";
 
-import {
-  type BaseSyntheticEvent,
-  startTransition,
-  useActionState,
-  useEffect,
-} from "react";
-import {
-  type FieldValues,
-  type Path,
-  type UseFormProps,
-  type UseFormReturn,
-  useForm,
+import type { BaseSyntheticEvent } from "react";
+import type {
+  FieldValues,
+  Path,
+  UseFormProps,
+  UseFormReturn,
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { type ZodType } from "zod";
-import { type FormState } from "@/features/auth/shared";
+import type { ZodType } from "zod";
+import type { FormState } from "@/features/auth/shared";
 
-interface Props<TFieldValues extends FieldValues>
-  extends UseFormProps<TFieldValues> {
-  schema: ZodType<TFieldValues, TFieldValues>;
+import { startTransition, useActionState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+interface Props<T extends FieldValues> extends UseFormProps<T> {
+  schema: ZodType<T, T>;
   action: (
-    _prevState: FormState<TFieldValues>,
+    _prevState: FormState<T>,
     payload: FormData,
-  ) => Promise<FormState<TFieldValues>>;
+  ) => Promise<FormState<T>>;
 }
 
-interface Return<TFieldValues extends FieldValues> {
-  form: UseFormReturn<TFieldValues>;
+interface Return<T extends FieldValues> {
+  form: UseFormReturn<T>;
   onSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
-  state: FormState<TFieldValues>;
+  state: FormState<T>;
   action: (payload: FormData) => void;
   isPending: boolean;
 }
 
-export const useActionForm = <TFieldValues extends FieldValues>({
+export const useActionForm = <T extends FieldValues>({
   schema,
   action,
+  defaultValues,
   ...props
-}: Props<TFieldValues>): Return<TFieldValues> => {
-  const [state, formAction, isPending] = useActionState(
-    action,
-    {} as FormState<TFieldValues>,
-  );
+}: Props<T>): Return<T> => {
+  const [state, formAction, isPending] = useActionState(action, {
+    fields: defaultValues,
+  } as FormState<T>);
 
-  const form = useForm<TFieldValues>({
+  const form = useForm<T>({
     resolver: zodResolver(schema),
-    mode: "onChange",
+    mode: "onBlur",
+    defaultValues,
     ...props,
   });
-
   const { setError, handleSubmit } = form;
 
   useEffect(() => {
-    if (state.errors) {
-      Object.entries(state.errors).forEach(([key, messages]) => {
-        if (messages?.[0]) {
-          setError(key as Path<TFieldValues>, {
-            type: "server",
-            message: messages[0],
-          });
-        }
-      });
-    }
+    if (!state.errors) return;
+
+    Object.entries(state.errors).forEach(([field, messages]) => {
+      if (messages?.[0]) {
+        setError(field as Path<T>, {
+          type: "server",
+          message: messages[0],
+        });
+      }
+    });
+
     if (state.message) {
       setError("root", {
         type: "server",

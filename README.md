@@ -1,4 +1,7 @@
-upgrade next.js&react, use pnpm, finishing login, refactor.
+**TODO:**
+
+- Добавить удаление сессии из бд после истечения срока.
+
 **Области хранения данных:**
 
 - база данных на @libsql/client.

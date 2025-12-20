@@ -1,16 +1,16 @@
 "use client";
 
-import { ROUTE_PATHS } from "@/config";
-import { type SignIn, signin, signInSchema } from "@/features/auth/shared";
-import { useActionForm } from "@/features/auth/client";
 import {
-  LinkButton,
   FieldSet,
   Form,
   FormButtonBlock,
   FormError,
   FormField,
+  LinkButton,
 } from "@/components/ui";
+import { useActionForm } from "@/features/auth/client";
+import { type SignIn, signInSchema, signin } from "@/features/auth/shared";
+import { ROUTE_PATHS } from "@/lib/shared";
 
 export function LoginForm() {
   const {
@@ -28,6 +28,10 @@ export function LoginForm() {
     action: signin,
   });
 
+  const generalError = errors.root?.message || state.message;
+  const loginError = errors.login?.message || state.errors?.login?.[0];
+  const passwordError = errors.password?.message || state.errors?.password?.[0];
+
   return (
     <Form action={action} onSubmit={onSubmit} noValidate>
       <FieldSet>
@@ -37,7 +41,7 @@ export function LoginForm() {
           label="Username"
           placeholder="your_username"
           defaultValue={state.fields?.login}
-          error={errors.login?.message || state.errors?.login?.[0]}
+          error={loginError}
           aria-required="true"
           {...register("login")}
         />
@@ -47,7 +51,7 @@ export function LoginForm() {
           label="Password"
           placeholder=" "
           defaultValue={state.fields?.password}
-          error={errors.password?.message || state.errors?.password?.[0]}
+          error={passwordError}
           aria-required="true"
           {...register("password")}
         />
@@ -64,9 +68,7 @@ export function LoginForm() {
         </LinkButton>
       </FormButtonBlock>
 
-      {(errors.root?.message || state.message) && (
-        <FormError error={errors.root?.message || state.message} />
-      )}
+      {generalError && <FormError error={generalError} />}
     </Form>
   );
 }

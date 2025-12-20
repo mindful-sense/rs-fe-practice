@@ -1,17 +1,44 @@
 import "server-only";
-import crypto from "crypto";
+import { randomBytes, scrypt, timingSafeEqual } from "crypto";
+import { promisify } from "util";
 
-const BYTES_NUMBER = 16;
-const HEX_ENCODING = "hex" satisfies BufferEncoding;
-const KEY_LENGTH = 64;
+const CONFIG = {
+  SALT_SIZE: 16,
+  HASH_SIZE: 64,
+  ENCODING: "hex" satisfies BufferEncoding,
+} as const;
 
-export const hashPassword = (password: string, salt: string): Promise<string> =>
-  new Promise((resolve, reject) => {
-    crypto.scrypt(password.normalize(), salt, KEY_LENGTH, (error, hash) => {
-      if (error) reject(error);
-      resolve(hash.toString(HEX_ENCODING).normalize());
-    });
-  });
+const scryptAsync = promisify(scrypt);
+
+export const hashPassword = async (
+  password: string,
+  salt: string,
+): Promise<string> => {
+  const hash = (await scryptAsync(
+    password.normalize(),
+    salt,
+    CONFIG.HASH_SIZE,
+  )) as Buffer;
+
+  return hash.toString(CONFIG.ENCODING).normalize();
+};
 
 export const generateSalt = (): string =>
-  crypto.randomBytes(BYTES_NUMBER).toString(HEX_ENCODING).normalize();
+  randomBytes(CONFIG.SALT_SIZE).toString(CONFIG.ENCODING).normalize();
+
+export const comparePasswords = async ({
+  hashedPassword,
+  password,
+  salt,
+}: {
+  hashedPassword: string;
+  password: string;
+  salt: string;
+}): Promise<boolean> => {
+  const inputHashedPassword = await hashPassword(password, salt);
+
+  return timingSafeEqual(
+    Buffer.from(inputHashedPassword, CONFIG.ENCODING),
+    Buffer.from(hashedPassword, CONFIG.ENCODING),
+  );
+};

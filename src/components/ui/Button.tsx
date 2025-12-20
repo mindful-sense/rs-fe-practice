@@ -1,10 +1,12 @@
+import type { ComponentProps, ReactNode } from "react";
+import type { VariantProps } from "class-variance-authority";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { RoutePath } from "@/lib/shared";
+
 import Link from "next/link";
-import { type ComponentProps, type ReactNode } from "react";
-import { type VariantProps, cva } from "class-variance-authority";
-import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cva } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
-import { type RoutePath } from "@/config";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const btnVariants = cva(
   "focus:outline-accent disabled:bg-accent-disabled flex h-9 w-auto cursor-pointer items-center justify-center rounded-lg px-4 text-center text-sm text-black outline-2 outline-offset-2 outline-transparent transition-colors duration-300",

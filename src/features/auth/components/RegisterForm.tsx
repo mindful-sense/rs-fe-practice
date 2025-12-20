@@ -1,16 +1,16 @@
 "use client";
 
-import { ROUTE_PATHS } from "@/config";
-import { type SignUp, signup, signUpSchema } from "@/features/auth/shared";
-import { useActionForm } from "@/features/auth/client";
 import {
-  LinkButton,
   FieldSet,
   Form,
   FormButtonBlock,
   FormError,
   FormField,
+  LinkButton,
 } from "@/components/ui";
+import { useActionForm } from "@/features/auth/client";
+import { type SignUp, signUpSchema, signup } from "@/features/auth/shared";
+import { ROUTE_PATHS } from "@/lib/shared";
 
 export function RegisterForm() {
   const {
@@ -28,6 +28,12 @@ export function RegisterForm() {
     action: signup,
   });
 
+  const generalError = errors.root?.message || state.message;
+  const loginError = errors.login?.message || state.errors?.login?.[0];
+  const passwordError = errors.password?.message || state.errors?.password?.[0];
+  const passwordConfirmError =
+    errors.passwordConfirm?.message || state.errors?.passwordConfirm?.[0];
+
   return (
     <Form action={action} onSubmit={onSubmit} noValidate>
       <FieldSet>
@@ -37,7 +43,7 @@ export function RegisterForm() {
           label="Username"
           placeholder="your_username"
           defaultValue={state.fields?.login}
-          error={errors.login?.message || state.errors?.login?.[0]}
+          error={loginError}
           aria-required="true"
           {...register("login")}
         />
@@ -47,7 +53,7 @@ export function RegisterForm() {
           label="Password"
           placeholder=" "
           defaultValue={state.fields?.password}
-          error={errors.password?.message || state.errors?.password?.[0]}
+          error={passwordError}
           aria-required="true"
           {...register("password")}
         />
@@ -57,10 +63,7 @@ export function RegisterForm() {
           label="Repeat password"
           placeholder=" "
           defaultValue={state.fields?.passwordConfirm}
-          error={
-            errors.passwordConfirm?.message ||
-            state.errors?.passwordConfirm?.[0]
-          }
+          error={passwordConfirmError}
           aria-required="true"
           {...register("passwordConfirm")}
         />
@@ -77,9 +80,7 @@ export function RegisterForm() {
         </LinkButton>
       </FormButtonBlock>
 
-      {(errors.root?.message || state.message) && (
-        <FormError error={errors.root?.message || state.message} />
-      )}
+      {generalError && <FormError error={generalError} />}
     </Form>
   );
 }

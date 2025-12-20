@@ -1,11 +1,13 @@
 import { type Metadata } from "next";
+import { type ReactNode } from "react";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-config.autoAddCss = false;
 
 import { Header } from "@/components/core";
 import { hostGrotesk } from "./_ui/fonts";
 import "./globals.css";
+
+config.autoAddCss = false;
 
 export const metadata: Metadata = {
   title: "devlog",
@@ -14,9 +16,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <body

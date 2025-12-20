@@ -1,2 +1,2 @@
-export * from "./header";
+export * from "./header/Header";
 export * from "./Footer";

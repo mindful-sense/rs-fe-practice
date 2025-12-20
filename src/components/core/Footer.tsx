@@ -1,5 +1,5 @@
-import { fetchWeatherByCity } from "@/lib/server";
-import { getTimestamp, capitalizeWords } from "@/lib/shared";
+import { getWeather } from "@/lib/server";
+import { capitalizeWords, getTimestamp } from "@/lib/shared";
 
 const CONFIG = {
   CITY: "London",
@@ -7,9 +7,9 @@ const CONFIG = {
 } as const;
 
 export async function Footer() {
-  const weather = await fetchWeatherByCity(CONFIG.CITY);
+  const weather = await getWeather(CONFIG.CITY);
   const weatherSummary = weather
-    ? `${weather.temperature.toFixed(1)}℃, ${capitalizeWords(weather.description)}`
+    ? `${weather.temperature.toFixed(1)}°C, ${capitalizeWords(weather.description)}`
     : "Weather data unavailable";
 
   const date = new Date();
@@ -23,6 +23,7 @@ export async function Footer() {
     <footer className="fixed bottom-5 left-1/2 flex h-13 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-4 text-sm/4 shadow-xs shadow-black/3 backdrop-blur-md">
       <div>
         <h3>For Inquiries:</h3>
+
         <address>
           <a
             href={`mailto:${CONFIG.EMAIL}`}

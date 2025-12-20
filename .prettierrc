@@ -1,11 +1,11 @@
 {
+  "endOfLine": "lf",
   "experimentalTernaries": false,
+  "plugins": ["prettier-plugin-tailwindcss"],
   "printWidth": 80,
-  "tabWidth": 2,
-  "useTabs": false,
   "semi": true,
   "singleQuote": false,
+  "tabWidth": 2,
   "trailingComma": "all",
-  "endOfLine": "lf",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "useTabs": false
 }

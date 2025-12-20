@@ -1,61 +1,49 @@
 import "server-only";
-import { getEnvVar } from "@/lib/server";
-import { getErrorMessage } from "@/lib/shared";
-import { weatherDataSchema, weatherErrorSchema } from "./schema";
+import { ENV, getErrorMessage } from "@/lib/server";
+import { type WeatherData, weatherDataSchema } from "./schema";
 
-const API_BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
-const API_UNITS = "metric";
-const API_REVALIDATION_SECONDS = 600;
+const API = {
+  ENDPOINT: "https://api.openweathermap.org/data/2.5/weather",
+  UNITS: "metric",
+  STALE_TIME: 600,
+} as const;
 
-interface Weather {
-  temperature: number;
-  description: string;
-}
-
-const getApiUrl = (city: string, apiKey: string): string => {
-  const params = new URLSearchParams({
+const fetchWeatherByCity = async (city: string): Promise<WeatherData> => {
+  const url = new URL(API.ENDPOINT);
+  url.search = new URLSearchParams({
     q: city,
-    units: API_UNITS,
-    appid: apiKey,
+    units: API.UNITS,
+    appid: ENV.OPENWEATHER,
+  }).toString();
+
+  const apiUrl = url.toString();
+  const response = await fetch(apiUrl, {
+    next: { revalidate: API.STALE_TIME },
   });
-  return `${API_BASE_URL}?${String(params)}`;
+
+  if (!response.ok) throw new Error(response.status.toString());
+
+  return weatherDataSchema.parse(await response.json());
 };
 
-export const fetchWeatherByCity = async (
+export const getWeather = async (
   city: string,
-): Promise<Weather | null> => {
-  const trimmedCity = city?.trim();
-
+): Promise<{
+  temperature: number;
+  description: string;
+} | null> => {
   try {
-    if (!trimmedCity) {
-      throw new Error("City name is required");
-    }
-
-    const apiKey = getEnvVar("OPENWEATHER_API_KEY");
-    const response = await fetch(getApiUrl(trimmedCity, apiKey), {
-      next: { revalidate: API_REVALIDATION_SECONDS },
-    });
-    const data: unknown = await response.json();
-
-    if (!response.ok) {
-      const result = weatherErrorSchema.safeParse(data);
-      const message = result.success
-        ? result.data.message
-        : `API: ${response.status}`;
-
-      throw new Error(message);
-    }
+    const trimmedCity = city?.trim();
+    if (!trimmedCity) throw new Error("City name is required");
 
     const {
       main: { temp: temperature },
       weather: [{ description }],
-    } = weatherDataSchema.parse(data);
+    } = await fetchWeatherByCity(trimmedCity);
 
     return { temperature, description };
   } catch (error) {
-    console.error(
-      `fetchWeatherByCity: Failed to fetch weather for ${trimmedCity}: ${getErrorMessage(error)}`,
-    );
+    console.error(`Failed to fetch weather: ${getErrorMessage(error)}`);
     return null;
   }
 };

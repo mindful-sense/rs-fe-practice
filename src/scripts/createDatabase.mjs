@@ -21,8 +21,8 @@ const users = [
     id: ADMIN_ID,
     login: "john_doe",
     password:
-      "b938ed3577d2708d8fbbbdd80d363b4dbaf1e997ce2c441567b7fffea775b825480d1d96db46e706491fff4c6972d0fd22351108022af9bb4972c750b3b4c5bb",
-    salt: "81d5ef2d2e32b9692916dba4215cc280",
+      "e954b3cb142e43fa0717401639cf2338198c8adef7182881cef4c661e07770bc1eea4f067f89f88b4a0019a03422374259bfabd92ebb9d61bab102321de7674f", // awdawd3!
+    salt: "673c1ee444edbd3dfe8a2471b39a576d",
     roleId: 1,
     registeredAt: "2025-07-01",
     updatedAt: "2025-07-01",
