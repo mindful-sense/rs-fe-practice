@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { CONFIG } from "@/features/auth/shared";
 import { ROLES } from "@/lib/shared";
 
 const userBaseSchema = z.strictObject({
@@ -35,7 +36,10 @@ export const safeUserSchema = userBaseSchema
   }));
 
 export const sessionSchema = z.strictObject({
-  sessionId: z.uuid(),
+  sessionId: z
+    .string()
+    .length(CONFIG.SESSION_BYTES * 2, "Session ID must be 64 characters")
+    .regex(/^[0-9A-Fa-f]+$/, "Invalid HEX format"),
   userId: z.uuid(),
   expiresAt: z.number(),
 });

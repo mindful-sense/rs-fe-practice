@@ -18,7 +18,7 @@ const statements = {
       users.login,
       users.role_id,
       users.registered_at,
-      users.updated_at,
+      users.updated_at
     FROM sessions
     INNER JOIN users ON sessions.user_id = users.id
     WHERE sessions.id = @sessionId
@@ -26,9 +26,14 @@ const statements = {
 };
 
 export const insertSession = (session: Session): void => {
-  sessionSchema.parse(session, {
-    error: () => `Couldn't create user session: Invalid data`,
-  });
+  const parsed = sessionSchema.safeParse(session);
+  if (!parsed.success) {
+    console.error(getErrorMessage(parsed.error));
+    throw new Error(
+      "Couldn't sign in automatically. Try to sign in (not sign up, your account is already created)",
+    );
+  }
+
   statements.insertSession.run(session);
 };
 
@@ -49,9 +54,7 @@ export const getSafeUser = async (
     const row = statements.getSafeUser.get({ sessionId });
     if (!row) throw new Error(`Data is not found: ${sessionId} | Session ID`);
 
-    return safeUserSchema.parse(row, {
-      error: () => `Data is invalid under ${sessionId}`,
-    });
+    return safeUserSchema.parse(row);
   } catch (error) {
     console.error(getErrorMessage(error));
     return null;

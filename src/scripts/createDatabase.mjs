@@ -1,13 +1,13 @@
 import Database from "better-sqlite3";
 import path from "path";
-import { nanoid } from "nanoid";
+import { randomUUID } from "crypto";
 
 const dbPath = path.join(process.cwd(), "src", "data", "blog.db");
 const db = new Database(dbPath /* { verbose: console.log } */);
 db.pragma("journal_mode = WAL");
 
-const ADMIN_ID = nanoid();
-const POST_IDS = Array.from({ length: 12 }, () => nanoid());
+const ADMIN_ID = randomUUID();
+const POST_IDS = Array.from({ length: 12 }, () => randomUUID());
 
 const roles = [
   { id: 1, name: "Admin" },
@@ -21,8 +21,8 @@ const users = [
     id: ADMIN_ID,
     login: "john_doe",
     password:
-      "e954b3cb142e43fa0717401639cf2338198c8adef7182881cef4c661e07770bc1eea4f067f89f88b4a0019a03422374259bfabd92ebb9d61bab102321de7674f", // awdawd3!
-    salt: "673c1ee444edbd3dfe8a2471b39a576d",
+      "4b48dc0043beb3863889abd3fd5ff7b3165f40a3dae1a2175ba8452f63367c5daa6f5d47bd1f931522d7ea470281d93f9abfe96be7f98d40658b845fc83053b0", // awdawd3!
+    salt: "5c1c7574ba9c848b77a8dd60ceb562a4",
     roleId: 1,
     registeredAt: "2025-07-01",
     updatedAt: "2025-07-01",
