@@ -2,7 +2,7 @@ import * as z from "zod";
 import { ROLES } from "@/lib/shared";
 
 const userBaseSchema = z.strictObject({
-  id: z.nanoid().min(1),
+  id: z.uuid(),
   login: z.string().min(1),
   password: z.string().min(1),
   salt: z.string().min(1),
@@ -21,21 +21,27 @@ export const userSchema = userBaseSchema.transform((data) => ({
   updatedAt: data.updated_at,
 }));
 
-export const userSessionSchema = userBaseSchema
+export const safeUserSchema = userBaseSchema
   .omit({
     password: true,
     salt: true,
   })
-  .extend({ expires_at: z.number() })
   .transform((data) => ({
     userId: data.id,
     login: data.login,
     roleId: data.role_id,
     registeredAt: data.registered_at,
     updatedAt: data.updated_at,
-    expiresAt: data.expires_at,
   }));
 
+export const sessionSchema = z.strictObject({
+  sessionId: z.uuid(),
+  userId: z.uuid(),
+  expiresAt: z.number(),
+});
+
 export type User = z.infer<typeof userSchema>;
-export type UserSession = z.infer<typeof userSessionSchema>;
+export type SafeUser = z.infer<typeof safeUserSchema>;
+export type Session = z.infer<typeof sessionSchema>;
+
 export type UserId = User["userId"];

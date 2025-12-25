@@ -1,23 +1,21 @@
 import "server-only";
 
-import type { UserId, UserSession } from "@/lib/shared";
+import type { UserId, SafeUser } from "@/lib/shared";
 
-import { nanoid } from "nanoid";
+import { randomBytes } from "crypto";
 import { cookies } from "next/headers";
-import { deleteSession, getUserSessionById, insertSession } from "@/lib/server";
+import { cache } from "react";
 
-const SESSION = {
-  COOKIE_NAME: "session-key",
-  EXPIRATION_MS: 60 * 60 * 24 * 7 * 1000,
-} as const;
+import { deleteSession, getSafeUser, insertSession } from "@/lib/server";
+import { CONFIG } from "./config";
 
-const getFutureWeekInMs = (): number => Date.now() + SESSION.EXPIRATION_MS;
+const getFutureWeekInMs = (): number => Date.now() + CONFIG.SESSION_EXPIRE_MS;
 
 const setCookie = async (
   sessionId: string,
   expiresAt: number = getFutureWeekInMs(),
 ): Promise<void> => {
-  (await cookies()).set(SESSION.COOKIE_NAME, sessionId, {
+  (await cookies()).set(CONFIG.SESSION_COOKIE_NAME, sessionId, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
@@ -27,24 +25,26 @@ const setCookie = async (
 };
 
 export const createSession = async (userId: UserId): Promise<void> => {
-  const sessionId = nanoid();
+  const sessionId = randomBytes(CONFIG.SESSION_BYTES).toString(CONFIG.ENCODING);
   const expiresAt = getFutureWeekInMs();
 
   insertSession({ sessionId, userId, expiresAt });
   await setCookie(sessionId, expiresAt);
 };
 
-export const getUserFromSession = async (): Promise<UserSession | null> => {
-  const sessionId = (await cookies()).get(SESSION.COOKIE_NAME)?.value;
-  return sessionId ? await getUserSessionById(sessionId) : null;
-};
-
 export const deleteUserFromSession = async (): Promise<void> => {
   const cookieStore = await cookies();
-  const sessionId = cookieStore.get(SESSION.COOKIE_NAME)?.value;
+  const sessionId = cookieStore.get(CONFIG.SESSION_COOKIE_NAME)?.value;
 
   if (!sessionId) return;
 
   deleteSession(sessionId);
-  cookieStore.delete(SESSION.COOKIE_NAME);
+  cookieStore.delete(CONFIG.SESSION_COOKIE_NAME);
 };
+
+export const getUserFromSession = async (): Promise<SafeUser | null> => {
+  const sessionId = (await cookies()).get(CONFIG.SESSION_COOKIE_NAME)?.value;
+  return sessionId ? await getSafeUser(sessionId) : null;
+};
+
+export const getCurrentUser = cache(async () => await getUserFromSession());

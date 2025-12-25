@@ -1,12 +1,7 @@
 import "server-only";
 import { randomBytes, scrypt, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-
-const CONFIG = {
-  SALT_SIZE: 16,
-  HASH_SIZE: 64,
-  ENCODING: "hex" satisfies BufferEncoding,
-} as const;
+import { CONFIG } from "./config";
 
 const scryptAsync = promisify(scrypt);
 
@@ -17,14 +12,14 @@ export const hashPassword = async (
   const hash = (await scryptAsync(
     password.normalize(),
     salt,
-    CONFIG.HASH_SIZE,
+    CONFIG.PASSWORD_BYTES,
   )) as Buffer;
 
-  return hash.toString(CONFIG.ENCODING).normalize();
+  return hash.toString(CONFIG.ENCODING);
 };
 
 export const generateSalt = (): string =>
-  randomBytes(CONFIG.SALT_SIZE).toString(CONFIG.ENCODING).normalize();
+  randomBytes(CONFIG.SALT_BYTES).toString(CONFIG.ENCODING);
 
 export const comparePasswords = async ({
   hashedPassword,

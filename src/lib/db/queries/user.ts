@@ -2,7 +2,7 @@ import "server-only";
 
 import type { User, UserId } from "@/lib/shared";
 
-import { nanoid } from "nanoid";
+import { randomUUID } from "crypto";
 import { ROLES, getTimestampWithoutTime, userSchema } from "@/lib/shared";
 import { db } from "../db";
 
@@ -22,7 +22,7 @@ const statements = {
 
 export const insertUser = db.transaction(
   (user: Pick<User, "login" | "password" | "salt">): UserId => {
-    const userId = nanoid();
+    const userId = randomUUID();
     const registeredAt = getTimestampWithoutTime(new Date());
     const row = statements.insertUser.get({
       ...user,

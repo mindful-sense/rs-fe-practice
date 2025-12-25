@@ -14,13 +14,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, LinkButton } from "@/components/ui";
 import { signout } from "@/features/auth/shared";
 import {
-  type UserSession,
+  type SafeUser,
   ROUTE_PATHS,
   isAuthRoutePath,
   truncateMiddle,
 } from "@/lib/shared";
 
-export function HeaderClient({ user }: { user: UserSession | null }) {
+export function HeaderClient({ user }: { user: SafeUser | null }) {
   const router = useRouter();
   const pathname = usePathname();
 
