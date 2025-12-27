@@ -5,8 +5,14 @@ import { ROLES } from "@/lib/shared";
 const userBaseSchema = z.strictObject({
   id: z.uuid(),
   login: z.string().min(1),
-  password: z.string().min(1),
-  salt: z.string().min(1),
+  password: z
+    .string()
+    .length(CONFIG.PASSWORD_BYTES * 2, "Password must be 32 characters")
+    .regex(/^[0-9A-Fa-f]+$/, "Invalid HEX format"),
+  salt: z
+    .string()
+    .length(CONFIG.SALT_BYTES * 2, "Salt must be 32 characters")
+    .regex(/^[0-9A-Fa-f]+$/, "Invalid HEX format"),
   role_id: z.enum(ROLES),
   registered_at: z.iso.date(),
   updated_at: z.iso.date(),
@@ -41,11 +47,17 @@ export const sessionSchema = z.strictObject({
     .length(CONFIG.SESSION_BYTES * 2, "Session ID must be 64 characters")
     .regex(/^[0-9A-Fa-f]+$/, "Invalid HEX format"),
   userId: z.uuid(),
-  expiresAt: z.number(),
+  expiresAt: z.number().refine((timestamp) => timestamp > Date.now(), {
+    message: "Expiration date should be set into the future",
+  }),
 });
+
+export const updateSessionSchema = sessionSchema.omit({ userId: true });
 
 export type User = z.infer<typeof userSchema>;
 export type SafeUser = z.infer<typeof safeUserSchema>;
 export type Session = z.infer<typeof sessionSchema>;
+export type UpdateSession = z.infer<typeof updateSessionSchema>;
 
 export type UserId = User["userId"];
+export type SessionId = Session["sessionId"];

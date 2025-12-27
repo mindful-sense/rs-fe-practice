@@ -1,12 +1,18 @@
 import "server-only";
 
-import type { UserId, SafeUser } from "@/lib/shared";
+import type { SafeUser, UserId } from "@/lib/shared";
 
 import { randomBytes } from "crypto";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
-import { deleteSession, getSafeUser, insertSession } from "@/lib/server";
+import {
+  deleteSession,
+  getErrorMessage,
+  getSafeUser,
+  insertSession,
+  updateSession,
+} from "@/lib/server";
 import { CONFIG } from "./config";
 
 const getFutureWeekInMs = (): number => Date.now() + CONFIG.SESSION_EXPIRE_MS;
@@ -25,26 +31,52 @@ const setCookie = async (
 };
 
 export const createSession = async (userId: UserId): Promise<void> => {
-  const sessionId = randomBytes(CONFIG.SESSION_BYTES).toString(CONFIG.ENCODING);
-  const expiresAt = getFutureWeekInMs();
+  try {
+    const sessionId = randomBytes(CONFIG.SESSION_BYTES).toString(
+      CONFIG.ENCODING,
+    );
+    const expiresAt = getFutureWeekInMs();
 
-  insertSession({ sessionId, userId, expiresAt });
-  await setCookie(sessionId, expiresAt);
+    insertSession({ sessionId, userId, expiresAt });
+    await setCookie(sessionId, expiresAt);
+  } catch (error) {
+    console.error(getErrorMessage(error));
+    throw new Error("A problem has occured. Try again");
+  }
 };
 
 export const deleteUserFromSession = async (): Promise<void> => {
   const cookieStore = await cookies();
   const sessionId = cookieStore.get(CONFIG.SESSION_COOKIE_NAME)?.value;
-
   if (!sessionId) return;
 
-  deleteSession(sessionId);
-  cookieStore.delete(CONFIG.SESSION_COOKIE_NAME);
+  try {
+    deleteSession(sessionId);
+    cookieStore.delete(CONFIG.SESSION_COOKIE_NAME);
+  } catch (error) {
+    console.error(
+      `Couldn't delete the session ${sessionId} from DB: ${getErrorMessage(error)}`,
+    );
+  }
 };
 
-export const getUserFromSession = async (): Promise<SafeUser | null> => {
+export const refreshSession = async (): Promise<void> => {
+  const sessionId = (await cookies()).get(CONFIG.SESSION_COOKIE_NAME)?.value;
+  if (!sessionId) return;
+
+  try {
+    const expiresAt = getFutureWeekInMs();
+
+    updateSession({ sessionId, expiresAt });
+    await setCookie(sessionId, expiresAt);
+  } catch (error) {
+    console.error(
+      `Couldn't update the session ${sessionId}: ${getErrorMessage(error)}`,
+    );
+  }
+};
+
+export const getCurrentUser = cache(async (): Promise<SafeUser | null> => {
   const sessionId = (await cookies()).get(CONFIG.SESSION_COOKIE_NAME)?.value;
   return sessionId ? await getSafeUser(sessionId) : null;
-};
-
-export const getCurrentUser = cache(async () => await getUserFromSession());
+});

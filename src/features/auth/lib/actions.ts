@@ -13,7 +13,11 @@ import { ROUTE_PATHS, delay } from "@/lib/shared";
 
 import { comparePasswords, generateSalt, hashPassword } from "./passwordHasher";
 import { signInSchema, signUpSchema } from "./schema";
-import { createSession, deleteUserFromSession } from "./session";
+import {
+  createSession,
+  deleteUserFromSession,
+  refreshSession,
+} from "./session";
 
 const handleAuth = async <FormType extends SignIn | SignUp>(
   payload: FormData,
@@ -76,4 +80,8 @@ export const signin = async (
 export const signout = async (): Promise<void> => {
   await deleteUserFromSession();
   redirect(ROUTE_PATHS.HOME);
+};
+
+export const refreshSessionAction = async (): Promise<void> => {
+  await refreshSession();
 };
