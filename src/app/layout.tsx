@@ -5,11 +5,14 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import { Header } from "@/components/core";
 import { SessionRefresher } from "@/features/auth/client";
+import { getCurrentUser } from "@/features/auth/server";
+import { StoreProvider } from "@/lib/client";
 
 import { hostGrotesk } from "./_ui/fonts";
 import "./globals.css";
 
 config.autoAddCss = false;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "devlog",
@@ -19,16 +22,20 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const user = await getCurrentUser();
+
   return (
     <html lang="en">
       <body
         className={`${hostGrotesk.className} bg-page font-medium antialiased`}
       >
         <SessionRefresher />
-        <Header />
-        <div className="mt-18 grid min-h-[calc(100vh-72px)] py-4">
-          {children}
-        </div>
+        <StoreProvider user={user}>
+          <Header />
+          <div className="mt-18 grid min-h-[calc(100vh-72px)] py-4">
+            {children}
+          </div>
+        </StoreProvider>
       </body>
     </html>
   );

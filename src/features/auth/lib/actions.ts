@@ -6,6 +6,7 @@ import type { SignIn, SignUp } from "./schema";
 import type { FormState } from "./types";
 
 import * as z from "zod";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { getErrorMessage, getUserByLogin, insertUser } from "@/lib/server";
@@ -27,25 +28,26 @@ const handleAuth = async <FormType extends SignIn | SignUp>(
   await delay();
 
   const formData = Object.fromEntries(payload);
-  const parsed = schema.safeParse(formData);
+  const { success, error, data } = schema.safeParse(formData);
 
-  if (!parsed.success) {
+  if (!success) {
     return {
       fields: { login: formData.login } as Partial<FormType>,
-      errors: z.flattenError(parsed.error).fieldErrors,
+      errors: z.flattenError(error).fieldErrors,
     };
   }
 
   try {
-    const userId = await handler(parsed.data);
+    const userId = await handler(data);
     await createSession(userId);
   } catch (error) {
     return {
       message: getErrorMessage(error),
-      fields: { login: parsed.data.login } as Partial<FormType>,
+      fields: { login: data.login } as Partial<FormType>,
     };
   }
 
+  revalidatePath(ROUTE_PATHS.HOME, "layout");
   redirect(ROUTE_PATHS.HOME);
 };
 

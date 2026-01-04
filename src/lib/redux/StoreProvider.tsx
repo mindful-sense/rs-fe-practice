@@ -1,17 +1,29 @@
-// "use client";
+"use client";
 
-// import { type ReactNode, useState } from "react";
-// import { Provider } from "react-redux";
-// import { type AppStore, type RootState, makeStore } from "./store";
+import { type ReactNode, useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import { type SafeUser } from "@/lib/shared";
+import { makeStore } from "./store";
+import { clearUser, setUser } from "./features";
 
-// export function StoreProvider({
-//   children,
-//   preloadedState,
-// }: {
-//   children: ReactNode;
-//   preloadedState?: Partial<RootState>;
-// }) {
-//   const [store] = useState<AppStore>(() => makeStore(preloadedState));
+export function StoreProvider({
+  user,
+  children,
+}: {
+  user: SafeUser | null;
+  children: ReactNode;
+}) {
+  const [store] = useState(() => {
+    const storeInstance = makeStore();
+    if (user) storeInstance.dispatch(setUser(user));
 
-//   return <Provider store={store}>{children}</Provider>;
-// }
+    return storeInstance;
+  });
+
+  useEffect(() => {
+    if (user) store.dispatch(setUser(user));
+    else store.dispatch(clearUser());
+  }, [user, store]);
+
+  return <Provider store={store}>{children}</Provider>;
+}

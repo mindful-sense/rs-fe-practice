@@ -13,20 +13,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Button, LinkButton } from "@/components/ui";
 import { signout } from "@/features/auth/shared";
-import {
-  type SafeUser,
-  ROUTE_PATHS,
-  isAuthRoutePath,
-  truncateMiddle,
-} from "@/lib/shared";
+import { selectLogin, selectRoleId, useAppSelector } from "@/lib/client";
+import { ROUTE_PATHS, isAuthRoutePath, truncateMiddle } from "@/lib/shared";
 
-export function HeaderClient({ user }: { user: SafeUser | null }) {
+export function Header() {
   const router = useRouter();
   const pathname = usePathname();
+  const userLogin = useAppSelector(selectLogin);
+  const userRoleId = useAppSelector(selectRoleId);
 
   const isAuthPage = isAuthRoutePath(pathname);
   const isHome = pathname === ROUTE_PATHS.HOME;
-  const isAdmin = user?.roleId === 1;
+  const isAdmin = userRoleId === 1;
 
   return (
     <header className="fixed top-5 left-1/2 z-50 flex h-13 w-max -translate-x-1/2 justify-center gap-2 whitespace-nowrap">
@@ -55,7 +53,7 @@ export function HeaderClient({ user }: { user: SafeUser | null }) {
 
         {!isAuthPage && (
           <div className="flex items-center gap-4">
-            {user ? (
+            {userLogin ? (
               <>
                 {isAdmin && (
                   <div className="flex items-center gap-2 border-r border-neutral-100 pr-4">
@@ -84,7 +82,7 @@ export function HeaderClient({ user }: { user: SafeUser | null }) {
                   rightIcon={faRightFromBracket}
                 >
                   {truncateMiddle({
-                    text: user.login,
+                    text: userLogin,
                     maxLength: isAdmin ? undefined : 20,
                   })}
                 </Button>

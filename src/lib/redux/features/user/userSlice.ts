@@ -1,21 +1,22 @@
-// import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-// import { type User } from "@/lib/db/schema";
-// import { ROLES } from "@/lib/shared";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { type SafeUser, ROLES } from "@/lib/shared";
 
-// export const initialUserState: User = {
-//   userId: "",
-//   login: "",
-//   roleId: ROLES.GUEST,
-// };
+export const initialState: SafeUser = {
+  userId: "",
+  login: "",
+  roleId: ROLES.GUEST,
+  registeredAt: "",
+  updatedAt: "",
+};
 
-// const userSlice = createSlice({
-//   name: "user",
-//   initialState: initialUserState,
-//   reducers: {
-//     setUser: (_state, action: PayloadAction<User>) => action.payload,
-//     resetUser: () => initialUserState,
-//   },
-// });
+const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    setUser: (_state, action: PayloadAction<SafeUser>) => action.payload,
+    clearUser: () => initialState,
+  },
+});
 
-// export const { setUser, resetUser } = userSlice.actions;
-// export const userReducer = userSlice.reducer;
+export const { setUser, clearUser } = userSlice.actions;
+export const userReducer = userSlice.reducer;

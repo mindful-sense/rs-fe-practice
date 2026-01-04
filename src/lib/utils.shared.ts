@@ -1,3 +1,7 @@
+export type Nullable<T> = {
+  [K in keyof T]: T[K] | null;
+};
+
 export const capitalizeWords = (text: string): string =>
   text.replace(/\b\w/g, (char) => char.toUpperCase());
 
