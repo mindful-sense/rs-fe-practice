@@ -19,13 +19,11 @@ export const signUpSchema = z
   .object({
     login: loginRule,
     password: passwordRule,
-    passwordConfirm: z
-      .string()
-      .min(1, { error: "Fill in your password again" }),
+    passcheck: z.string().min(1, { error: "Fill in your password again" }),
   })
-  .refine((data) => data.password === data.passwordConfirm, {
+  .refine((data) => data.password === data.passcheck, {
     error: "Passwords do not match",
-    path: ["passwordConfirm"],
+    path: ["passcheck"],
   });
 
 export const signInSchema = z.object({

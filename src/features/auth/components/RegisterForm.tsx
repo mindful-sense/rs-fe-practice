@@ -23,7 +23,7 @@ export function RegisterForm() {
     action,
     isPending,
   } = useActionForm<SignUp>({
-    defaultValues: { login: "", password: "", passwordConfirm: "" },
+    defaultValues: { login: "", password: "", passcheck: "" },
     schema: signUpSchema,
     action: signup,
   });
@@ -31,8 +31,8 @@ export function RegisterForm() {
   const generalError = errors.root?.message || state.message;
   const loginError = errors.login?.message || state.errors?.login?.[0];
   const passwordError = errors.password?.message || state.errors?.password?.[0];
-  const passwordConfirmError =
-    errors.passwordConfirm?.message || state.errors?.passwordConfirm?.[0];
+  const passcheckError =
+    errors.passcheck?.message || state.errors?.passcheck?.[0];
 
   return (
     <Form action={action} onSubmit={onSubmit} noValidate>
@@ -58,14 +58,14 @@ export function RegisterForm() {
           {...register("password")}
         />
         <FormField
-          id="passwordConfirm"
+          id="passcheck"
           type="password"
           label="Repeat password"
           placeholder=" "
-          defaultValue={state.fields?.passwordConfirm}
-          error={passwordConfirmError}
+          defaultValue={state.fields?.passcheck}
+          error={passcheckError}
           aria-required="true"
-          {...register("passwordConfirm")}
+          {...register("passcheck")}
         />
       </FieldSet>
 
