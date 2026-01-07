@@ -1,4 +1,4 @@
-export const CONFIG = {
+export const AUTH_CONFIG = {
   ENCODING: "hex" satisfies BufferEncoding,
   PASSWORD_BYTES: 64,
   SALT_BYTES: 16,

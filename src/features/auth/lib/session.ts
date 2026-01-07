@@ -13,15 +13,16 @@ import {
   insertSession,
   updateSession,
 } from "@/lib/server";
-import { CONFIG } from "./config";
+import { AUTH_CONFIG } from "./config";
 
-const getFutureWeekInMs = (): number => Date.now() + CONFIG.SESSION_EXPIRE_MS;
+const getFutureWeekInMs = (): number =>
+  Date.now() + AUTH_CONFIG.SESSION_EXPIRE_MS;
 
 const setCookie = async (
   sessionId: string,
   expiresAt: number = getFutureWeekInMs(),
 ): Promise<void> => {
-  (await cookies()).set(CONFIG.SESSION_COOKIE_NAME, sessionId, {
+  (await cookies()).set(AUTH_CONFIG.SESSION_COOKIE_NAME, sessionId, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
@@ -32,8 +33,8 @@ const setCookie = async (
 
 export const createSession = async (userId: UserId): Promise<void> => {
   try {
-    const sessionId = randomBytes(CONFIG.SESSION_BYTES).toString(
-      CONFIG.ENCODING,
+    const sessionId = randomBytes(AUTH_CONFIG.SESSION_BYTES).toString(
+      AUTH_CONFIG.ENCODING,
     );
     const expiresAt = getFutureWeekInMs();
 
@@ -47,12 +48,12 @@ export const createSession = async (userId: UserId): Promise<void> => {
 
 export const deleteUserFromSession = async (): Promise<void> => {
   const cookieStore = await cookies();
-  const sessionId = cookieStore.get(CONFIG.SESSION_COOKIE_NAME)?.value;
+  const sessionId = cookieStore.get(AUTH_CONFIG.SESSION_COOKIE_NAME)?.value;
   if (!sessionId) return;
 
   try {
     deleteSession(sessionId);
-    cookieStore.delete(CONFIG.SESSION_COOKIE_NAME);
+    cookieStore.delete(AUTH_CONFIG.SESSION_COOKIE_NAME);
   } catch (error) {
     console.error(
       `Couldn't delete the session ${sessionId} from DB: ${getErrorMessage(error)}`,
@@ -61,7 +62,9 @@ export const deleteUserFromSession = async (): Promise<void> => {
 };
 
 export const refreshSession = async (): Promise<void> => {
-  const sessionId = (await cookies()).get(CONFIG.SESSION_COOKIE_NAME)?.value;
+  const sessionId = (await cookies()).get(
+    AUTH_CONFIG.SESSION_COOKIE_NAME,
+  )?.value;
   if (!sessionId) return;
 
   try {
@@ -77,6 +80,8 @@ export const refreshSession = async (): Promise<void> => {
 };
 
 export const getCurrentUser = cache(async (): Promise<SafeUser | null> => {
-  const sessionId = (await cookies()).get(CONFIG.SESSION_COOKIE_NAME)?.value;
+  const sessionId = (await cookies()).get(
+    AUTH_CONFIG.SESSION_COOKIE_NAME,
+  )?.value;
   return sessionId ? await getSafeUser(sessionId) : null;
 });

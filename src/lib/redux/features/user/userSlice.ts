@@ -5,8 +5,6 @@ export const initialState: SafeUser = {
   userId: "",
   login: "",
   roleId: ROLES.GUEST,
-  registeredAt: "",
-  updatedAt: "",
 };
 
 const userSlice = createSlice({

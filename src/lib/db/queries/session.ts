@@ -25,9 +25,7 @@ const statements = {
     SELECT
       users.id,
       users.login,
-      users.role_id,
-      users.registered_at,
-      users.updated_at
+      users.role_id
     FROM sessions
     INNER JOIN users ON sessions.user_id = users.id
     WHERE sessions.id = @sessionId
