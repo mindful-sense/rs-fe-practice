@@ -1,10 +1,14 @@
 import "server-only";
 
-import type { User, UserId } from "@/lib/shared";
+import type { User, UserId } from "../schema";
 
 import { randomUUID } from "crypto";
-import { ROLES, getTimestampWithoutTime, userSchema } from "@/lib/shared";
+
+import { ROLES } from "@/lib/constants";
+import { getTimestampWithoutTime } from "@/lib/utils.shared";
+
 import { db } from "../db";
+import { userSchema } from "../schema";
 
 const statements = {
   insertUser: db.prepare(`

@@ -1,5 +1,6 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { type SafeUser, ROLES } from "@/lib/shared";
+import { type SafeUser } from "@/lib/db/schema";
+import { ROLES } from "@/lib/constants";
 
 export const initialState: SafeUser = {
   userId: "",

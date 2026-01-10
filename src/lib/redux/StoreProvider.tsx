@@ -2,7 +2,9 @@
 
 import { type ReactNode, useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import { type SafeUser } from "@/lib/shared";
+
+import { type SafeUser } from "@/lib/db/schema";
+
 import { makeStore } from "./store";
 import { clearUser, setUser } from "./features";
 

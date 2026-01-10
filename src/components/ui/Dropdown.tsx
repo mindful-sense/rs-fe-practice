@@ -1,9 +1,9 @@
 import { type ComponentProps } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-// import { ROLE_NAMES } from "@/lib/shared";
 
 export function Dropdown({
+  // list,
   children,
 }: ComponentProps<"button"> & { list?: string[] }) {
   return (
@@ -17,7 +17,7 @@ export function Dropdown({
       </button>
       {/* <div>
         <ul>
-          {ROLE_NAMES.map((role, index) => (
+          {list.map((role, index) => (
             <li key={index}>{role}</li>
           ))}
         </ul>

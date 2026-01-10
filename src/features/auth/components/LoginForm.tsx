@@ -8,9 +8,11 @@ import {
   FormField,
   LinkButton,
 } from "@/components/ui";
-import { useActionForm } from "@/features/auth/client";
-import { type SignIn, signInSchema, signin } from "@/features/auth/shared";
 import { ROUTE_PATHS } from "@/lib/shared";
+
+import { useActionForm } from "../hooks/useActionForm";
+import { signin } from "../lib/actions";
+import { type SignIn, signInSchema } from "../lib/schema";
 
 export function LoginForm() {
   const {

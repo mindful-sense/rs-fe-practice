@@ -1,14 +1,10 @@
 import "server-only";
 
-import type { SafeUser, Session, SessionId, UpdateSession } from "@/lib/shared";
+import type { SafeUser, Session, SessionId, UpdateSession } from "../schema";
 
-import { getErrorMessage } from "@/lib/server";
-import {
-  safeUserSchema,
-  sessionSchema,
-  updateSessionSchema,
-} from "@/lib/shared";
+import { getErrorMessage } from "@/lib/utils.server";
 import { db } from "../db";
+import { safeUserSchema, sessionSchema, updateSessionSchema } from "../schema";
 
 const statements = {
   insert: db.prepare(`

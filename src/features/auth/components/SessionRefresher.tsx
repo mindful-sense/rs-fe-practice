@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { refreshSessionAction } from "@/features/auth/shared";
+import { refreshSessionAction } from "../lib/actions";
 
 export function SessionRefresher() {
   useEffect(() => {

@@ -1,6 +1,6 @@
 import * as z from "zod";
 import { AUTH_CONFIG } from "@/features/auth/shared";
-import { ROLES } from "@/lib/shared";
+import { ROLES } from "../constants";
 
 const userBaseSchema = z.strictObject({
   id: z.uuid(),

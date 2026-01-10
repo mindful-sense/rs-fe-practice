@@ -1,5 +1,6 @@
 import "server-only";
-import { ENV, getErrorMessage } from "@/lib/server";
+import { ENV } from "../env";
+import { getErrorMessage } from "../utils.server";
 import { type WeatherData, weatherDataSchema } from "./schema";
 
 const API = {
