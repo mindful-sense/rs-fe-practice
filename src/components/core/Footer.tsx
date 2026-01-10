@@ -20,7 +20,7 @@ export async function Footer() {
   }).format(date);
 
   return (
-    <footer className="fixed bottom-5 left-1/2 flex h-13 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-4 text-sm/4 shadow-xs ring-1 shadow-black/3 ring-black/1 backdrop-blur-md">
+    <footer className="fixed bottom-2 left-1/2 flex h-13 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-4 text-sm/4 shadow-xs ring-1 shadow-black/3 ring-black/1 backdrop-blur-md">
       <div>
         <h3>For Inquiries:</h3>
 
