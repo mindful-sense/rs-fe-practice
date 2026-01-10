@@ -14,7 +14,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, LinkButton } from "@/components/ui";
 import { signout } from "@/features/auth/shared";
 import { selectLogin, selectRoleId, useAppSelector } from "@/lib/client";
-import { ROUTE_PATHS, isAuthRoutePath, truncateMiddle } from "@/lib/shared";
+import {
+  ROLES,
+  ROUTE_PATHS,
+  isAuthRoutePath,
+  truncateMiddle,
+} from "@/lib/shared";
 
 export function Header() {
   const router = useRouter();
@@ -24,7 +29,7 @@ export function Header() {
 
   const isAuthPage = isAuthRoutePath(pathname);
   const isHome = pathname === ROUTE_PATHS.HOME;
-  const isAdmin = userRoleId === 1;
+  const isAdmin = userRoleId === ROLES.ADMIN;
 
   return (
     <header className="fixed top-5 left-1/2 z-50 flex h-13 w-max -translate-x-1/2 justify-center gap-2 whitespace-nowrap">
@@ -32,14 +37,14 @@ export function Header() {
         <button
           type="button"
           onClick={router.back}
-          className="hover:text-accent focus:text-accent flex w-23 grow cursor-pointer items-center justify-center gap-2 rounded-2xl bg-white/70 shadow-xs shadow-black/3 outline-0 backdrop-blur-md transition-colors duration-300"
+          className="hover:text-accent focus:text-accent flex w-23 grow cursor-pointer items-center justify-center gap-2 rounded-2xl bg-white/70 shadow-xs ring-1 shadow-black/3 ring-black/1 outline-0 backdrop-blur-md transition-colors duration-300"
         >
           <FontAwesomeIcon icon={faCircleLeft} />
           <strong className="text-sm font-medium">Back</strong>
         </button>
       )}
 
-      <div className="flex max-w-xl items-center justify-between gap-22 rounded-2xl bg-white/70 px-4 shadow-xs shadow-black/3 backdrop-blur-md">
+      <div className="flex max-w-xl items-center justify-between gap-22 rounded-2xl bg-white/70 px-4 shadow-xs ring-1 shadow-black/3 ring-black/1 backdrop-blur-md">
         <Link
           href="/"
           aria-label="devlog home logo"
@@ -56,7 +61,7 @@ export function Header() {
             {userLogin ? (
               <>
                 {isAdmin && (
-                  <div className="flex items-center gap-2 border-r border-neutral-100 pr-4">
+                  <div className="flex items-center gap-2 border-r border-neutral-200 pr-4">
                     <LinkButton
                       href={ROUTE_PATHS.USERS}
                       intent="secondary"

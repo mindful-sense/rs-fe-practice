@@ -10,10 +10,10 @@ const ADMIN_ID = randomUUID();
 const POST_IDS = Array.from({ length: 12 }, () => randomUUID());
 
 const roles = [
-  { id: 1, name: "Admin" },
-  { id: 2, name: "Moderator" },
-  { id: 3, name: "Reader" },
-  { id: 4, name: "Guest" },
+  { id: 0, name: "Admin" },
+  { id: 1, name: "Moderator" },
+  { id: 2, name: "Reader" },
+  { id: 3, name: "Guest" },
 ];
 
 const users = [
@@ -23,7 +23,7 @@ const users = [
     password:
       "4b48dc0043beb3863889abd3fd5ff7b3165f40a3dae1a2175ba8452f63367c5daa6f5d47bd1f931522d7ea470281d93f9abfe96be7f98d40658b845fc83053b0", // awdawd3!
     salt: "5c1c7574ba9c848b77a8dd60ceb562a4",
-    roleId: 1,
+    roleId: 0,
     registeredAt: "2025-07-01",
     updatedAt: "2025-07-01",
   },

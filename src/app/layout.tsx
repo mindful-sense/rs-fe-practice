@@ -32,7 +32,7 @@ export default async function RootLayout({
         <SessionRefresher />
         <StoreProvider user={user}>
           <Header />
-          <div className="mt-18 grid min-h-[calc(100vh-72px)] py-4">
+          <div className="mt-18 grid min-h-[calc(100vh-72px)] pt-4">
             {children}
           </div>
         </StoreProvider>

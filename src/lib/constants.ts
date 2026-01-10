@@ -1,9 +1,11 @@
 export const ROLES = {
-  ADMIN: 1,
-  MODERATOR: 2,
-  READER: 3,
-  GUEST: 4,
+  ADMIN: 0,
+  MODERATOR: 1,
+  READER: 2,
+  GUEST: 3,
 } as const satisfies Record<string, number>;
+
+export const ROLE_NAMES = ["Admin", "Moderator", "Reader", "Guest"] as const;
 
 export const ROUTE_PATHS = {
   HOME: "/",
@@ -13,20 +15,11 @@ export const ROUTE_PATHS = {
   POST: "/post",
 } as const satisfies Record<string, `/${string}`>;
 
-export type Role = (typeof ROLES)[keyof typeof ROLES];
 export type RoutePath = (typeof ROUTE_PATHS)[keyof typeof ROUTE_PATHS];
+
 export type AuthRoutePath =
   | typeof ROUTE_PATHS.LOGIN
   | typeof ROUTE_PATHS.REGISTER;
 
-const createTypeGuard =
-  <Element extends string | number>(obj: Record<string, Element>) =>
-  (value: unknown): value is Element =>
-    Object.values(obj).includes(value as Element);
-
-export const isRole = createTypeGuard(ROLES);
-export const isRoutePath = createTypeGuard(ROUTE_PATHS);
-export const isAuthRoutePath = createTypeGuard({
-  LOGIN: ROUTE_PATHS.LOGIN,
-  REGISTER: ROUTE_PATHS.REGISTER,
-});
+export const isAuthRoutePath = (value: unknown): value is Element =>
+  [ROUTE_PATHS.LOGIN, ROUTE_PATHS.REGISTER].includes(value as AuthRoutePath);

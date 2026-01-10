@@ -1,9 +1,5 @@
-export type Nullable<T> = {
-  [K in keyof T]: T[K] | null;
-};
-
-export const capitalizeWords = (text: string): string =>
-  text.replace(/\b\w/g, (char) => char.toUpperCase());
+export const toTitleCase = (text: string): string =>
+  text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 
 export const delay = async (ms = 500): Promise<void> =>
   await new Promise((resolve) => setTimeout(resolve, ms));
