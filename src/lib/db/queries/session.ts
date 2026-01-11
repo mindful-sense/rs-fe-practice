@@ -1,31 +1,21 @@
 import "server-only";
 
-import type { SafeUser, Session, SessionId, UpdateSession } from "../schema";
+import type { Session, UpdateSession } from "../schema";
 
-import { getErrorMessage } from "@/lib/utils.server";
 import { db } from "../db";
-import { safeUserSchema, sessionSchema, updateSessionSchema } from "../schema";
+import { sessionSchema, updateSessionSchema } from "../schema";
 
 const statements = {
   insert: db.prepare(`
     INSERT INTO sessions (id, user_id, expires_at)
-    VALUES (@sessionId, @userId, @expiresAt)
+    VALUES (@sessionId, @userId, @expiresAt);
   `),
   update: db.prepare(`
     UPDATE sessions
     SET expires_at = @expiresAt
-    WHERE id = @sessionId
+    WHERE id = @sessionId;
   `),
-  delete: db.prepare(`DELETE FROM sessions WHERE id = @sessionId`),
-  safeUser: db.prepare(`
-    SELECT
-      users.id,
-      users.login,
-      users.role_id
-    FROM sessions
-    INNER JOIN users ON sessions.user_id = users.id
-    WHERE sessions.id = @sessionId
-  `),
+  delete: db.prepare(`DELETE FROM sessions WHERE id = @sessionId;`),
 };
 
 export const insertSession = (session: Session): void => {
@@ -45,18 +35,4 @@ export const updateSession = (session: UpdateSession): void => {
 export const deleteSession = (sessionId: string): void => {
   const { changes } = statements.delete.run({ sessionId });
   if (!changes) throw new Error("Didn't delete the database row");
-};
-
-export const getSafeUser = async (
-  sessionId: SessionId,
-): Promise<SafeUser | null> => {
-  try {
-    const row = statements.safeUser.get({ sessionId });
-    if (!row) throw new Error(`Data is not found. Session: ${sessionId}`);
-
-    return safeUserSchema.parse(row);
-  } catch (error) {
-    console.error(getErrorMessage(error));
-    return null;
-  }
 };

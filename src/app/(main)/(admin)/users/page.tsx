@@ -1,11 +1,11 @@
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown, H2 } from "@/components/ui";
-import { getUsers } from "@/features/users/server";
+import { selectUsers } from "@/lib/server";
 import { ROLE_NAMES, toTitleCase, truncateMiddle } from "@/lib/shared";
 
 export default function Users() {
-  const { users, message } = getUsers();
+  const { users, message } = selectUsers();
 
   return (
     <>

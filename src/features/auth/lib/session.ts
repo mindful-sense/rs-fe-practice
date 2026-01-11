@@ -9,8 +9,8 @@ import { cache } from "react";
 import {
   deleteSession,
   getErrorMessage,
-  getSafeUser,
   insertSession,
+  selectSafeUser,
   updateSession,
 } from "@/lib/server";
 import { AUTH_CONFIG } from "./config";
@@ -83,5 +83,5 @@ export const getCurrentUser = cache(async (): Promise<SafeUser | null> => {
   const sessionId = (await cookies()).get(
     AUTH_CONFIG.SESSION_COOKIE_NAME,
   )?.value;
-  return sessionId ? await getSafeUser(sessionId) : null;
+  return sessionId ? selectSafeUser(sessionId) : null;
 });

@@ -1,14 +1,15 @@
 import "server-only";
 
-import type { User, UserId } from "../schema";
+import type { SafeUser, SessionId, User, UserForList, UserId } from "../schema";
 
 import { randomUUID } from "crypto";
 
 import { ROLES } from "@/lib/constants";
+import { getErrorMessage } from "@/lib/utils.server";
 import { getTimestampWithoutTime } from "@/lib/utils.shared";
 
 import { db } from "../db";
-import { type UserForList, userSchema, userListSchema } from "../schema";
+import { safeUserSchema, userSchema, userListSchema } from "../schema";
 
 const statements = {
   insert: db.prepare(`
@@ -16,11 +17,19 @@ const statements = {
     VALUES (@userId, @login, @password, @salt, @roleId, @registeredAt, @updatedAt)
     RETURNING id, login, password, salt, role_id, registered_at, updated_at;
   `),
+  selectOneSafe: db.prepare(`
+    SELECT
+      users.id,
+      users.login,
+      users.role_id
+    FROM sessions
+    INNER JOIN users ON sessions.user_id = users.id
+    WHERE sessions.id = @sessionId;
+  `),
   selectOne: db.prepare(`
     SELECT id, login, password, salt, role_id, registered_at, updated_at
     FROM users
-    WHERE login = @login
-    LIMIT 1;
+    WHERE login = @login;
   `),
   selectAll: db.prepare(`
     SELECT id, login, role_id, registered_at, updated_at
@@ -56,12 +65,30 @@ export const selectUserByLogin = (login: string): User => {
     error: () => `Failed to fetch the user ${login}`,
   });
 };
-// TODO move getSafeUser
-export const selectUsers = (): UserForList[] => {
-  const rows = statements.selectAll.all();
-  if (!rows.length) throw new Error("No users are registered");
 
-  return userListSchema.parse(rows, {
-    error: () => `Failed to fetch users`,
-  });
+export const selectSafeUser = (sessionId: SessionId): SafeUser | null => {
+  try {
+    const row = statements.selectOneSafe.get({ sessionId });
+    if (!row) throw new Error(`Data is not found. Session: ${sessionId}`);
+
+    return safeUserSchema.parse(row);
+  } catch (error) {
+    console.error(getErrorMessage(error));
+    return null;
+  }
+};
+
+export const selectUsers = (): { users?: UserForList[]; message?: string } => {
+  try {
+    const rows = statements.selectAll.all();
+    if (!rows.length) throw new Error("No users are registered");
+
+    return {
+      users: userListSchema.parse(rows, {
+        error: () => "Failed to fetch users",
+      }),
+    };
+  } catch (error) {
+    return { message: getErrorMessage(error) };
+  }
 };
