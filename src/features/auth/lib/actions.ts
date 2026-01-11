@@ -9,7 +9,7 @@ import * as z from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { getErrorMessage, getUserByLogin, insertUser } from "@/lib/server";
+import { getErrorMessage, insertUser, selectUserByLogin } from "@/lib/server";
 import { ROUTE_PATHS, delay } from "@/lib/shared";
 
 import { comparePasswords, generateSalt, hashPassword } from "./passwordHasher";
@@ -67,7 +67,7 @@ export const signin = async (
   payload: FormData,
 ): Promise<FormState<SignIn>> =>
   handleAuth(payload, signInSchema, async ({ login, password }) => {
-    const user = getUserByLogin(login);
+    const user = selectUserByLogin(login);
     const isCorrectPassword = await comparePasswords({
       hashedPassword: user.password,
       password: password,

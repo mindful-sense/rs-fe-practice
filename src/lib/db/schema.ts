@@ -40,6 +40,18 @@ export const safeUserSchema = userBaseSchema
     roleId: data.role_id,
   }));
 
+export const userListSchema = z
+  .array(
+    userBaseSchema.omit({ password: true, salt: true }).transform((data) => ({
+      userId: data.id,
+      login: data.login,
+      roleId: data.role_id,
+      registeredAt: data.registered_at,
+      updatedAt: data.updated_at,
+    })),
+  )
+  .min(1, "There must be at least one user in the database");
+
 export const sessionSchema = z.strictObject({
   sessionId: z
     .string()
@@ -47,7 +59,7 @@ export const sessionSchema = z.strictObject({
     .regex(/^[0-9A-Fa-f]+$/, "Invalid HEX format"),
   userId: z.uuid(),
   expiresAt: z.number().refine((timestamp) => timestamp > Date.now(), {
-    message: "Expiration date should be set into the future",
+    error: "Expiration date should be set into the future",
   }),
 });
 
@@ -55,6 +67,7 @@ export const updateSessionSchema = sessionSchema.omit({ userId: true });
 
 export type User = z.infer<typeof userSchema>;
 export type SafeUser = z.infer<typeof safeUserSchema>;
+export type UserForList = z.infer<typeof userListSchema.element>;
 export type Session = z.infer<typeof sessionSchema>;
 export type UpdateSession = z.infer<typeof updateSessionSchema>;
 
