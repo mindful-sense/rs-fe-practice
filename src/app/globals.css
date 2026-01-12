@@ -6,22 +6,28 @@
 }
 
 @theme inline {
-  --bg-page: var(--background);
   --color-black: var(--foreground);
+  --color-pagebg: var(--background);
 }
 
 @theme {
-  --color-white: #ffffff;
   --color-accent: #470ff4;
   --color-accent-disabled: #a9a5b4;
+  --color-accent-light: #adb4ff;
+
+  --color-danger-50: #de0034;
+  --color-danger-100: #c7002f;
+
+  --color-elembg: #f9f8fa;
+
   --color-neutral-*: initial;
   --color-neutral-50: #edecf0;
   --color-neutral-100: #e4e2ed;
   --color-neutral-200: #dddae5;
   --color-neutral-300: #bfbbcb;
   --color-neutral-400: #918ca3;
-  --color-danger-50: #de0034;
-  --color-danger-100: #c7002f;
+
+  --color-white: #ffffff;
 }
 
 body {

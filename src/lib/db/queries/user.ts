@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { SafeUser, SessionId, User, UserForList, UserId } from "../schema";
+import type { SafeUser, SessionId, TableUser, User, UserId } from "../schema";
 
 import { randomUUID } from "crypto";
 
@@ -9,7 +9,7 @@ import { getErrorMessage } from "@/lib/utils.server";
 import { getTimestampWithoutTime } from "@/lib/utils.shared";
 
 import { db } from "../db";
-import { safeUserSchema, userSchema, userListSchema } from "../schema";
+import { safeUserSchema, tableUserSchema, userSchema } from "../schema";
 
 const statements = {
   insert: db.prepare(`
@@ -78,13 +78,13 @@ export const selectSafeUser = (sessionId: SessionId): SafeUser | null => {
   }
 };
 
-export const selectUsers = (): { users?: UserForList[]; message?: string } => {
+export const selectUsers = (): { users?: TableUser[]; message?: string } => {
   try {
     const rows = statements.selectAll.all();
     if (!rows.length) throw new Error("No users are registered");
 
     return {
-      users: userListSchema.parse(rows, {
+      users: tableUserSchema.parse(rows, {
         error: () => "Failed to fetch users",
       }),
     };

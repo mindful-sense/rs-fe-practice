@@ -40,7 +40,7 @@ export const safeUserSchema = userBaseSchema
     roleId: data.role_id,
   }));
 
-export const userListSchema = z
+export const tableUserSchema = z
   .array(
     userBaseSchema.omit({ password: true, salt: true }).transform((data) => ({
       userId: data.id,
@@ -67,7 +67,7 @@ export const updateSessionSchema = sessionSchema.omit({ userId: true });
 
 export type User = z.infer<typeof userSchema>;
 export type SafeUser = z.infer<typeof safeUserSchema>;
-export type UserForList = z.infer<typeof userListSchema.element>;
+export type TableUser = z.infer<typeof tableUserSchema.element>;
 export type Session = z.infer<typeof sessionSchema>;
 export type UpdateSession = z.infer<typeof updateSessionSchema>;
 

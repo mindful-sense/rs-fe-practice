@@ -6,6 +6,7 @@ export const ROLES = {
 } as const satisfies Record<string, number>;
 
 export const ROLE_NAMES = ["Admin", "Moderator", "Reader", "Guest"] as const;
+export type RoleNames = (typeof ROLE_NAMES)[number];
 
 export const ROUTE_PATHS = {
   HOME: "/",
