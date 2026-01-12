@@ -9,7 +9,12 @@ import { getErrorMessage } from "@/lib/utils.server";
 import { getTimestampWithoutTime } from "@/lib/utils.shared";
 
 import { db } from "../db";
-import { safeUserSchema, tableUserSchema, userSchema } from "../schema";
+import {
+  type RoleId,
+  safeUserSchema,
+  tableUserSchema,
+  userSchema,
+} from "../schema";
 
 const statements = {
   insert: db.prepare(`
@@ -35,6 +40,12 @@ const statements = {
     SELECT id, login, role_id, registered_at, updated_at
     FROM users;
   `),
+  updateRole: db.prepare(`
+    UPDATE users
+    SET role_id = @roleId
+    WHERE id = @userId;
+  `),
+  deleteOne: db.prepare(`DELETE FROM users WHERE id = @userId;`),
 };
 
 export const insertUser = db.transaction(
@@ -91,4 +102,14 @@ export const selectUsers = (): { users?: TableUser[]; message?: string } => {
   } catch (error) {
     return { message: getErrorMessage(error) };
   }
+};
+
+export const updateRole = (userId: UserId, roleId: RoleId): void => {
+  const { changes } = statements.updateRole.run({ userId, roleId });
+  if (!changes) throw new Error("Didn't save the role change in the row");
+};
+
+export const deleteUser = (userId: UserId): void => {
+  const { changes } = statements.deleteOne.run({ userId });
+  if (!changes) throw new Error("Didn't delete the user in the row");
 };

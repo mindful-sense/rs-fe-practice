@@ -7,8 +7,8 @@ import { UserRow } from "./UserRow";
 export function UserTable({ users }: { users: TableUser[] }) {
   const [currentDropdown, setCurrentDropdown] = useState<string | null>(null);
 
-  const openDropdown = (newId: string) => setCurrentDropdown(newId);
-  const closeDropdown = () => setCurrentDropdown(null);
+  const handleOpenDropdown = (newId: string): void => setCurrentDropdown(newId);
+  const handleCloseDropdown = (): void => setCurrentDropdown(null);
 
   return (
     <table className="w-full table-fixed text-sm">
@@ -42,8 +42,8 @@ export function UserTable({ users }: { users: TableUser[] }) {
             registeredAt={registeredAt}
             updatedAt={updatedAt}
             isDropdownOpen={userId === currentDropdown}
-            openDropdown={openDropdown}
-            closeDropdown={closeDropdown}
+            onOpenDropdown={handleOpenDropdown}
+            onCloseDropdown={handleCloseDropdown}
           />
         ))}
       </tbody>

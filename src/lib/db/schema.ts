@@ -2,6 +2,8 @@ import * as z from "zod";
 import { AUTH_CONFIG } from "@/features/auth/shared";
 import { ROLES } from "../constants";
 
+export const roleIdSchema = z.enum(ROLES);
+
 const userBaseSchema = z.strictObject({
   id: z.uuid(),
   login: z.string().min(1),
@@ -13,7 +15,7 @@ const userBaseSchema = z.strictObject({
     .string()
     .length(AUTH_CONFIG.SALT_BYTES * 2, "Salt must be 32 characters")
     .regex(/^[0-9A-Fa-f]+$/, "Invalid HEX format"),
-  role_id: z.enum(ROLES),
+  role_id: roleIdSchema,
   registered_at: z.iso.date(),
   updated_at: z.iso.date(),
 });
@@ -70,6 +72,7 @@ export type SafeUser = z.infer<typeof safeUserSchema>;
 export type TableUser = z.infer<typeof tableUserSchema.element>;
 export type Session = z.infer<typeof sessionSchema>;
 export type UpdateSession = z.infer<typeof updateSessionSchema>;
+export type RoleId = z.infer<typeof roleIdSchema>;
 
 export type UserId = User["userId"];
 export type SessionId = Session["sessionId"];

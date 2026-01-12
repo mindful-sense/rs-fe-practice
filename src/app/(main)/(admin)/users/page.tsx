@@ -6,16 +6,16 @@ export default function Users() {
   const { users, message } = selectUsers();
 
   return (
-    <>
+    <div className="pb-15">
       <H2 className="my-5">Users</H2>
 
-      <main className="mx-auto w-202 rounded-3xl bg-white/70 p-6 backdrop-blur-md">
+      <main className="relative mx-auto w-202 rounded-3xl bg-white/70 p-6 backdrop-blur-md">
         {users ? (
           <UserTable users={users} />
         ) : (
           <p className="text-center">{message}</p>
         )}
       </main>
-    </>
+    </div>
   );
 }
