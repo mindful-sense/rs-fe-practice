@@ -17,12 +17,14 @@ const fetchWeatherByCity = async (city: string): Promise<WeatherData> => {
     appid: ENV.OPENWEATHER,
   }).toString();
 
-  const apiUrl = url.toString();
-  const response = await fetch(apiUrl, {
+  const response = await fetch(url.toString(), {
     next: { revalidate: API.STALE_TIME },
   });
 
-  if (!response.ok) throw new Error(response.status.toString());
+  if (!response.ok) {
+    const statusText = response.statusText || "Unknown Error";
+    throw new Error(`Weather API Error ${response.status}: ${statusText}`);
+  }
 
   return weatherDataSchema.parse(await response.json());
 };
@@ -44,7 +46,7 @@ export const getWeather = async (
 
     return { temperature, description };
   } catch (error) {
-    console.error(`Failed to fetch weather: ${getErrorMessage(error)}`);
+    console.error(`Failed to fetch weather ${city}: ${getErrorMessage(error)}`);
     return null;
   }
 };

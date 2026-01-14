@@ -1,6 +1,5 @@
 import * as z from "zod";
-import { AUTH_CONFIG } from "@/features/auth/shared";
-import { ROLES } from "../constants";
+import { AUTH_CONFIG, ROLES } from "../constants";
 
 export const roleIdSchema = z.enum(ROLES);
 
@@ -30,7 +29,7 @@ export const userSchema = userBaseSchema.transform((data) => ({
   updatedAt: data.updated_at,
 }));
 
-export const safeUserSchema = userBaseSchema
+export const sessionUserSchema = userBaseSchema
   .pick({
     id: true,
     login: true,
@@ -68,7 +67,7 @@ export const sessionSchema = z.strictObject({
 export const updateSessionSchema = sessionSchema.omit({ userId: true });
 
 export type User = z.infer<typeof userSchema>;
-export type SafeUser = z.infer<typeof safeUserSchema>;
+export type SessionUser = z.infer<typeof sessionUserSchema>;
 export type TableUser = z.infer<typeof tableUserSchema.element>;
 export type Session = z.infer<typeof sessionSchema>;
 export type UpdateSession = z.infer<typeof updateSessionSchema>;

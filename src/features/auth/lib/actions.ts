@@ -20,10 +20,10 @@ import {
   refreshSession,
 } from "./session";
 
-const handleAuth = async <FormType extends SignIn | SignUp>(
+const handleAuthActions = async <FormType extends SignIn | SignUp>(
   payload: FormData,
   schema: z.ZodType<FormType>,
-  handler: (data: FormType) => Promise<UserId>,
+  action: (data: FormType) => Promise<UserId>,
 ): Promise<FormState<FormType>> => {
   await delay();
 
@@ -38,7 +38,7 @@ const handleAuth = async <FormType extends SignIn | SignUp>(
   }
 
   try {
-    const userId = await handler(data);
+    const userId = await action(data);
     await createSession(userId);
   } catch (error) {
     return {
@@ -55,7 +55,7 @@ export const signup = async (
   _prevState: FormState<SignUp>,
   payload: FormData,
 ): Promise<FormState<SignUp>> =>
-  handleAuth(payload, signUpSchema, async ({ login, password }) => {
+  handleAuthActions(payload, signUpSchema, async ({ login, password }) => {
     const salt = generateSalt();
     const hashedPassword = await hashPassword(password, salt);
 
@@ -66,7 +66,7 @@ export const signin = async (
   _prevState: FormState<SignIn>,
   payload: FormData,
 ): Promise<FormState<SignIn>> =>
-  handleAuth(payload, signInSchema, async ({ login, password }) => {
+  handleAuthActions(payload, signInSchema, async ({ login, password }) => {
     const user = selectUserByLogin(login);
     const isCorrectPassword = await comparePasswords({
       hashedPassword: user.password,

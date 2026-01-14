@@ -1,8 +1,8 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { type SafeUser } from "@/lib/db/schema";
+import { type SessionUser } from "@/lib/db/schema";
 import { ROLES } from "@/lib/constants";
 
-export const initialState: SafeUser = {
+export const initialState: SessionUser = {
   userId: "",
   login: "",
   roleId: ROLES.GUEST,
@@ -12,7 +12,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (_state, action: PayloadAction<SafeUser>) => action.payload,
+    setUser: (_state, action: PayloadAction<SessionUser>) => action.payload,
     clearUser: () => initialState,
   },
 });

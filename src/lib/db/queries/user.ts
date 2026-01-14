@@ -1,20 +1,21 @@
 import "server-only";
 
-import type { SafeUser, SessionId, TableUser, User, UserId } from "../schema";
+import type {
+  RoleId,
+  SessionUser,
+  SessionId,
+  TableUser,
+  User,
+  UserId,
+} from "../schema";
 
 import { randomUUID } from "crypto";
 
 import { ROLES } from "@/lib/constants";
-import { getErrorMessage } from "@/lib/utils.server";
 import { getTimestampWithoutTime } from "@/lib/utils.shared";
 
 import { db } from "../db";
-import {
-  type RoleId,
-  safeUserSchema,
-  tableUserSchema,
-  userSchema,
-} from "../schema";
+import { sessionUserSchema, tableUserSchema, userSchema } from "../schema";
 
 const statements = {
   insert: db.prepare(`
@@ -22,21 +23,22 @@ const statements = {
     VALUES (@userId, @login, @password, @salt, @roleId, @registeredAt, @updatedAt)
     RETURNING id, login, password, salt, role_id, registered_at, updated_at;
   `),
-  selectOneSafe: db.prepare(`
+  selectSessionUser: db.prepare(`
     SELECT
       users.id,
       users.login,
       users.role_id
     FROM sessions
     INNER JOIN users ON sessions.user_id = users.id
-    WHERE sessions.id = @sessionId;
+    WHERE sessions.id = @sessionId
+    AND sessions.expires_at > @now;
   `),
-  selectOne: db.prepare(`
+  selectAuthUser: db.prepare(`
     SELECT id, login, password, salt, role_id, registered_at, updated_at
     FROM users
     WHERE login = @login;
   `),
-  selectAll: db.prepare(`
+  selectAllUsers: db.prepare(`
     SELECT id, login, role_id, registered_at, updated_at
     FROM users;
   `),
@@ -45,7 +47,7 @@ const statements = {
     SET role_id = @roleId
     WHERE id = @userId;
   `),
-  deleteOne: db.prepare(`DELETE FROM users WHERE id = @userId;`),
+  delete: db.prepare(`DELETE FROM users WHERE id = @userId;`),
 };
 
 export const insertUser = db.transaction(
@@ -69,7 +71,7 @@ export const insertUser = db.transaction(
 );
 
 export const selectUserByLogin = (login: string): User => {
-  const row = statements.selectOne.get({ login });
+  const row = statements.selectAuthUser.get({ login });
   if (!row) throw new Error("User is not found");
 
   return userSchema.parse(row, {
@@ -77,39 +79,28 @@ export const selectUserByLogin = (login: string): User => {
   });
 };
 
-export const selectSafeUser = (sessionId: SessionId): SafeUser | null => {
-  try {
-    const row = statements.selectOneSafe.get({ sessionId });
-    if (!row) throw new Error(`Data is not found. Session: ${sessionId}`);
+export const selectUserBySession = (sessionId: SessionId): SessionUser => {
+  const row = statements.selectSessionUser.get({ sessionId, now: Date.now() });
+  if (!row) throw new Error(`Data is not found. Session: ${sessionId}`);
 
-    return safeUserSchema.parse(row);
-  } catch (error) {
-    console.error(getErrorMessage(error));
-    return null;
-  }
+  return sessionUserSchema.parse(row);
 };
 
-export const selectUsers = (): { users?: TableUser[]; message?: string } => {
-  try {
-    const rows = statements.selectAll.all();
-    if (!rows.length) throw new Error("No users are registered");
+export const selectUsers = (): TableUser[] => {
+  const rows = statements.selectAllUsers.all();
+  if (!rows.length) throw new Error("No users are registered");
 
-    return {
-      users: tableUserSchema.parse(rows, {
-        error: () => "Failed to fetch users",
-      }),
-    };
-  } catch (error) {
-    return { message: getErrorMessage(error) };
-  }
+  return tableUserSchema.parse(rows, {
+    error: () => "Failed to fetch users",
+  });
 };
 
 export const updateRole = (userId: UserId, roleId: RoleId): void => {
   const { changes } = statements.updateRole.run({ userId, roleId });
-  if (!changes) throw new Error("Didn't save the role change in the row");
+  if (!changes) throw new Error("Couldn't save the role change in the row");
 };
 
 export const deleteUser = (userId: UserId): void => {
-  const { changes } = statements.deleteOne.run({ userId });
-  if (!changes) throw new Error("Didn't delete the user in the row");
+  const { changes } = statements.delete.run({ userId });
+  if (!changes) throw new Error("Couldn't delete the user in the row");
 };

@@ -24,3 +24,12 @@ export type AuthRoutePath =
 
 export const isAuthRoutePath = (value: unknown): value is Element =>
   [ROUTE_PATHS.LOGIN, ROUTE_PATHS.REGISTER].includes(value as AuthRoutePath);
+
+export const AUTH_CONFIG = {
+  ENCODING: "hex" satisfies BufferEncoding,
+  PASSWORD_BYTES: 64,
+  SALT_BYTES: 16,
+  SESSION_BYTES: 32,
+  SESSION_COOKIE_NAME: "session-key",
+  SESSION_EXPIRE_MS: 60 * 60 * 24 * 7 * 1000,
+} as const;

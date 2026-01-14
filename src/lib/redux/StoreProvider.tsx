@@ -3,7 +3,7 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 
-import { type SafeUser } from "@/lib/db/schema";
+import { type SessionUser } from "@/lib/db/schema";
 
 import { makeStore } from "./store";
 import { clearUser, setUser } from "./features";
@@ -12,7 +12,7 @@ export function StoreProvider({
   user,
   children,
 }: {
-  user: SafeUser | null;
+  user: SessionUser | null;
   children: ReactNode;
 }) {
   const [store] = useState(() => {

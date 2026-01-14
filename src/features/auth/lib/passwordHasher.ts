@@ -1,7 +1,7 @@
 import "server-only";
 import { randomBytes, scrypt, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-import { AUTH_CONFIG } from "./config";
+import { AUTH_CONFIG } from "@/lib/shared";
 
 const scryptAsync = promisify(scrypt);
 

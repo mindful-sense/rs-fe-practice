@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { AUTH_CONFIG } from "@/features/auth/shared";
-import { isAuthRoutePath, ROUTE_PATHS } from "@/lib/constants";
+import { AUTH_CONFIG, isAuthRoutePath, ROUTE_PATHS } from "@/lib/shared";
 
 export function proxy(request: NextRequest) {
   const session = request.cookies.get(AUTH_CONFIG.SESSION_COOKIE_NAME);

@@ -16,6 +16,11 @@ const statements = {
     WHERE id = @sessionId;
   `),
   delete: db.prepare(`DELETE FROM sessions WHERE id = @sessionId;`),
+  deleteExpired: db.prepare(`
+    DELETE FROM sessions 
+    WHERE expires_at < @now
+    LIMIT 10;
+  `),
 };
 
 export const insertSession = (session: Session): void => {
@@ -29,10 +34,15 @@ export const updateSession = (session: UpdateSession): void => {
   const data = updateSessionSchema.parse(session);
   const { changes } = statements.update.run(data);
 
-  if (!changes) throw new Error("Didn't update the database row");
+  if (!changes) throw new Error("Couldn't update the database row");
 };
 
 export const deleteSession = (sessionId: string): void => {
   const { changes } = statements.delete.run({ sessionId });
-  if (!changes) throw new Error("Didn't delete the database row");
+  if (!changes) throw new Error("Couldn't delete the database row");
+};
+
+export const deleteExpiredSessions = (): void => {
+  const { changes } = statements.deleteExpired.run({ now: Date.now() });
+  if (!changes) throw new Error("Couldn't delete expired sessions");
 };

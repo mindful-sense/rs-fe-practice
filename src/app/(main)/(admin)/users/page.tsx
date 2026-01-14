@@ -1,9 +1,17 @@
 import { H2 } from "@/components/ui";
 import { UserTable } from "@/features/users/client";
-import { selectUsers } from "@/lib/server";
+import { getErrorMessage, selectUsers } from "@/lib/server";
+import { type TableUser } from "@/lib/shared";
 
 export default function Users() {
-  const { users, message } = selectUsers();
+  let users: TableUser[] | null = null;
+  let message: string | null = null;
+
+  try {
+    users = selectUsers();
+  } catch (error) {
+    message = getErrorMessage(error);
+  }
 
   return (
     <div className="pb-15">
