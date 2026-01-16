@@ -32,7 +32,7 @@ export default async function RootLayout({
         <SessionRefresher />
         <StoreProvider user={user}>
           <Header />
-          <div className="grid min-h-[calc(100vh-68px)] pt-17">{children}</div>
+          <div className="grid min-h-[calc(100vh-72px)] pt-18">{children}</div>
         </StoreProvider>
       </body>
     </html>

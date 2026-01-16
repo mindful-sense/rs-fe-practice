@@ -32,26 +32,26 @@ export function Header() {
   const isAdmin = userRoleId === ROLES.ADMIN;
 
   return (
-    <header className="fixed top-2 left-1/2 z-50 flex h-13 w-max -translate-x-1/2 justify-center gap-1 whitespace-nowrap">
+    <header className="fixed top-2 left-1/2 z-50 flex h-14 w-max -translate-x-1/2 justify-center gap-1 whitespace-nowrap">
       {!isHome && (
         <button
           type="button"
           onClick={router.back}
-          className="hover:text-accent focus:text-accent flex w-23 grow cursor-pointer items-center justify-center gap-2 rounded-2xl bg-white/70 shadow-xs ring-1 shadow-black/3 ring-black/1 outline-0 backdrop-blur-md transition-colors duration-300"
+          className="hover:text-accent focus:text-accent flex w-24 grow cursor-pointer items-center justify-center gap-1 rounded-2xl border border-neutral-50 bg-white/70 backdrop-blur-sm transition-colors duration-300 outline-none"
         >
           <FontAwesomeIcon icon={faCircleLeft} />
           <strong className="text-sm font-medium">Back</strong>
         </button>
       )}
 
-      <div className="flex max-w-xl items-center justify-between gap-22 rounded-2xl bg-white/70 px-4 shadow-xs ring-1 shadow-black/3 ring-black/1 backdrop-blur-md">
+      <div className="flex max-w-xl items-center justify-between gap-20 rounded-2xl border border-neutral-50 bg-white/70 px-4 backdrop-blur-sm">
         <Link
           href="/"
           aria-label="devlog home logo"
-          className="hover:text-accent focus:text-accent outline-0 transition-colors duration-300"
+          className="hover:text-accent focus:text-accent transition-colors duration-300 outline-none"
         >
           <FontAwesomeIcon icon={faCode} size="lg" className="mr-1" />
-          <strong className="text-xl/5 font-extrabold tracking-tight">
+          <strong className="text-xl/tight font-extrabold tracking-tight">
             devlog
           </strong>
         </Link>
@@ -61,7 +61,7 @@ export function Header() {
             {userLogin ? (
               <>
                 {isAdmin && (
-                  <div className="flex items-center gap-2 border-r border-neutral-200 pr-4">
+                  <div className="flex items-center gap-2 border-r border-neutral-100 pr-4">
                     <LinkButton
                       href={ROUTE_PATHS.USERS}
                       intent="secondary"

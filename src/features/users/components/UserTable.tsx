@@ -13,7 +13,7 @@ export function UserTable({ users }: { users: TableUser[] }) {
   return (
     <table className="w-full table-fixed text-sm">
       <thead>
-        <tr className="bg-neutral-100 text-left">
+        <tr className="sticky top-18 z-20 bg-neutral-50/70 text-left backdrop-blur-sm">
           <th scope="col" className="w-52 rounded-s-xl px-5 py-3">
             Username
           </th>
@@ -23,10 +23,10 @@ export function UserTable({ users }: { users: TableUser[] }) {
           <th scope="col" className="w-full px-5 py-3">
             Registered
           </th>
-          <th scope="col" className="w-38 px-5 py-3">
+          <th scope="col" className="w-44 px-5 py-3">
             Role
           </th>
-          <th scope="col" className="w-25 rounded-e-xl px-5 py-3">
+          <th scope="col" className="w-24 rounded-e-xl px-5 py-3">
             <span className="sr-only">Actions</span>
           </th>
         </tr>

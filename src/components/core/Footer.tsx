@@ -20,14 +20,14 @@ export async function Footer() {
   }).format(date);
 
   return (
-    <footer className="fixed bottom-2 left-1/2 flex h-13 w-150 -translate-x-1/2 items-center justify-between rounded-2xl bg-white/70 px-4 text-sm/4 shadow-xs ring-1 shadow-black/3 ring-black/1 backdrop-blur-md">
+    <footer className="fixed bottom-2 left-1/2 z-50 flex h-14 w-xl -translate-x-1/2 items-center justify-between rounded-2xl border border-neutral-50 bg-white/70 px-4 text-sm/tight backdrop-blur-sm">
       <div>
         <h3>For Inquiries:</h3>
 
         <address>
           <a
             href={`mailto:${CONFIG.EMAIL}`}
-            className="hover:text-accent focus:text-accent not-italic outline-0 transition-colors duration-300"
+            className="hover:text-accent focus:text-accent not-italic transition-colors duration-300 outline-none"
           >
             {CONFIG.EMAIL}
           </a>

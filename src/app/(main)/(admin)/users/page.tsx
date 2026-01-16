@@ -14,16 +14,16 @@ export default function Users() {
   }
 
   return (
-    <div className="pb-15">
-      <H2 className="my-5">Users</H2>
+    <>
+      <H2 className="mt-8 mb-10">User Management Table</H2>
 
-      <main className="relative mx-auto w-202 rounded-3xl bg-white/70 p-6 backdrop-blur-md">
+      <main className="bg-elembg relative mx-auto mb-24 w-4xl rounded-3xl p-6">
         {users ? (
           <UserTable users={users} />
         ) : (
           <p className="text-center">{message}</p>
         )}
       </main>
-    </div>
+    </>
   );
 }

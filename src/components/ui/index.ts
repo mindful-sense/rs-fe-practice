@@ -8,4 +8,3 @@ export * from "./FormField";
 export * from "./FormWrapper";
 export * from "./H2";
 export * from "./Input";
-export * from "./VerticalDivider";

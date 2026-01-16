@@ -15,7 +15,7 @@ const btnVariants = cva(
       intent: {
         primary: "hover:bg-accent bg-black text-white",
         secondary:
-          "hover:border-accent gap-2 border border-black hover:bg-accent hover:text-white",
+          "hover:border-accent hover:bg-accent gap-2 border border-neutral-100 hover:text-white",
         inline:
           "hover:text-accent focus:text-accent inline-flex h-auto gap-1 px-0 focus:outline-transparent",
       },
