@@ -1,9 +1,9 @@
 import "server-only";
 
-import type { Session, UpdateSession } from "../schema";
+import type { Session, UpdateSession } from "../schemas";
 
 import { db } from "../db";
-import { sessionSchema, updateSessionSchema } from "../schema";
+import { sessionSchema, updateSessionSchema } from "../schemas";
 
 const statements = {
   insert: db.prepare(`

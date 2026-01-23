@@ -1,4 +1,5 @@
 export * from "./Button";
+export * from "./Chip";
 export * from "./FieldError";
 export * from "./FieldSet";
 export * from "./Form";

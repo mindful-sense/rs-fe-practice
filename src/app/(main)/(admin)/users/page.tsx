@@ -10,6 +10,7 @@ export default function Users() {
   try {
     users = selectUsers();
   } catch (error) {
+    console.error(error);
     message = getErrorMessage(error);
   }
 

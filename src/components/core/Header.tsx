@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   faCircleLeft,
-  faCode,
+  faWater,
   faFile,
   faRightFromBracket,
   faUsers,
@@ -47,12 +47,12 @@ export function Header() {
       <div className="flex max-w-xl items-center justify-between gap-20 rounded-2xl border border-neutral-50 bg-white/70 px-4 backdrop-blur-sm">
         <Link
           href="/"
-          aria-label="devlog home logo"
+          aria-label="selog home logo"
           className="hover:text-accent focus:text-accent transition-colors duration-300 outline-none"
         >
-          <FontAwesomeIcon icon={faCode} size="lg" className="mr-1" />
+          <FontAwesomeIcon icon={faWater} size="lg" className="mr-1" />
           <strong className="text-xl/tight font-extrabold tracking-tight">
-            devlog
+            selog
           </strong>
         </Link>
 

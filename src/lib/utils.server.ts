@@ -8,7 +8,12 @@ export const getErrorMessage = (error: unknown): string => {
   ) {
     return "Username is already taken";
   }
-  if (error instanceof z.ZodError) return z.prettifyError(error);
+
+  if (error instanceof z.ZodError) {
+    return "There's a problem with the data format";
+  }
+
   if (error instanceof Error) return error.message;
+
   return String(error);
 };

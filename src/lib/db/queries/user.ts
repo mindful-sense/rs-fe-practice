@@ -7,7 +7,7 @@ import type {
   TableUser,
   User,
   UserId,
-} from "../schema";
+} from "../schemas";
 
 import { randomUUID } from "crypto";
 
@@ -15,7 +15,7 @@ import { ROLES } from "@/lib/constants";
 import { getTimestampWithoutTime } from "@/lib/utils.shared";
 
 import { db } from "../db";
-import { sessionUserSchema, tableUserSchema, userSchema } from "../schema";
+import { sessionUserSchema, tableUserSchema, userSchema } from "../schemas";
 
 const statements = {
   insert: db.prepare(`

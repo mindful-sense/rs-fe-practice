@@ -102,14 +102,14 @@ export function UserRow({
             type="button"
             disabled={currentRole.id === roleId}
             onClick={() => saveChanges(userId, currentRole.id)}
-            className="focus:outline-accent disabled:text-accent-disabled hover:outline-accent size-6 cursor-pointer rounded-sm outline-2 outline-transparent transition-colors duration-300 disabled:cursor-not-allowed disabled:outline-none"
+            className="focus:outline-accent disabled:text-accent-disabled hover:outline-accent size-6 cursor-pointer rounded-full outline-2 outline-transparent transition-colors duration-300 disabled:cursor-not-allowed disabled:outline-none"
           >
             <FontAwesomeIcon icon={faFloppyDisk} />
           </button>
           <button
             type="button"
             onClick={() => removeUser(userId)}
-            className="focus:outline-danger text-danger hover:outline-danger size-6 cursor-pointer rounded-sm outline-2 outline-transparent transition-colors duration-300"
+            className="focus:outline-danger text-danger hover:outline-danger size-6 cursor-pointer rounded-full outline-2 outline-transparent transition-colors duration-300"
           >
             <FontAwesomeIcon icon={faTrash} />
           </button>
