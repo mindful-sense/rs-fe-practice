@@ -9,29 +9,45 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const btnVariants = cva("rounded-full border border-neutral-200", {
   variants: {
     intent: {
-      btnDefault:
-        "focus:outline-accent hover:bg-accent hover:border-accent size-8 cursor-pointer rounded-full border border-neutral-200 outline-2 outline-offset-2 outline-transparent transition-colors duration-300 hover:text-white",
-      btnDanger:
-        "focus:outline-danger text-danger border-danger hover:bg-danger hover:border-danger size-8 cursor-pointer rounded-full border outline-2 outline-offset-2 outline-transparent transition-colors duration-300 hover:text-white",
+      button:
+        "focus:outline-accent hover:bg-accent hover:border-accent disabled:text-accent-disabled size-8 cursor-pointer outline-2 outline-offset-2 outline-transparent transition-colors duration-300 hover:text-white disabled:cursor-not-allowed disabled:border-none disabled:bg-transparent disabled:outline-none",
       info: "flex h-8 items-center gap-1 px-2.5",
     },
+    size: {
+      md: "size-6",
+    },
+    border: {
+      none: "border-none",
+    },
+    rounded: {
+      semi: "rounded-lg",
+    },
+    color: {
+      danger:
+        "focus:outline-danger text-danger border-danger hover:bg-danger hover:border-danger",
+    },
   },
-  defaultVariants: { intent: "btnDefault" },
 });
 
 interface BaseProps extends VariantProps<typeof btnVariants> {
+  text?: string;
   icon?: IconDefinition;
   iconstyles?: string;
 }
 
 export function ChipButton({
-  intent,
+  size,
+  border,
+  rounded,
+  color,
   icon,
   iconstyles,
   className,
   ...props
 }: Omit<ComponentProps<"button">, "type"> & BaseProps) {
-  const classes = twMerge(btnVariants({ intent, className }));
+  const classes = twMerge(
+    btnVariants({ intent: "button", size, border, rounded, color, className }),
+  );
   return (
     <button type="button" className={classes} {...props}>
       {icon && <FontAwesomeIcon icon={icon} className={iconstyles} />}
@@ -44,7 +60,7 @@ export function ChipInfo({
   icon,
   iconstyles,
   className,
-}: { text: string; className?: string } & BaseProps) {
+}: { className?: string } & BaseProps) {
   const classes = twMerge(btnVariants({ intent: "info", className }));
   return (
     <div className={classes}>

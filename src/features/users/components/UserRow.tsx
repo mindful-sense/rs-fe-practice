@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { ChipButton } from "@/components/ui";
 import {
   type RoleId,
   type RoleName,
@@ -98,21 +99,20 @@ export function UserRow({
 
       <td className="px-5 py-3">
         <div className="flex justify-between">
-          <button
-            type="button"
+          <ChipButton
+            border="none"
+            rounded="semi"
+            icon={faFloppyDisk}
             disabled={currentRole.id === roleId}
             onClick={() => saveChanges(userId, currentRole.id)}
-            className="focus:outline-accent disabled:text-accent-disabled hover:outline-accent size-6 cursor-pointer rounded-full outline-2 outline-transparent transition-colors duration-300 disabled:cursor-not-allowed disabled:outline-none"
-          >
-            <FontAwesomeIcon icon={faFloppyDisk} />
-          </button>
-          <button
-            type="button"
+          />
+          <ChipButton
+            border="none"
+            rounded="semi"
+            color="danger"
+            icon={faTrash}
             onClick={() => removeUser(userId)}
-            className="focus:outline-danger text-danger hover:outline-danger size-6 cursor-pointer rounded-full outline-2 outline-transparent transition-colors duration-300"
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
+          />
         </div>
       </td>
     </tr>

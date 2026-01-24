@@ -1,3 +1,4 @@
+// import Image from "next/image";
 import {
   faCalendar,
   faFilePen,
@@ -32,20 +33,22 @@ export default async function Post({
   }).format(new Date(post.publishedAt));
 
   return (
-    <article className="flex flex-col items-center pt-8">
-      <header className="flex max-w-3xl flex-col items-center gap-5">
-        <H2>{post.title}</H2>
-        <div className="flex gap-1 text-sm">
+    <main className="flex flex-col items-center pt-8">
+      <header className="flex flex-col items-center">
+        <H2 className="mb-5 max-w-3xl">{post.title}</H2>
+
+        <div className="mb-12 flex gap-1 text-sm">
           <ChipInfo
             text={formattedDate}
             icon={faCalendar}
             iconstyles="-mt-0.5"
-            className="flex h-8 items-center gap-1 rounded-full border border-neutral-200 px-2.5"
           />
           <ChipButton icon={faFilePen} iconstyles="-mr-0.5" />
-          <ChipButton intent="btnDanger" icon={faTrash} />
+          <ChipButton color="danger" icon={faTrash} />
         </div>
+
+        <div className="h-100 w-5xl rounded-4xl bg-neutral-100" />
       </header>
-    </article>
+    </main>
   );
 }

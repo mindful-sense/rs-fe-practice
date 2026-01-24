@@ -1,6 +1,3 @@
-export const toTitleCase = (text: string): string =>
-  text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
-
 export const delay = async (ms = 500): Promise<void> =>
   await new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -9,6 +6,9 @@ export const getTimestamp = (date: Date): string =>
 
 export const getTimestampWithoutTime = (date: Date): string =>
   date.toISOString().split("T")[0];
+
+export const toTitleCase = (text: string): string =>
+  text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 
 export const truncateMiddle = ({
   text,

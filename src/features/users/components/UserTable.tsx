@@ -26,7 +26,7 @@ export function UserTable({ users }: { users: TableUser[] }) {
           <th scope="col" className="w-44 px-5 py-3">
             Role
           </th>
-          <th scope="col" className="w-24 rounded-e-xl px-5 py-3">
+          <th scope="col" className="w-30 rounded-e-xl px-5 py-3">
             <span className="sr-only">Actions</span>
           </th>
         </tr>

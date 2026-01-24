@@ -75,11 +75,10 @@ export function RegisterForm() {
         Already have an account?&nbsp;
         <LinkButton
           href={ROUTE_PATHS.LOGIN}
+          text="Sign In"
           intent="inline"
           decoration="underline"
-        >
-          Sign In
-        </LinkButton>
+        />
       </FormButtonBlock>
 
       {generalError && <FormError error={generalError} />}

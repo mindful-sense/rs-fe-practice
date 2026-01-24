@@ -64,43 +64,42 @@ export function Header() {
                   <div className="flex items-center gap-2 border-r border-neutral-100 pr-4">
                     <LinkButton
                       href={ROUTE_PATHS.USERS}
+                      text="View Users"
                       intent="secondary"
                       leftIcon={faUsers}
-                    >
-                      View Users
-                    </LinkButton>
-
+                    />
                     <LinkButton
                       href={ROUTE_PATHS.POST}
+                      text="Post"
                       intent="secondary"
                       leftIcon={faFile}
                       iconstyles="-mx-1"
-                    >
-                      Post
-                    </LinkButton>
+                    />
                   </div>
                 )}
 
                 <Button
-                  onClick={() => signout()}
-                  intent="inline"
-                  rightIcon={faRightFromBracket}
-                >
-                  {truncateMiddle({
+                  text={truncateMiddle({
                     text: userLogin,
                     maxLength: isAdmin ? undefined : 20,
                   })}
-                </Button>
+                  onClick={() => signout()}
+                  intent="inline"
+                  rightIcon={faRightFromBracket}
+                />
               </>
             ) : (
               <div className="-mr-2 flex items-center gap-4">
-                <LinkButton href={ROUTE_PATHS.LOGIN} intent="inline">
-                  Sign In
-                </LinkButton>
-
-                <LinkButton href={ROUTE_PATHS.REGISTER} intent="primary">
-                  Sign Up
-                </LinkButton>
+                <LinkButton
+                  href={ROUTE_PATHS.LOGIN}
+                  text="Sign In"
+                  intent="inline"
+                />
+                <LinkButton
+                  href={ROUTE_PATHS.REGISTER}
+                  text="Sign Up"
+                  intent="primary"
+                />
               </div>
             )}
           </div>
