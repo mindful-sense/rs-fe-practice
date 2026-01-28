@@ -1,18 +1,19 @@
 "use client";
 
-import {
-  FieldSet,
-  Form,
-  FormButtonBlock,
-  FormError,
-  FormField,
-  LinkButton,
-} from "@/components/ui";
+import { LinkButton } from "@/components/ui";
 import { ROUTE_PATHS } from "@/lib/shared";
 
 import { useActionForm } from "../hooks/useActionForm";
 import { signup } from "../lib/actions";
 import { type SignUp, signUpSchema } from "../lib/schema";
+
+import {
+  AuthFieldSet,
+  AuthForm,
+  AuthFormButtonBlock,
+  AuthFormError,
+  AuthFormField,
+} from "./ui";
 
 export function RegisterForm() {
   const {
@@ -37,9 +38,9 @@ export function RegisterForm() {
     errors.passcheck?.message || state.errors?.passcheck?.[0];
 
   return (
-    <Form action={action} onSubmit={onSubmit} noValidate>
-      <FieldSet>
-        <FormField
+    <AuthForm action={action} onSubmit={onSubmit} noValidate>
+      <AuthFieldSet>
+        <AuthFormField
           id="login"
           type="text"
           label="Username"
@@ -49,7 +50,7 @@ export function RegisterForm() {
           aria-required="true"
           {...register("login")}
         />
-        <FormField
+        <AuthFormField
           id="password"
           type="password"
           label="Password"
@@ -59,7 +60,7 @@ export function RegisterForm() {
           aria-required="true"
           {...register("password")}
         />
-        <FormField
+        <AuthFormField
           id="passcheck"
           type="password"
           label="Repeat password"
@@ -69,9 +70,9 @@ export function RegisterForm() {
           aria-required="true"
           {...register("passcheck")}
         />
-      </FieldSet>
+      </AuthFieldSet>
 
-      <FormButtonBlock label="Sign Up" isPending={isPending}>
+      <AuthFormButtonBlock label="Sign Up" isPending={isPending}>
         Already have an account?&nbsp;
         <LinkButton
           href={ROUTE_PATHS.LOGIN}
@@ -79,9 +80,9 @@ export function RegisterForm() {
           intent="inline"
           decoration="underline"
         />
-      </FormButtonBlock>
+      </AuthFormButtonBlock>
 
-      {generalError && <FormError error={generalError} />}
-    </Form>
+      {generalError && <AuthFormError error={generalError} />}
+    </AuthForm>
   );
 }

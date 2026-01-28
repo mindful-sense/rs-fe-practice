@@ -1,4 +1,4 @@
-export function FormError({ error }: { error?: string }) {
+export function AuthFormError({ error }: { error?: string }) {
   if (!error) return null;
   return (
     <p

@@ -1,18 +1,19 @@
 "use client";
 
-import {
-  FieldSet,
-  Form,
-  FormButtonBlock,
-  FormError,
-  FormField,
-  LinkButton,
-} from "@/components/ui";
+import { LinkButton } from "@/components/ui";
 import { ROUTE_PATHS } from "@/lib/shared";
 
 import { useActionForm } from "../hooks/useActionForm";
 import { signin } from "../lib/actions";
 import { type SignIn, signInSchema } from "../lib/schema";
+
+import {
+  AuthFieldSet,
+  AuthForm,
+  AuthFormButtonBlock,
+  AuthFormError,
+  AuthFormField,
+} from "./ui";
 
 export function LoginForm() {
   const {
@@ -35,9 +36,9 @@ export function LoginForm() {
   const passwordError = errors.password?.message || state.errors?.password?.[0];
 
   return (
-    <Form action={action} onSubmit={onSubmit} noValidate>
-      <FieldSet>
-        <FormField
+    <AuthForm action={action} onSubmit={onSubmit} noValidate>
+      <AuthFieldSet>
+        <AuthFormField
           id="login"
           type="text"
           label="Username"
@@ -47,7 +48,7 @@ export function LoginForm() {
           aria-required="true"
           {...register("login")}
         />
-        <FormField
+        <AuthFormField
           id="password"
           type="password"
           label="Password"
@@ -57,9 +58,9 @@ export function LoginForm() {
           aria-required="true"
           {...register("password")}
         />
-      </FieldSet>
+      </AuthFieldSet>
 
-      <FormButtonBlock label="Sign In" isPending={isPending}>
+      <AuthFormButtonBlock label="Sign In" isPending={isPending}>
         Don&apos;t have an account?&nbsp;
         <LinkButton
           href={ROUTE_PATHS.REGISTER}
@@ -67,9 +68,9 @@ export function LoginForm() {
           intent="inline"
           decoration="underline"
         />
-      </FormButtonBlock>
+      </AuthFormButtonBlock>
 
-      {generalError && <FormError error={generalError} />}
-    </Form>
+      {generalError && <AuthFormError error={generalError} />}
+    </AuthForm>
   );
 }

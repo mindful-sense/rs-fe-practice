@@ -1,6 +1,6 @@
 import { type ComponentProps } from "react";
 
-export function Form({
+export function AuthForm({
   children,
   ...props
 }: Omit<ComponentProps<"form">, "className">) {

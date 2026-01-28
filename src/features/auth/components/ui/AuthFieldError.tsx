@@ -1,4 +1,4 @@
-export function FieldError({
+export function AuthFieldError({
   errorId,
   error,
 }: {

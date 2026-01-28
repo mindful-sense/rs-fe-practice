@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
-import { Button } from "./Button";
+import { Button } from "@/components/ui";
 
-export function FormButtonBlock({
+export function AuthFormButtonBlock({
   label,
   isPending,
   children,
