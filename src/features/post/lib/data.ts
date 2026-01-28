@@ -1,7 +1,7 @@
 import "server-only";
 
-import type { BlogPost, PostSlug } from "@/lib/server";
-import type { PublicUser, UserId } from "@/lib/shared";
+import type { BlogPost } from "@/lib/server";
+import type { PostSlug, PublicUser, UserId } from "@/lib/shared";
 
 import {
   getErrorMessage,

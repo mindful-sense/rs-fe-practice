@@ -1,12 +1,16 @@
-import { type UserId } from "@/lib/shared";
+import { type UserId, USERNAME_NOT_FOUND } from "@/lib/shared";
 import { getPublicUser } from "../lib/data";
 
-const USERNAME_NOT_FOUND = "[deleted]";
-
-export async function CommentAuthor({ authorId }: { authorId: UserId | null }) {
+export function CommentAuthor({ authorId }: { authorId: UserId | null }) {
   const username = authorId
     ? (getPublicUser(authorId)?.login ?? USERNAME_NOT_FOUND)
     : USERNAME_NOT_FOUND;
 
-  return <span className="text-sm">{username}</span>;
+  return (
+    <span
+      className={`text-sm ${username === USERNAME_NOT_FOUND ? "text-accent-disabled select-none" : ""}`}
+    >
+      {username}
+    </span>
+  );
 }

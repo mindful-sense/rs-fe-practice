@@ -33,3 +33,5 @@ export const AUTH_CONFIG = {
   SESSION_COOKIE_NAME: "session-key",
   SESSION_EXPIRE_MS: 60 * 60 * 24 * 7 * 1000,
 } as const;
+
+export const USERNAME_NOT_FOUND = "[deleted]";

@@ -1,6 +1,4 @@
-import "server-only";
 import * as z from "zod";
-import { getErrorMessage } from "@/lib/utils.server";
 
 const jsonCodec = <T extends z.ZodType>(schema: T) =>
   z.codec(z.string(), schema, {
@@ -12,7 +10,7 @@ const jsonCodec = <T extends z.ZodType>(schema: T) =>
           code: "invalid_format",
           format: "json",
           input: jsonString,
-          message: getErrorMessage(error),
+          message: String(error),
         });
         return z.NEVER;
       }

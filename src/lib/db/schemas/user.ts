@@ -3,8 +3,8 @@ import { AUTH_CONFIG, ROLES } from "@/lib/constants";
 
 export const roleIdSchema = z.enum(ROLES);
 
-const userBaseSchema = z.strictObject({
-  id: z.uuid(),
+export const userSchema = z.strictObject({
+  userId: z.uuid(),
   login: z.string().min(1),
   password: z
     .string()
@@ -14,50 +14,23 @@ const userBaseSchema = z.strictObject({
     .string()
     .length(AUTH_CONFIG.SALT_BYTES * 2, "Salt must be 32 characters")
     .regex(/^[0-9A-Fa-f]+$/, "Invalid HEX format"),
-  role_id: roleIdSchema,
-  registered_at: z.iso.date(),
-  updated_at: z.iso.date(),
+  roleId: roleIdSchema,
+  registeredAt: z.iso.date(),
+  updatedAt: z.iso.date(),
 });
 
-export const userSchema = userBaseSchema.transform((data) => ({
-  userId: data.id,
-  login: data.login,
-  password: data.password,
-  salt: data.salt,
-  roleId: data.role_id,
-  registeredAt: data.registered_at,
-  updatedAt: data.updated_at,
-}));
+export const sessionUserSchema = userSchema.pick({
+  userId: true,
+  login: true,
+  roleId: true,
+});
 
-export const sessionUserSchema = userBaseSchema
-  .pick({
-    id: true,
-    login: true,
-    role_id: true,
-  })
-  .transform((data) => ({
-    userId: data.id,
-    login: data.login,
-    roleId: data.role_id,
-  }));
-
-export const tableUserSchema = z
-  .array(
-    userBaseSchema.omit({ password: true, salt: true }).transform((data) => ({
-      userId: data.id,
-      login: data.login,
-      roleId: data.role_id,
-      registeredAt: data.registered_at,
-      updatedAt: data.updated_at,
-    })),
-  )
+export const tableUserSchema = userSchema
+  .omit({ password: true, salt: true })
+  .array()
   .min(1, "There must be at least one user in the database");
 
-export const publicUserSchema = userBaseSchema
-  .pick({ login: true })
-  .transform((data) => ({
-    login: data.login,
-  }));
+export const publicUserSchema = userSchema.pick({ login: true });
 
 export type User = z.infer<typeof userSchema>;
 export type SessionUser = z.infer<typeof sessionUserSchema>;

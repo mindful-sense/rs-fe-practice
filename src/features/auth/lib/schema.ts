@@ -1,10 +1,14 @@
 import * as z from "zod";
+import { USERNAME_NOT_FOUND } from "@/lib/constants";
 
 const loginRule = z
   .string()
   .trim()
   .min(3, { error: "Min 3 characters" })
-  .max(30, { error: "Max 30 characters" });
+  .max(30, { error: "Max 30 characters" })
+  .refine((data) => data !== USERNAME_NOT_FOUND, {
+    error: "This username is reserved and can't be used",
+  });
 
 const passwordRule = z
   .string()

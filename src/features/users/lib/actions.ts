@@ -1,10 +1,12 @@
 "use server";
 import "server-only";
 
-import { getCurrentUser } from "@/features/auth/server";
-import { deleteUser, getErrorMessage, updateRole } from "@/lib/server";
-import { type RoleId, type UserId, ROLES, ROUTE_PATHS } from "@/lib/shared";
+import type { RoleId, UserId } from "@/lib/shared";
+
 import { revalidatePath } from "next/cache";
+import { getCurrentUser } from "@/features/auth/server";
+import { deleteUser, updateRole } from "@/lib/server";
+import { ROLES, ROUTE_PATHS } from "@/lib/shared";
 
 const handleAdminActions = async (action: () => void): Promise<void> => {
   try {
@@ -13,7 +15,7 @@ const handleAdminActions = async (action: () => void): Promise<void> => {
 
     action();
   } catch (error) {
-    console.error(`${getErrorMessage(error)}. Try again`);
+    console.error(error);
   }
   revalidatePath(ROUTE_PATHS.USERS);
 };

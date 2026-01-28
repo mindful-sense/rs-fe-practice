@@ -1,9 +1,9 @@
 import "server-only";
 
-import type { Comment, Post, PostSlug } from "../schemas/post";
+import type { Comment, Post, PostSlug } from "../schemas";
 
 import { db } from "../db";
-import { commentsSchema, postSchema, postsSchema } from "../schemas/post";
+import { commentsSchema, postSchema, postsSchema } from "../schemas";
 
 const statements = {
   selectPost: db.prepare(`
@@ -49,12 +49,9 @@ export interface BlogPost {
 
 export const selectPostBySlug = (slug: PostSlug): BlogPost => {
   const postRow = statements.selectPost.get({ slug });
-  if (!postRow) throw new Error("Post is not found");
+  if (!postRow) throw new Error("Post not found");
 
-  const post = postSchema.parse(postRow, {
-    error: () => `Failed to fetch the post ${slug}`,
-  });
-
+  const post = postSchema.parse(postRow);
   const commentRows = statements.selectComments.all({
     postSlug: post.postSlug,
   });
@@ -66,7 +63,5 @@ export const selectPosts = (): Post[] => {
   const rows = statements.selectAll.all();
   if (!rows.length) throw new Error("No posts are made");
 
-  return postsSchema.parse(rows, {
-    error: () => "Failed to fetch posts",
-  });
+  return postsSchema.parse(rows);
 };
