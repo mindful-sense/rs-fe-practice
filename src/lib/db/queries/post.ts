@@ -1,30 +1,65 @@
 import "server-only";
 
-import type { Post, PostSlug } from "../schemas";
+import type { Comment, Post, PostSlug } from "../schemas/post";
 
 import { db } from "../db";
-import { postSchema, postsSchema } from "../schemas";
+import { commentsSchema, postSchema, postsSchema } from "../schemas/post";
 
 const statements = {
   selectPost: db.prepare(`
-    SELECT id, title, lead, json(content) AS content, conclusion, published_at, image_preview, image_lead
+    SELECT 
+      id AS postSlug, 
+      h1, 
+      lead, 
+      json(content) AS content, 
+      conclusion, 
+      published_at AS publishedAt, 
+      image_preview AS imagePreview, 
+      image_lead AS imageLead
     FROM posts
-    WHERE id = @slug;
+    WHERE posts.id = @slug;
+  `),
+  selectComments: db.prepare(`
+    SELECT 
+      id AS commentId, 
+      content, 
+      author_id AS authorId, 
+      post_id AS postSlug
+    FROM comments
+    WHERE post_id = @postSlug;
   `),
   selectAll: db.prepare(`
-    SELECT id, title, lead, json(content) AS content, conclusion, published_at, image_preview, image_lead
+    SELECT 
+      id AS postSlug, 
+      h1, 
+      lead, 
+      json(content) AS content, 
+      conclusion, 
+      published_at AS publishedAt, 
+      image_preview AS imagePreview, 
+      image_lead AS imageLead
     FROM posts;
   `),
 };
 
-export const selectPostBySlug = (slug: PostSlug): Post => {
-  const row = statements.selectPost.get({ slug });
-  if (!row) throw new Error("Post is not found");
+export interface BlogPost {
+  post: Post;
+  comments: Comment[];
+}
 
-  // return postSchema.parse(row, {
-  //   error: () => `Failed to fetch post ${slug}`,
-  // });
-  return postSchema.parse(row);
+export const selectPostBySlug = (slug: PostSlug): BlogPost => {
+  const postRow = statements.selectPost.get({ slug });
+  if (!postRow) throw new Error("Post is not found");
+
+  const post = postSchema.parse(postRow, {
+    error: () => `Failed to fetch the post ${slug}`,
+  });
+
+  const commentRows = statements.selectComments.all({
+    postSlug: post.postSlug,
+  });
+
+  return { post, comments: commentsSchema.parse(commentRows) };
 };
 
 export const selectPosts = (): Post[] => {

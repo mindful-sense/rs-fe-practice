@@ -1,64 +1,66 @@
+import "server-only";
 import * as z from "zod";
+import { getErrorMessage } from "@/lib/utils.server";
 
-const postBaseSchema = z.strictObject({
-  id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  title: z.string().min(1),
+const jsonCodec = <T extends z.ZodType>(schema: T) =>
+  z.codec(z.string(), schema, {
+    decode: (jsonString, ctx) => {
+      try {
+        return JSON.parse(jsonString);
+      } catch (error) {
+        ctx.issues.push({
+          code: "invalid_format",
+          format: "json",
+          input: jsonString,
+          message: getErrorMessage(error),
+        });
+        return z.NEVER;
+      }
+    },
+    encode: (value) => JSON.stringify(value),
+  });
+
+const slugRule = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+const picsumUrl = z.url({ protocol: /^https$/, hostname: /^picsum.photos$/ });
+
+const contentSchema = z
+  .strictObject({
+    h3: z.string().min(1).optional(),
+    paragraphs: z.string().min(1).array().min(1),
+  })
+  .array()
+  .min(1);
+
+export const postSchema = z.strictObject({
+  postSlug: slugRule,
+  h1: z.string().min(1),
   lead: z.string().min(1),
   content: z
     .string()
-    .transform((str) => JSON.parse(str))
-    .pipe(
-      z
-        .strictObject({
-          subtitle: z.string().min(1),
-          paragraphs: z.string().min(1).array().min(1),
-          list: z
-            .strictObject({
-              subtitle: z.string().min(1),
-              content: z.string().min(1),
-            })
-            .array()
-            .min(2)
-            .optional(),
-        })
-        .array()
-        .min(1),
-    ),
+    .transform((jsonString) => jsonCodec(contentSchema).decode(jsonString)),
   conclusion: z.string().min(1),
-  published_at: z.iso.date(),
-  image_preview: z.url({
-    protocol: /^https$/,
-    hostname: /^fastly.picsum.photos$/,
-  }),
-  image_lead: z.url({
-    protocol: /^https$/,
-    hostname: /^fastly.picsum.photos$/,
-  }),
+  publishedAt: z.iso.date().transform((isoDate) =>
+    new Intl.DateTimeFormat("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }).format(new Date(isoDate)),
+  ),
+  imagePreview: picsumUrl,
+  imageLead: picsumUrl,
 });
 
-export const postSchema = postBaseSchema.transform((data) => ({
-  postSlug: data.id,
-  title: data.title,
-  lead: data.lead,
-  content: data.content,
-  conclusion: data.conclusion,
-  publishedAt: data.published_at,
-  imagePreview: data.image_preview,
-  imageLead: data.image_lead,
-}));
+export const postsSchema = z.array(postSchema);
 
-export const postsSchema = z.array(
-  postBaseSchema.transform((data) => ({
-    postSlug: data.id,
-    title: data.title,
-    lead: data.lead,
-    content: data.content,
-    conclusion: data.conclusion,
-    publishedAt: data.published_at,
-    imagePreview: data.image_preview,
-    imageLead: data.image_lead,
-  })),
-);
+export const commentsSchema = z
+  .strictObject({
+    commentId: z.uuid(),
+    content: z.string().min(1),
+    authorId: z.uuid().nullable(),
+    postSlug: slugRule,
+  })
+  .array();
 
 export type Post = z.infer<typeof postSchema>;
+export type Comment = z.infer<typeof commentsSchema.element>;
 export type PostSlug = Post["postSlug"];

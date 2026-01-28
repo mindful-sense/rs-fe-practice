@@ -1,6 +1,7 @@
 import "server-only";
 
 import type {
+  PublicUser,
   RoleId,
   SessionUser,
   SessionId,
@@ -15,7 +16,12 @@ import { ROLES } from "@/lib/constants";
 import { getTimestampWithoutTime } from "@/lib/utils.shared";
 
 import { db } from "../db";
-import { sessionUserSchema, tableUserSchema, userSchema } from "../schemas";
+import {
+  publicUserSchema,
+  sessionUserSchema,
+  tableUserSchema,
+  userSchema,
+} from "../schemas";
 
 const statements = {
   insert: db.prepare(`
@@ -38,6 +44,7 @@ const statements = {
     FROM users
     WHERE login = @login;
   `),
+  selectPublicUser: db.prepare(`SELECT login FROM users WHERE id = @userId`),
   selectAllUsers: db.prepare(`
     SELECT id, login, role_id, registered_at, updated_at
     FROM users;
@@ -84,6 +91,13 @@ export const selectUserBySession = (sessionId: SessionId): SessionUser => {
   if (!row) throw new Error(`Data is not found. Session: ${sessionId}`);
 
   return sessionUserSchema.parse(row);
+};
+
+export const selectPublicUserById = (userId: UserId): PublicUser => {
+  const row = statements.selectPublicUser.get({ userId });
+  if (!row) throw new Error(`Data is not found. Id: ${userId}`);
+
+  return publicUserSchema.parse(row);
 };
 
 export const selectUsers = (): TableUser[] => {

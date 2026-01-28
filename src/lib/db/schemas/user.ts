@@ -53,9 +53,16 @@ export const tableUserSchema = z
   )
   .min(1, "There must be at least one user in the database");
 
+export const publicUserSchema = userBaseSchema
+  .pick({ login: true })
+  .transform((data) => ({
+    login: data.login,
+  }));
+
 export type User = z.infer<typeof userSchema>;
 export type SessionUser = z.infer<typeof sessionUserSchema>;
 export type TableUser = z.infer<typeof tableUserSchema.element>;
+export type PublicUser = z.infer<typeof publicUserSchema>;
 export type RoleId = z.infer<typeof roleIdSchema>;
 
 export type UserId = User["userId"];
