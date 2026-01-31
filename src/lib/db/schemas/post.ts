@@ -18,7 +18,7 @@ const jsonCodec = <T extends z.ZodType>(schema: T) =>
     encode: (value) => JSON.stringify(value),
   });
 
-const slugRule = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+export const postSlugRule = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const picsumUrl = z.url({ protocol: /^https$/, hostname: /^picsum.photos$/ });
 
 const contentSchema = z
@@ -30,7 +30,7 @@ const contentSchema = z
   .min(1);
 
 export const postSchema = z.strictObject({
-  postSlug: slugRule,
+  postSlug: postSlugRule,
   h1: z.string().min(1),
   lead: z.string().min(1),
   content: z
@@ -50,15 +50,16 @@ export const postSchema = z.strictObject({
 
 export const postsSchema = z.array(postSchema);
 
-export const commentsSchema = z
-  .strictObject({
-    commentId: z.uuid(),
-    content: z.string().min(1),
-    authorId: z.uuid().nullable(),
-    postSlug: slugRule,
-  })
-  .array();
+export const commentSchema = z.strictObject({
+  commentId: z.uuid(),
+  content: z.string().min(1),
+  commentedAt: z.iso.datetime(),
+  authorId: z.uuid().nullable(),
+  postSlug: postSlugRule,
+});
+
+export const commentsSchema = commentSchema.array();
 
 export type Post = z.infer<typeof postSchema>;
-export type Comment = z.infer<typeof commentsSchema.element>;
+export type Comment = z.infer<typeof commentSchema>;
 export type PostSlug = Post["postSlug"];

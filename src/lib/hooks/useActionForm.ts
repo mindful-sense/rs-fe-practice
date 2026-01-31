@@ -8,7 +8,7 @@ import type {
   UseFormReturn,
 } from "react-hook-form";
 import type { ZodType } from "zod";
-import type { FormState } from "../lib/types";
+import type { FormState } from "./types";
 
 import { startTransition, useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";

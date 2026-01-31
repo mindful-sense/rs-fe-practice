@@ -13,6 +13,13 @@ const getRandomDate = () => {
     .split("T")[0];
 };
 
+const getRandomDateWithTime = () => {
+  const startDateMs = Date.parse("2025-01-01");
+  return new Date(
+    startDateMs + Math.random() * (Date.now() - startDateMs),
+  ).toISOString();
+};
+
 const slugify = (text) =>
   text
     .toLowerCase()
@@ -591,6 +598,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Finally, an explanation that doesn't just say \u201Cclear your mind\u201D. The point about brain plasticity is fascinating.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.annaJoy,
     postId: postIds[0],
   },
@@ -598,6 +606,7 @@ const comments = [
     id: randomUUID(),
     content:
       "I've been doing the body scan for a week and my sleep has improved drastically.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.borisT,
     postId: postIds[0],
   },
@@ -605,6 +614,7 @@ const comments = [
     id: randomUUID(),
     content:
       "The \u201CConsistency trumps intensity\u201D part is exactly what I needed to hear. I was trying too hard.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.denisPro,
     postId: postIds[0],
   },
@@ -612,6 +622,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Can you elaborate more on the Loving-Kindness practice? I struggle with that one.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.dmitriyK,
     postId: postIds[0],
   },
@@ -619,6 +630,7 @@ const comments = [
     id: randomUUID(),
     content:
       "The \u201CEmail Apnea\u201D check caught me off guard—I was literally holding my breath while reading this!",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.elenaW,
     postId: postIds[1],
   },
@@ -626,12 +638,14 @@ const comments = [
     id: randomUUID(),
     content:
       "Walking meditation is the only way I can get through my commute without road rage.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.guest99,
     postId: postIds[1],
   },
   {
     id: randomUUID(),
     content: "Digital Sunset is a game changer for my morning energy levels.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.igorDev,
     postId: postIds[1],
   },
@@ -639,6 +653,7 @@ const comments = [
     id: randomUUID(),
     content:
       "I use the \u201CJust Like Me\u201D practice before board meetings. It changes the whole room's dynamic.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.ivanIvanov,
     postId: postIds[1],
   },
@@ -646,6 +661,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Great tips for leaders. We need more of this in corporate culture.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.kateRock,
     postId: postIds[1],
   },
@@ -653,6 +669,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Viktor Frankl's concept of \u201Cspace\u201D saved my marriage. Thank you for this reminder.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.lisaM,
     postId: postIds[2],
   },
@@ -660,6 +677,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Naming the emotion really does take the power out of it. \u201CName it to tame it\u201D.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.maxPower,
     postId: postIds[2],
   },
@@ -667,6 +685,7 @@ const comments = [
     id: randomUUID(),
     content:
       "I struggle with self-compassion. It's so much easier to be kind to others than myself.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.ninaSky,
     postId: postIds[2],
   },
@@ -674,6 +693,7 @@ const comments = [
     id: randomUUID(),
     content:
       "The 5-4-3-2-1 method pulled me out of a panic attack yesterday. It really works.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.olgaArt,
     postId: postIds[3],
   },
@@ -681,6 +701,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Box breathing is standard issue for Navy SEALs for a reason. Simple but effective.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.pavel88,
     postId: postIds[3],
   },
@@ -688,12 +709,14 @@ const comments = [
     id: randomUUID(),
     content:
       "Holding an ice cube sounds intense, but I'm willing to try anything to stop the spiral.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.sergeyDev,
     postId: postIds[3],
   },
   {
     id: randomUUID(),
     content: "Cognitive Defusion is such a helpful term. I am not my thoughts!",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.techLead,
     postId: postIds[3],
   },
@@ -701,6 +724,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Caffeine was my biggest trigger. Cut it out and anxiety dropped by 50%.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.userVova,
     postId: postIds[3],
   },
@@ -708,12 +732,14 @@ const comments = [
     id: randomUUID(),
     content:
       "Nature immersion is underrated. Just looking at trees lowers my heart rate.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.annaJoy,
     postId: postIds[3],
   },
   {
     id: randomUUID(),
     content: "Shoshin (Beginner's Mind) is the secret to all good design work.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.borisT,
     postId: postIds[4],
   },
@@ -721,12 +747,14 @@ const comments = [
     id: randomUUID(),
     content:
       "I never connected the \u201CDefault Mode Network\u201D to my inner critic before. Makes total sense.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.denisPro,
     postId: postIds[4],
   },
   {
     id: randomUUID(),
     content: "Mindful walking without a phone... sounds scary but I'll try it.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.dmitriyK,
     postId: postIds[4],
   },
@@ -734,12 +762,14 @@ const comments = [
     id: randomUUID(),
     content:
       "The non-judgmental brainstorm is hard! My internal editor is loud.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.elenaW,
     postId: postIds[4],
   },
   {
     id: randomUUID(),
     content: "Grayscale mode makes my phone look so boring, I love it.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.guest99,
     postId: postIds[5],
   },
@@ -747,18 +777,21 @@ const comments = [
     id: randomUUID(),
     content:
       "JOMO > FOMO. I deleted Instagram last month and haven't looked back.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.igorDev,
     postId: postIds[5],
   },
   {
     id: randomUUID(),
     content: "Phantom Vibration Syndrome is real. I thought I was going crazy.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.ivanIvanov,
     postId: postIds[5],
   },
   {
     id: randomUUID(),
     content: "The 20-20-20 rule saved my eyesight during coding marathons.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.kateRock,
     postId: postIds[5],
   },
@@ -766,18 +799,21 @@ const comments = [
     id: randomUUID(),
     content:
       "It's terrifying how accurate the \u201Cdopamine loop\u201D description is.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.lisaM,
     postId: postIds[5],
   },
   {
     id: randomUUID(),
     content: "Analog weekends are the highlight of my week now.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.maxPower,
     postId: postIds[5],
   },
   {
     id: randomUUID(),
     content: "Single-tasking feels like a superpower in this distracted world.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.ninaSky,
     postId: postIds[5],
   },
@@ -785,6 +821,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Cognitive shuffling (the random word thing) knocks me out in 5 minutes flat.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.olgaArt,
     postId: postIds[6],
   },
@@ -792,12 +829,14 @@ const comments = [
     id: randomUUID(),
     content:
       "I wake up at 3 AM every single night. The advice not to stay in bed is counterintuitive but I'll try it.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.pavel88,
     postId: postIds[6],
   },
   {
     id: randomUUID(),
     content: "NSDR scripts on YouTube are a lifesaver.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.sergeyDev,
     postId: postIds[6],
   },
@@ -805,6 +844,7 @@ const comments = [
     id: randomUUID(),
     content:
       "Journaling the chaos before bed clears my mind like nothing else.",
+    commentedAt: getRandomDateWithTime(),
     authorId: userIds.techLead,
     postId: postIds[6],
   },
@@ -886,6 +926,7 @@ const schema = `
   CREATE TABLE comments (
     id TEXT PRIMARY KEY,
     content TEXT NOT NULL,
+    commented_at TEXT NOT NULL,
     author_id TEXT,
     post_id TEXT NOT NULL,
     FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE SET NULL,
@@ -915,8 +956,8 @@ const statements = {
     VALUES (@id, @h1, @lead, jsonb(@content), @conclusion, @publishedAt, @imagePreview, @imageLead);
   `),
   insertComment: db.prepare(`
-    INSERT INTO comments (id, content, author_id, post_id)
-    VALUES (@id, @content, @authorId, @postId)
+    INSERT INTO comments (id, content, commented_at, author_id, post_id)
+    VALUES (@id, @content, @commentedAt, @authorId, @postId)
   `),
 };
 

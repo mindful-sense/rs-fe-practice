@@ -1,9 +1,8 @@
 "use server";
 import "server-only";
 
-import type { UserId } from "@/lib/shared";
+import type { FormState, UserId } from "@/lib/shared";
 import type { SignIn, SignUp } from "./schema";
-import type { FormState } from "./types";
 
 import * as z from "zod";
 import { revalidatePath } from "next/cache";

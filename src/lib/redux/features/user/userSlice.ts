@@ -1,6 +1,6 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { type SessionUser } from "@/lib/db/schema";
 import { ROLES } from "@/lib/constants";
+import { type SessionUser } from "@/lib/db/schemas";
 
 export const initialState: SessionUser = {
   userId: "",

@@ -14,6 +14,7 @@ export const ROUTE_PATHS = {
   REGISTER: "/register",
   USERS: "/users",
   POST: "/post",
+  POSTS: "/posts",
 } as const satisfies Record<string, `/${string}`>;
 
 export type RoutePath = (typeof ROUTE_PATHS)[keyof typeof ROUTE_PATHS];

@@ -5,7 +5,10 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { ChipButton, ChipInfo, H1, Paragraph } from "@/components/ui";
+import { getCurrentUser } from "@/features/auth/server";
+import { CommentForm } from "@/features/post/client";
 import { CommentAuthor, getPostBySlug } from "@/features/post/server";
+import { getPassedTime, ROLES } from "@/lib/shared";
 
 export default async function Post({
   params,
@@ -13,7 +16,10 @@ export default async function Post({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const user = await getCurrentUser();
   const result = getPostBySlug(slug);
+  const isModerator =
+    user?.roleId === ROLES.MODERATOR || user?.roleId === ROLES.ADMIN;
 
   if ("error" in result) {
     return <p className="mt-12 text-center">{result.error}</p>;
@@ -67,27 +73,48 @@ export default async function Post({
         <p>{post.conclusion}</p>
       </section>
 
-      <section className="flex min-w-xl flex-col gap-6 pb-10">
-        <h4 className="text-xl font-semibold">Comments</h4>
+      <section className="flex min-w-xl flex-col gap-10 pb-10">
+        <h4 className="-mb-2 text-xl font-semibold">Comments</h4>
 
-        <textarea
-          name=""
-          id=""
-          placeholder="Write your comment"
-          className="bg-elembg h-32 resize-none rounded-2xl p-5"
-        ></textarea>
+        <CommentForm postSlug={post.postSlug} />
 
         {comments.length ? (
           <ul className="flex max-w-xl flex-col gap-2">
-            {comments.map(({ commentId, content, authorId }) => (
-              <li
-                key={commentId}
-                className="bg-elembg flex flex-col gap-2 rounded-2xl p-5"
-              >
-                <CommentAuthor authorId={authorId} />
-                <Paragraph text={content} />
-              </li>
-            ))}
+            {comments
+              .sort(
+                (a, b) => Date.parse(b.commentedAt) - Date.parse(a.commentedAt),
+              )
+              .map(({ commentId, content, commentedAt, authorId }) => (
+                <li
+                  key={commentId}
+                  className="bg-elembg relative flex flex-col gap-2 rounded-2xl p-5"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <CommentAuthor authorId={authorId} />
+                      <span className="h-1 w-1 rounded-full bg-neutral-300" />
+                      <time
+                        dateTime={commentedAt}
+                        className="text-sm text-neutral-300"
+                      >
+                        {getPassedTime(Date.parse(commentedAt))}
+                      </time>
+                    </div>
+
+                    {(isModerator || user?.userId === authorId) && (
+                      <ChipButton
+                        size="md"
+                        border="none"
+                        rounded="semi"
+                        color="danger"
+                        icon={faTrash}
+                      />
+                    )}
+                  </div>
+
+                  <Paragraph text={content} />
+                </li>
+              ))}
           </ul>
         ) : (
           <p className="text-center">No comments yet</p>

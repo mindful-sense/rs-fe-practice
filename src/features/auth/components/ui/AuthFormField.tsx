@@ -1,6 +1,5 @@
 import { type ComponentPropsWithRef } from "react";
-import { Input } from "@/components/ui";
-import { AuthFieldError } from "./AuthFieldError";
+import { Input, InputError } from "@/components/ui";
 
 export function AuthFormField({
   id,
@@ -18,7 +17,7 @@ export function AuthFormField({
         aria-describedby={`${id}-error`}
         {...props}
       />
-      <AuthFieldError errorId={`${id}-error`} error={error} />
+      <InputError errorId={`${id}-error`} error={error} />
     </div>
   );
 }

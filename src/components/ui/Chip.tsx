@@ -13,18 +13,18 @@ const btnVariants = cva("rounded-full border border-neutral-200", {
         "focus:outline-accent hover:bg-accent hover:border-accent disabled:text-accent-disabled size-8 cursor-pointer outline-2 outline-offset-2 outline-transparent transition-colors duration-300 hover:text-white disabled:cursor-not-allowed disabled:border-none disabled:bg-transparent disabled:outline-none",
       info: "flex h-8 items-center gap-1 px-2.5",
     },
+    color: {
+      danger:
+        "focus:outline-danger text-danger border-danger hover:bg-danger hover:border-danger",
+    },
     size: {
-      md: "size-6",
+      md: "hover:text-danger hover:outline-danger size-6 hover:bg-transparent",
     },
     border: {
       none: "border-none",
     },
     rounded: {
       semi: "rounded-lg",
-    },
-    color: {
-      danger:
-        "focus:outline-danger text-danger border-danger hover:bg-danger hover:border-danger",
     },
   },
 });
@@ -36,17 +36,17 @@ interface BaseProps extends VariantProps<typeof btnVariants> {
 }
 
 export function ChipButton({
+  color,
   size,
   border,
   rounded,
-  color,
   icon,
   iconstyles,
   className,
   ...props
 }: Omit<ComponentProps<"button">, "type"> & BaseProps) {
   const classes = twMerge(
-    btnVariants({ intent: "button", size, border, rounded, color, className }),
+    btnVariants({ intent: "button", color, size, border, rounded, className }),
   );
   return (
     <button type="button" className={classes} {...props}>

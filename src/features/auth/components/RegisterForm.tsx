@@ -1,9 +1,9 @@
 "use client";
 
 import { LinkButton } from "@/components/ui";
+import { useActionForm } from "@/lib/client";
 import { ROUTE_PATHS } from "@/lib/shared";
 
-import { useActionForm } from "../hooks/useActionForm";
 import { signup } from "../lib/actions";
 import { type SignUp, signUpSchema } from "../lib/schema";
 
