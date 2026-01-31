@@ -5,11 +5,17 @@ import type { FormState, UserId } from "@/lib/shared";
 import type { SignIn, SignUp } from "./schema";
 
 import * as z from "zod";
+import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { getErrorMessage, insertUser, selectUserByLogin } from "@/lib/server";
-import { ROUTE_PATHS, delay } from "@/lib/shared";
+import {
+  ROLES,
+  ROUTE_PATHS,
+  delay,
+  getTimestampWithoutTime,
+} from "@/lib/shared";
 
 import { comparePasswords, generateSalt, hashPassword } from "./passwordHasher";
 import { signInSchema, signUpSchema } from "./schema";
@@ -55,10 +61,18 @@ export const signup = async (
   payload: FormData,
 ): Promise<FormState<SignUp>> =>
   handleAuthActions(payload, signUpSchema, async ({ login, password }) => {
+    const registeredAt = getTimestampWithoutTime(new Date());
     const salt = generateSalt();
-    const hashedPassword = await hashPassword(password, salt);
 
-    return insertUser({ login, password: hashedPassword, salt });
+    return insertUser({
+      userId: randomUUID(),
+      login,
+      password: await hashPassword(password, salt),
+      salt,
+      roleId: ROLES.GUEST,
+      registeredAt,
+      updatedAt: registeredAt,
+    });
   });
 
 export const signin = async (

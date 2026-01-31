@@ -10,11 +10,6 @@ import type {
   UserId,
 } from "../schemas";
 
-import { randomUUID } from "crypto";
-
-import { ROLES } from "@/lib/constants";
-import { getTimestampWithoutTime } from "@/lib/utils.shared";
-
 import { db } from "../db";
 import {
   publicUserSchema,
@@ -90,23 +85,12 @@ const statements = {
   delete: db.prepare(`DELETE FROM users WHERE id = @userId;`),
 };
 
-export const insertUser = db.transaction(
-  (user: Pick<User, "login" | "password" | "salt">): UserId => {
-    const userId = randomUUID();
-    const registeredAt = getTimestampWithoutTime(new Date());
-    const row = statements.insert.get({
-      ...user,
-      userId,
-      roleId: ROLES.READER,
-      registeredAt,
-      updatedAt: registeredAt,
-    });
+export const insertUser = db.transaction((user: User): UserId => {
+  const row = statements.insert.get(user);
+  if (!row) throw new Error("Unable to create an account");
 
-    if (!row) throw new Error("Unable to create an account");
-
-    return userSchema.parse(row).userId;
-  },
-);
+  return userSchema.parse(row).userId;
+});
 
 export const selectUserByLogin = (login: string): User => {
   const row = statements.selectAuthUser.get({ login });
