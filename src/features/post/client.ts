@@ -1,2 +1,2 @@
-export * from "./components/CommentDeleteButton";
+export * from "./components/DeleteButton";
 export * from "./components/CommentForm";

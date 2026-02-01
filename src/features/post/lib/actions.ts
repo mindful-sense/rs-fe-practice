@@ -12,13 +12,48 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/features/auth/server";
 import {
   deleteAnyComment,
+  deletePost,
   deleteSelfComment,
   getErrorMessage,
   insertComment,
 } from "@/lib/server";
 import { ROLES, ROUTE_PATHS, delay } from "@/lib/shared";
 
-import { deleteCommentSchema, inputCommentSchema } from "./schema";
+import {
+  deleteCommentSchema,
+  deletePostSchema,
+  inputCommentSchema,
+} from "./schema";
+
+export const removePost = async (payload: FormData): Promise<void> => {
+  await delay();
+
+  const user = await getCurrentUser();
+  if (
+    !user ||
+    (user.roleId !== ROLES.MODERATOR && user.roleId !== ROLES.ADMIN)
+  ) {
+    console.warn("Unauthorized");
+    return;
+  }
+
+  const formData = Object.fromEntries(payload);
+  const { success, error, data } = deletePostSchema.safeParse(formData);
+
+  if (!success) {
+    console.error(error);
+    return;
+  }
+
+  try {
+    deletePost(data.postSlug);
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+
+  redirect(ROUTE_PATHS.HOME);
+};
 
 export const sendComment = async (
   _prevState: FormState<InputComment>,
@@ -66,7 +101,7 @@ export const removeComment = async (payload: FormData): Promise<void> => {
 
   const user = await getCurrentUser();
   if (!user) {
-    console.error("Unauthorized");
+    console.warn("Unauthorized");
     return;
   }
 

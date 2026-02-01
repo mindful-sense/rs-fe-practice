@@ -1,5 +1,7 @@
 import * as z from "zod";
-import { commentSchema } from "@/lib/shared";
+import { commentSchema, postSchema } from "@/lib/shared";
+
+export const deletePostSchema = postSchema.pick({ postSlug: true }).strip();
 
 export const inputCommentSchema = commentSchema.extend({
   content: z
@@ -22,5 +24,6 @@ export const deleteCommentSchema = commentSchema
   })
   .strip();
 
+export type DeletePost = z.infer<typeof deletePostSchema>;
 export type InputComment = z.infer<typeof inputCommentSchema>;
 export type InputCommentClient = z.infer<typeof inputCommentClientSchema>;

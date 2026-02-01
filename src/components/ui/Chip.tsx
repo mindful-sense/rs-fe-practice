@@ -29,7 +29,9 @@ const btnVariants = cva("rounded-full border border-neutral-200", {
   },
 });
 
-interface BaseProps extends VariantProps<typeof btnVariants> {
+export type ChipVariantProps = VariantProps<typeof btnVariants>;
+
+interface BaseProps extends ChipVariantProps {
   text?: string;
   icon?: IconDefinition;
   iconstyles?: string;

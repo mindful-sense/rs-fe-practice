@@ -6,9 +6,9 @@ import { ROLES, getPassedTime } from "@/lib/shared";
 import { removeComment } from "../lib/actions";
 
 import { CommentAuthor } from "./CommentAuthor";
-import { CommentDeleteButton } from "./CommentDeleteButton";
+import { DeleteButton } from "./DeleteButton";
 
-export async function CommentItem({
+export function CommentItem({
   comment,
   currentUserId,
   roleId,
@@ -36,7 +36,7 @@ export async function CommentItem({
           <form action={removeComment}>
             <input type="hidden" name="commentId" value={commentId} />
             <input type="hidden" name="postSlug" value={postSlug} />
-            <CommentDeleteButton />
+            <DeleteButton size="md" border="none" rounded="semi" />
           </form>
         )}
       </div>

@@ -1,14 +1,11 @@
 import Image from "next/image";
-import {
-  faCalendar,
-  faFilePen,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 
-import { ChipButton, ChipInfo, H1, Paragraph } from "@/components/ui";
+import { ChipInfo, H1, Paragraph } from "@/components/ui";
 import { getCurrentUser } from "@/features/auth/server";
 import { CommentForm } from "@/features/post/client";
-import { CommentItem, getPostBySlug } from "@/features/post/server";
+import { getPostBySlug } from "@/features/post/server";
+import { CommentItem, PostActions } from "@/features/post/shared";
 
 export default async function Post({
   params,
@@ -36,8 +33,7 @@ export default async function Post({
             icon={faCalendar}
             iconstyles="-mt-0.5"
           />
-          <ChipButton icon={faFilePen} iconstyles="-mr-0.5" />
-          <ChipButton color="danger" icon={faTrash} />
+          <PostActions postSlug={post.postSlug} roleId={user?.roleId} />
         </div>
 
         <Image

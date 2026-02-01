@@ -43,6 +43,9 @@ const statements = {
       image_lead AS imageLead
     FROM posts;
   `),
+  deletePost: db.prepare(`
+    DELETE FROM posts WHERE id = @postSlug;  
+  `),
   insertComment: db.prepare(`
     INSERT INTO comments (
       id,
@@ -88,6 +91,11 @@ export const selectPosts = (): Post[] => {
   if (!rows.length) throw new Error("No posts are made");
 
   return postsSchema.parse(rows);
+};
+
+export const deletePost = (postSlug: PostSlug): void => {
+  const { changes } = statements.deletePost.run({ postSlug });
+  if (!changes) throw new Error("Couldn't delete the post");
 };
 
 export const insertComment = (comment: InputComment): void => {
