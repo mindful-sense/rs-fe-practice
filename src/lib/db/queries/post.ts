@@ -1,27 +1,12 @@
 import "server-only";
 
 import type { InputComment } from "@/features/post/shared";
-import type { Comment, Post, PostSlug } from "../schemas";
+import type { Comment, CommentId, Post, PostSlug, UserId } from "../schemas";
 
 import { db } from "../db";
 import { commentsSchema, postSchema, postsSchema } from "../schemas";
 
 const statements = {
-  insertComment: db.prepare(`
-    INSERT INTO comments (
-      id,
-      content,
-      commented_at,
-      author_id,
-      post_id
-    ) VALUES (
-      @commentId,
-      @content,
-      @commentedAt,
-      @authorId,
-      @postSlug 
-    );
-  `),
   selectPost: db.prepare(`
     SELECT 
       id AS postSlug, 
@@ -43,7 +28,8 @@ const statements = {
       author_id AS authorId, 
       post_id AS postSlug
     FROM comments
-    WHERE post_id = @postSlug;
+    WHERE post_id = @postSlug
+    ORDER BY commented_at DESC;
   `),
   selectAll: db.prepare(`
     SELECT 
@@ -57,11 +43,27 @@ const statements = {
       image_lead AS imageLead
     FROM posts;
   `),
-};
-
-export const insertComment = (comment: InputComment): void => {
-  const { changes } = statements.insertComment.run(comment);
-  if (!changes) throw new Error("Couldn't send the comment");
+  insertComment: db.prepare(`
+    INSERT INTO comments (
+      id,
+      content,
+      commented_at,
+      author_id,
+      post_id
+    ) VALUES (
+      @commentId,
+      @content,
+      @commentedAt,
+      @authorId,
+      @postSlug 
+    );
+  `),
+  deleteSelfComment: db.prepare(`
+    DELETE FROM comments WHERE id = @commentId AND author_id = @authorId;
+  `),
+  deleteAnyComment: db.prepare(`
+    DELETE FROM comments WHERE id = @commentId;
+  `),
 };
 
 export interface BlogPost {
@@ -86,4 +88,22 @@ export const selectPosts = (): Post[] => {
   if (!rows.length) throw new Error("No posts are made");
 
   return postsSchema.parse(rows);
+};
+
+export const insertComment = (comment: InputComment): void => {
+  const { changes } = statements.insertComment.run(comment);
+  if (!changes) throw new Error("Couldn't send the comment");
+};
+
+export const deleteSelfComment = (
+  commentId: CommentId,
+  authorId: UserId,
+): void => {
+  const { changes } = statements.deleteSelfComment.run({ commentId, authorId });
+  if (!changes) throw new Error("Couldn't delete the comment");
+};
+
+export const deleteAnyComment = (commentId: CommentId): void => {
+  const { changes } = statements.deleteAnyComment.run({ commentId });
+  if (!changes) throw new Error("Couldn't delete the comment: Not Found");
 };

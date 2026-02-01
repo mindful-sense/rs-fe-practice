@@ -15,5 +15,12 @@ export const inputCommentClientSchema = inputCommentSchema.pick({
   postSlug: true,
 });
 
+export const deleteCommentSchema = commentSchema
+  .pick({
+    commentId: true,
+    postSlug: true,
+  })
+  .strip();
+
 export type InputComment = z.infer<typeof inputCommentSchema>;
 export type InputCommentClient = z.infer<typeof inputCommentClientSchema>;

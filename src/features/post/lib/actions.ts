@@ -6,13 +6,19 @@ import type { InputComment } from "./schema";
 
 import * as z from "zod";
 import { randomUUID } from "crypto";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/features/auth/server";
-import { getErrorMessage, insertComment } from "@/lib/server";
-import { ROUTE_PATHS, delay } from "@/lib/shared";
+import {
+  deleteAnyComment,
+  deleteSelfComment,
+  getErrorMessage,
+  insertComment,
+} from "@/lib/server";
+import { ROLES, ROUTE_PATHS, delay } from "@/lib/shared";
 
-import { inputCommentSchema } from "./schema";
+import { deleteCommentSchema, inputCommentSchema } from "./schema";
 
 export const sendComment = async (
   _prevState: FormState<InputComment>,
@@ -20,12 +26,20 @@ export const sendComment = async (
 ): Promise<FormState<InputComment>> => {
   await delay();
 
+  const user = await getCurrentUser();
+  if (!user) {
+    return {
+      message: "You must be logged in to comment.",
+      fields: { content: payload.get("content") as string },
+    };
+  }
+
   const formData = Object.fromEntries(payload);
   const { success, error, data } = inputCommentSchema.safeParse({
     ...formData,
     commentId: randomUUID(),
     commentedAt: new Date().toISOString(),
-    authorId: (await getCurrentUser())?.userId,
+    authorId: user.userId,
   });
 
   if (!success) {
@@ -45,4 +59,35 @@ export const sendComment = async (
   }
 
   redirect(`${ROUTE_PATHS.POSTS}/${data.postSlug}`);
+};
+
+export const removeComment = async (payload: FormData): Promise<void> => {
+  await delay();
+
+  const user = await getCurrentUser();
+  if (!user) {
+    console.error("Unauthorized");
+    return;
+  }
+
+  const formData = Object.fromEntries(payload);
+  const { success, error, data } = deleteCommentSchema.safeParse(formData);
+
+  if (!success) {
+    console.error(error);
+    return;
+  }
+
+  try {
+    if (user.roleId === ROLES.MODERATOR || user.roleId === ROLES.ADMIN) {
+      deleteAnyComment(data.commentId);
+    } else {
+      deleteSelfComment(data.commentId, user.userId);
+    }
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+
+  revalidatePath(`${ROUTE_PATHS.POSTS}/${data.postSlug}`);
 };

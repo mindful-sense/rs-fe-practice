@@ -62,4 +62,6 @@ export const commentsSchema = commentSchema.array();
 
 export type Post = z.infer<typeof postSchema>;
 export type Comment = z.infer<typeof commentSchema>;
+
 export type PostSlug = Post["postSlug"];
+export type CommentId = Comment["commentId"];

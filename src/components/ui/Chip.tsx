@@ -44,12 +44,12 @@ export function ChipButton({
   iconstyles,
   className,
   ...props
-}: Omit<ComponentProps<"button">, "type"> & BaseProps) {
+}: ComponentProps<"button"> & BaseProps) {
   const classes = twMerge(
     btnVariants({ intent: "button", color, size, border, rounded, className }),
   );
   return (
-    <button type="button" className={classes} {...props}>
+    <button className={classes} {...props}>
       {icon && <FontAwesomeIcon icon={icon} className={iconstyles} />}
     </button>
   );
