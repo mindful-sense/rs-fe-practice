@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 
-import { ChipInfo, H1, Paragraph } from "@/components/ui";
+import { ChipInfo, H1, H3, Paragraph } from "@/components/ui";
 import { getCurrentUser } from "@/features/auth/server";
-import { CommentForm } from "@/features/post/client";
-import { getPostBySlug } from "@/features/post/server";
-import { CommentItem, PostActions } from "@/features/post/shared";
+import { CommentForm, PostActions } from "@/features/post/client";
+import { CommentItem, getPostBySlug } from "@/features/post/server";
 
 export default async function Post({
   params,
@@ -51,7 +50,7 @@ export default async function Post({
 
         {post.content.map(({ h3, paragraphs }, index) => (
           <section key={index} className="flex flex-col gap-6">
-            {h3 && <h3 className="text-2xl font-semibold">{h3}</h3>}
+            {h3 && <H3>{h3}</H3>}
 
             <div className="flex flex-col gap-3">
               {paragraphs.map((text, index) => (

@@ -3,7 +3,7 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 
-import { type SessionUser } from "@/lib/db/schema";
+import { type SessionUser } from "@/lib/db/schemas";
 
 import { makeStore } from "./store";
 import { clearUser, setUser } from "./features";

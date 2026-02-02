@@ -2,7 +2,7 @@
 import "server-only";
 
 import type { FormState } from "@/lib/shared";
-import type { InputComment } from "./schema";
+import type { DeletePost, InputComment } from "./schema";
 
 import * as z from "zod";
 import { randomUUID } from "crypto";
@@ -25,7 +25,7 @@ import {
   inputCommentSchema,
 } from "./schema";
 
-export const removePost = async (payload: FormData): Promise<void> => {
+export const removePost = async (postData: DeletePost): Promise<void> => {
   await delay();
 
   const user = await getCurrentUser();
@@ -37,8 +37,7 @@ export const removePost = async (payload: FormData): Promise<void> => {
     return;
   }
 
-  const formData = Object.fromEntries(payload);
-  const { success, error, data } = deletePostSchema.safeParse(formData);
+  const { success, error, data } = deletePostSchema.safeParse(postData);
 
   if (!success) {
     console.error(error);

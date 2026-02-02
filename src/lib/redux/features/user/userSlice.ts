@@ -2,7 +2,7 @@ import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ROLES } from "@/lib/constants";
 import { type SessionUser } from "@/lib/db/schemas";
 
-export const initialState: SessionUser = {
+const initialState: SessionUser = {
   userId: "",
   login: "",
   roleId: ROLES.GUEST,

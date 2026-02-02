@@ -1,12 +1,13 @@
+"use client";
+
 import type { PostSlug, RoleId } from "@/lib/shared";
 
-import { faFilePen } from "@fortawesome/free-solid-svg-icons";
+import { faFilePen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { ChipButton } from "@/components/ui";
+import { MODAL_VIEW } from "@/features/modal/shared";
+import { openModal, useAppDispatch } from "@/lib/client";
 import { ROLES } from "@/lib/shared";
-
-import { removePost } from "../lib/actions";
-import { DeleteButton } from "./DeleteButton";
 
 export function PostActions({
   postSlug,
@@ -15,16 +16,25 @@ export function PostActions({
   postSlug: PostSlug;
   roleId?: RoleId;
 }) {
+  const dispatch = useAppDispatch();
+
   if (roleId !== ROLES.MODERATOR && roleId !== ROLES.ADMIN) return null;
 
   return (
     <>
       <ChipButton icon={faFilePen} iconstyles="-mr-0.5" />
-
-      <form action={removePost}>
-        <input type="hidden" name="postSlug" value={postSlug} />
-        <DeleteButton />
-      </form>
+      <ChipButton
+        color="danger"
+        icon={faTrash}
+        onClick={() =>
+          dispatch(
+            openModal({
+              view: MODAL_VIEW.DELETE_POST,
+              data: { postSlug },
+            }),
+          )
+        }
+      />
     </>
   );
 }

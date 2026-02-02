@@ -15,12 +15,16 @@ const btnVariants = cva(
       intent: {
         primary: "bg-black text-white",
         secondary:
-          "hover:border-accent gap-2 border border-neutral-100 hover:text-white",
+          "disabled:border-accent-disabled disabled:text-accent-disabled hover:border-accent gap-2 border border-neutral-100 hover:text-white disabled:bg-transparent",
         inline:
           "hover:text-accent focus:text-accent inline-flex h-auto gap-1 px-0 hover:bg-transparent focus:outline-transparent",
       },
       size: { full: "w-full h-12 rounded-xl text-base" },
       decoration: { underline: "underline" },
+      color: {
+        danger:
+          "border-danger hover:bg-danger text-danger focus:outline-danger disabled:border-accent-disabled disabled:text-accent-disabled border bg-transparent hover:text-white disabled:bg-transparent",
+      },
     },
     defaultVariants: { intent: "primary" },
   },
@@ -48,13 +52,16 @@ export function Button({
   intent,
   size,
   decoration,
+  color,
   leftIcon,
   rightIcon,
   iconstyles,
   className,
   ...props
 }: ComponentProps<"button"> & BaseProps) {
-  const classes = twMerge(btnVariants({ intent, size, decoration, className }));
+  const classes = twMerge(
+    btnVariants({ intent, size, decoration, color, className }),
+  );
   return (
     <button className={classes} {...props}>
       <Content

@@ -6,6 +6,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Header } from "@/components/core";
 import { SessionRefresher } from "@/features/auth/client";
 import { getCurrentUser } from "@/features/auth/server";
+import { Modal } from "@/features/modal/client";
 import { StoreProvider } from "@/lib/client";
 
 import { hostGrotesk } from "./_ui/fonts";
@@ -33,6 +34,7 @@ export default async function RootLayout({
         <StoreProvider user={user}>
           <Header />
           <div className="grid min-h-[calc(100vh-72px)] pt-18">{children}</div>
+          <Modal />
         </StoreProvider>
       </body>
     </html>

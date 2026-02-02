@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userReducer } from "./features";
+import { modalReducer, userReducer } from "./features";
 
 export const makeStore = () =>
   configureStore({
-    reducer: { user: userReducer },
+    reducer: { modal: modalReducer, user: userReducer },
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
