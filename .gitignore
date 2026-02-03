@@ -28,7 +28,7 @@
 *.db-journal
 *.db-wal
 *.db-shm
-data/
+src/data/
 
 # debug
 npm-debug.log*
