@@ -13,10 +13,7 @@ export const removePost = async (payload: DeletePost): Promise<void> => {
   await delay();
 
   const user = await getCurrentUser();
-  const isModerator =
-    user?.roleId === ROLES.MODERATOR || user?.roleId === ROLES.ADMIN;
-
-  if (!user || !isModerator) {
+  if (!user || user.roleId !== ROLES.ADMIN) {
     console.warn("Unauthorized");
     return;
   }

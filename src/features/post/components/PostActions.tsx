@@ -13,9 +13,7 @@ interface Props {
 }
 
 export function PostActions({ postSlug, roleId }: Props) {
-  const isModerator = roleId !== ROLES.MODERATOR && roleId !== ROLES.ADMIN;
-
-  if (isModerator) return null;
+  if (roleId !== ROLES.ADMIN) return null;
 
   return (
     <>
