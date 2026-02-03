@@ -1,22 +1,19 @@
 import type { Comment, RoleId, UserId } from "@/lib/shared";
 
 import { Paragraph } from "@/components/ui";
+import { MODAL_VIEW } from "@/features/modal/shared";
 import { ROLES, getPassedTime } from "@/lib/shared";
-
-import { removeComment } from "../lib/actions";
 
 import { CommentAuthor } from "./CommentAuthor";
 import { DeleteButton } from "./DeleteButton";
 
-export function CommentItem({
-  comment,
-  currentUserId,
-  roleId,
-}: {
+interface Props {
   comment: Comment;
   currentUserId?: UserId;
   roleId?: RoleId;
-}) {
+}
+
+export function CommentItem({ comment, currentUserId, roleId }: Props) {
   const { commentId, content, commentedAt, authorId, postSlug } = comment;
   const isAuthor = currentUserId === authorId;
   const isModerator = roleId === ROLES.MODERATOR || roleId === ROLES.ADMIN;
@@ -33,11 +30,15 @@ export function CommentItem({
         </div>
 
         {(isAuthor || isModerator) && (
-          <form action={removeComment}>
-            <input type="hidden" name="commentId" value={commentId} />
-            <input type="hidden" name="postSlug" value={postSlug} />
-            <DeleteButton size="md" border="none" rounded="semi" />
-          </form>
+          <DeleteButton
+            size="md"
+            border="none"
+            rounded="semi"
+            payload={{
+              view: MODAL_VIEW.DELETE_COMMENT,
+              data: { commentId, postSlug },
+            }}
+          />
         )}
       </div>
 

@@ -1,11 +1,26 @@
-import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { type ModalView } from "@/features/modal/constants";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { DeletePost, DeleteComment } from "@/features/post/shared";
 
-interface ModalState {
-  isOpen: boolean;
-  view: ModalView;
-  data: unknown;
-}
+import { createSlice } from "@reduxjs/toolkit";
+import { MODAL_VIEW } from "@/features/modal/shared";
+
+type ModalState =
+  | { isOpen: false; view: null; data: null }
+  | {
+      isOpen: true;
+      view: typeof MODAL_VIEW.DELETE_COMMENT;
+      data: DeleteComment;
+    }
+  | {
+      isOpen: true;
+      view: typeof MODAL_VIEW.DELETE_POST;
+      data: DeletePost;
+    }
+  | {
+      isOpen: true;
+      view: typeof MODAL_VIEW.EDIT_POST;
+      data: undefined;
+    };
 
 const initialState: ModalState = {
   isOpen: false,
@@ -15,18 +30,14 @@ const initialState: ModalState = {
 
 const modalSlice = createSlice({
   name: "modal",
-  initialState,
+  initialState: initialState as ModalState,
   reducers: {
     openModal: (state, action: PayloadAction<Omit<ModalState, "isOpen">>) => {
       state.isOpen = true;
       state.view = action.payload.view;
       state.data = action.payload.data || null;
     },
-    closeModal: (state) => {
-      state.isOpen = false;
-      state.view = null;
-      state.data = null;
-    },
+    closeModal: () => initialState,
   },
 });
 

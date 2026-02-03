@@ -1,8 +1,8 @@
 "use client";
 
+import * as z from "zod";
 import { useTransition } from "react";
 import { Button, H3 } from "@/components/ui";
-import { deletePostSchema, removePost } from "@/features/post/shared";
 import {
   closeModal,
   selectData,
@@ -10,11 +10,15 @@ import {
   useAppSelector,
 } from "@/lib/client";
 
-export function DeletePostModal() {
+interface Props<T> {
+  title: string;
+  schema: z.ZodType<T>;
+  action: (data: T) => Promise<void>;
+}
+
+export function DeleteModal<T>({ title, schema, action }: Props<T>) {
   const dispatch = useAppDispatch();
-  const { success, error, data } = deletePostSchema.safeParse(
-    useAppSelector(selectData),
-  );
+  const { success, error, data } = schema.safeParse(useAppSelector(selectData));
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
@@ -24,19 +28,16 @@ export function DeletePostModal() {
     }
 
     startTransition(async () => {
-      await removePost(data);
+      await action(data);
       dispatch(closeModal());
     });
   };
 
   return (
-    <div className="bg-elembg flex w-full max-w-sm flex-col gap-20 rounded-3xl p-8">
+    <>
       <div className="flex flex-col gap-2">
-        <H3>Delete Post?</H3>
-        <p>
-          This action cannot be undone. Are you sure you want to delete this
-          post?
-        </p>
+        <H3>{title}</H3>
+        <p>This action cannot be undone. Are you sure you want to proceed?</p>
       </div>
 
       <div className="flex justify-end gap-2">
@@ -49,10 +50,10 @@ export function DeletePostModal() {
         <Button
           text={isPending ? "Deleting..." : "Delete"}
           color="danger"
-          disabled={isPending}
+          disabled={isPending || !success}
           onClick={handleDelete}
         />
       </div>
-    </div>
+    </>
   );
 }

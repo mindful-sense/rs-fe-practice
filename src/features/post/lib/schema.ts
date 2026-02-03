@@ -25,5 +25,6 @@ export const deleteCommentSchema = commentSchema
   .strip();
 
 export type DeletePost = z.infer<typeof deletePostSchema>;
+export type DeleteComment = z.infer<typeof deleteCommentSchema>;
 export type InputComment = z.infer<typeof inputCommentSchema>;
 export type InputCommentClient = z.infer<typeof inputCommentClientSchema>;

@@ -2,7 +2,7 @@
 import "server-only";
 
 import type { FormState } from "@/lib/shared";
-import type { DeletePost, InputComment } from "./schema";
+import type { DeleteComment, DeletePost, InputComment } from "./schema";
 
 import * as z from "zod";
 import { randomUUID } from "crypto";
@@ -25,20 +25,19 @@ import {
   inputCommentSchema,
 } from "./schema";
 
-export const removePost = async (postData: DeletePost): Promise<void> => {
+export const removePost = async (payload: DeletePost): Promise<void> => {
   await delay();
 
   const user = await getCurrentUser();
-  if (
-    !user ||
-    (user.roleId !== ROLES.MODERATOR && user.roleId !== ROLES.ADMIN)
-  ) {
+  const isModerator =
+    user?.roleId === ROLES.MODERATOR || user?.roleId === ROLES.ADMIN;
+
+  if (!user || !isModerator) {
     console.warn("Unauthorized");
     return;
   }
 
-  const { success, error, data } = deletePostSchema.safeParse(postData);
-
+  const { success, error, data } = deletePostSchema.safeParse(payload);
   if (!success) {
     console.error(error);
     return;
@@ -50,7 +49,6 @@ export const removePost = async (postData: DeletePost): Promise<void> => {
     console.error(error);
     return;
   }
-
   redirect(ROUTE_PATHS.HOME);
 };
 
@@ -91,11 +89,10 @@ export const sendComment = async (
       fields: { content: data.content } as Partial<InputComment>,
     };
   }
-
   redirect(`${ROUTE_PATHS.POSTS}/${data.postSlug}`);
 };
 
-export const removeComment = async (payload: FormData): Promise<void> => {
+export const removeComment = async (payload: DeleteComment): Promise<void> => {
   await delay();
 
   const user = await getCurrentUser();
@@ -104,16 +101,17 @@ export const removeComment = async (payload: FormData): Promise<void> => {
     return;
   }
 
-  const formData = Object.fromEntries(payload);
-  const { success, error, data } = deleteCommentSchema.safeParse(formData);
-
+  const { success, error, data } = deleteCommentSchema.safeParse(payload);
   if (!success) {
     console.error(error);
     return;
   }
 
   try {
-    if (user.roleId === ROLES.MODERATOR || user.roleId === ROLES.ADMIN) {
+    const isModerator =
+      user.roleId === ROLES.MODERATOR || user.roleId === ROLES.ADMIN;
+
+    if (isModerator) {
       deleteAnyComment(data.commentId);
     } else {
       deleteSelfComment(data.commentId, user.userId);
@@ -122,6 +120,5 @@ export const removeComment = async (payload: FormData): Promise<void> => {
     console.error(error);
     return;
   }
-
   revalidatePath(`${ROUTE_PATHS.POSTS}/${data.postSlug}`);
 };

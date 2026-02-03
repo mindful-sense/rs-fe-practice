@@ -107,6 +107,7 @@ export const deleteSelfComment = (
   commentId: CommentId,
   authorId: UserId,
 ): void => {
+  console.log("deleteSelfComment", commentId, authorId);
   const { changes } = statements.deleteSelfComment.run({ commentId, authorId });
   if (!changes) throw new Error("Couldn't delete the comment");
 };
