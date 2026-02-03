@@ -1,5 +1,4 @@
 import "server-only";
-
 import type { Session, UpdateSession } from "../schemas";
 
 import { db } from "../db";

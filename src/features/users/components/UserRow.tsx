@@ -1,5 +1,7 @@
 "use client";
 
+import type { RoleId, RoleName, TableUser } from "@/lib/shared";
+
 import { useState } from "react";
 import {
   faCaretDown,
@@ -9,15 +11,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { ChipButton } from "@/components/ui";
-import {
-  type RoleId,
-  type RoleName,
-  type TableUser,
-  ROLES,
-  ROLE_NAMES,
-  truncateMiddle,
-} from "@/lib/shared";
+import { ROLES, ROLE_NAMES, truncateMiddle } from "@/lib/shared";
 import { removeUser, saveChanges } from "../lib/actions";
+
+interface Props extends TableUser {
+  isDropdownOpen: boolean;
+  onOpenDropdown: (value: string) => void;
+  onCloseDropdown: () => void;
+}
 
 export function UserRow({
   userId,
@@ -28,11 +29,7 @@ export function UserRow({
   isDropdownOpen,
   onOpenDropdown,
   onCloseDropdown,
-}: TableUser & {
-  isDropdownOpen: boolean;
-  onOpenDropdown: (value: string) => void;
-  onCloseDropdown: () => void;
-}) {
+}: Props) {
   const [currentRole, setCurrentRole] = useState({
     id: roleId,
     name: ROLE_NAMES[roleId],

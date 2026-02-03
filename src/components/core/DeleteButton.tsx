@@ -1,10 +1,14 @@
 "use client";
 
+import type { ChipVariantProps } from "@/components/ui";
+
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { type ChipVariantProps, ChipButton } from "@/components/ui";
+
+import { ChipButton } from "@/components/ui";
+import { DeleteComment } from "@/features/comment/shared";
 import { MODAL_VIEW } from "@/features/modal/shared";
+import { DeletePost } from "@/features/post/shared";
 import { openModal, useAppDispatch } from "@/lib/client";
-import { DeleteComment, DeletePost } from "../shared";
 
 type DeletePayload =
   | { view: typeof MODAL_VIEW.DELETE_COMMENT; data: DeleteComment }

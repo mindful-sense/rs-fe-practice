@@ -2,10 +2,10 @@ import type { PostSlug, RoleId } from "@/lib/shared";
 
 import { faFilePen } from "@fortawesome/free-solid-svg-icons";
 
+import { DeleteButton } from "@/components/core";
 import { ChipButton } from "@/components/ui";
 import { MODAL_VIEW } from "@/features/modal/shared";
 import { ROLES } from "@/lib/shared";
-import { DeleteButton } from "./DeleteButton";
 
 interface Props {
   postSlug: PostSlug;

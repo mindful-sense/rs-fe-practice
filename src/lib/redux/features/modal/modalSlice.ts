@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { DeletePost, DeleteComment } from "@/features/post/shared";
+import type { DeleteComment } from "@/features/comment/shared";
+import type { DeletePost } from "@/features/post/shared";
 
 import { createSlice } from "@reduxjs/toolkit";
 import { MODAL_VIEW } from "@/features/modal/shared";

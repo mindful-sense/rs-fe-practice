@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  deleteCommentSchema,
-  deletePostSchema,
-  removeComment,
-  removePost,
-} from "@/features/post/shared";
+import { deleteCommentSchema, removeComment } from "@/features/comment/shared";
+import { deletePostSchema, removePost } from "@/features/post/shared";
 import {
   closeModal,
   selectIsOpen,
@@ -13,6 +9,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "@/lib/client";
+
 import { MODAL_VIEW } from "../constants";
 import { DeleteModal } from "./DeleteModal";
 

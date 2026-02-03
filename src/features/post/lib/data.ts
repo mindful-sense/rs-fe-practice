@@ -1,28 +1,12 @@
 import "server-only";
-
-import type { BlogPost } from "@/lib/server";
-import type { PostSlug, PublicUser, UserId } from "@/lib/shared";
-
-import {
-  getErrorMessage,
-  selectPostBySlug,
-  selectPublicUserById,
-} from "@/lib/server";
+import { type BlogPost, getErrorMessage, selectPost } from "@/lib/server";
+import { type PostSlug } from "@/lib/shared";
 
 export const getPostBySlug = (slug: PostSlug): BlogPost | { error: string } => {
   try {
-    return selectPostBySlug(slug);
+    return selectPost(slug);
   } catch (error) {
     console.error(error);
     return { error: getErrorMessage(error) };
-  }
-};
-
-export const getPublicUser = (userId: UserId): PublicUser | null => {
-  try {
-    return selectPublicUserById(userId);
-  } catch (error) {
-    console.error(error);
-    return null;
   }
 };

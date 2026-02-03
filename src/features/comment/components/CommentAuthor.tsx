@@ -1,5 +1,5 @@
+import { getPublicUser } from "@/features/users/server";
 import { type UserId, USERNAME_NOT_FOUND } from "@/lib/shared";
-import { getPublicUser } from "../lib/data";
 
 export function CommentAuthor({ authorId }: { authorId: UserId | null }) {
   const username = authorId

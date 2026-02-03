@@ -1,11 +1,11 @@
 import type { Comment, RoleId, UserId } from "@/lib/shared";
 
+import { DeleteButton } from "@/components/core";
 import { Paragraph } from "@/components/ui";
 import { MODAL_VIEW } from "@/features/modal/shared";
 import { ROLES, getPassedTime } from "@/lib/shared";
 
 import { CommentAuthor } from "./CommentAuthor";
-import { DeleteButton } from "./DeleteButton";
 
 interface Props {
   comment: Comment;

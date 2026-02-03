@@ -1,6 +1,6 @@
 "use server";
-import "server-only";
 
+import "server-only";
 import type { FormState, UserId } from "@/lib/shared";
 import type { SignIn, SignUp } from "./schema";
 

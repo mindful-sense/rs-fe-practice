@@ -1,20 +1,20 @@
 "use client";
 
-import { type ReactNode, useEffect, useState } from "react";
-import { Provider } from "react-redux";
+import type { ReactNode } from "react";
+import type { SessionUser } from "@/lib/db/schemas";
 
-import { type SessionUser } from "@/lib/db/schemas";
+import { useEffect, useState } from "react";
+import { Provider } from "react-redux";
 
 import { makeStore } from "./store";
 import { clearUser, setUser } from "./features";
 
-export function StoreProvider({
-  user,
-  children,
-}: {
+interface Props {
   user: SessionUser | null;
   children: ReactNode;
-}) {
+}
+
+export function StoreProvider({ user, children }: Props) {
   const [store] = useState(() => {
     const storeInstance = makeStore();
     if (user) storeInstance.dispatch(setUser(user));

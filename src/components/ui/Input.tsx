@@ -1,11 +1,10 @@
 import { type ComponentPropsWithRef } from "react";
 
-export function Input({
-  label,
-  ...props
-}: Omit<ComponentPropsWithRef<"input">, "className"> & {
+interface Props extends Omit<ComponentPropsWithRef<"input">, "className"> {
   label: string;
-}) {
+}
+
+export function Input({ label, ...props }: Props) {
   return (
     <div className="flex flex-col gap-1">
       <label>

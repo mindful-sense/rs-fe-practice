@@ -1,15 +1,13 @@
 import { type ReactNode } from "react";
 import { Button } from "@/components/ui";
 
-export function AuthFormButtonBlock({
-  label,
-  isPending,
-  children,
-}: {
+interface Props {
   label: string;
   isPending: boolean;
   children: ReactNode;
-}) {
+}
+
+export function AuthFormButtonBlock({ label, isPending, children }: Props) {
   return (
     <div className="flex flex-col gap-3">
       <Button

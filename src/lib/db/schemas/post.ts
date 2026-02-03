@@ -50,18 +50,5 @@ export const postSchema = z.strictObject({
 
 export const postsSchema = z.array(postSchema);
 
-export const commentSchema = z.strictObject({
-  commentId: z.uuid(),
-  content: z.string().min(1),
-  commentedAt: z.iso.datetime(),
-  authorId: z.uuid().nullable(),
-  postSlug: postSlugRule,
-});
-
-export const commentsSchema = commentSchema.array();
-
 export type Post = z.infer<typeof postSchema>;
-export type Comment = z.infer<typeof commentSchema>;
-
 export type PostSlug = Post["postSlug"];
-export type CommentId = Comment["commentId"];

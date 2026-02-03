@@ -1,30 +1,6 @@
 import * as z from "zod";
-import { commentSchema, postSchema } from "@/lib/shared";
+import { postSchema } from "@/lib/shared";
 
 export const deletePostSchema = postSchema.pick({ postSlug: true }).strip();
 
-export const inputCommentSchema = commentSchema.extend({
-  content: z
-    .string()
-    .trim()
-    .min(3, { error: "Min 3 characters" })
-    .max(3000, { error: "Max 3000 characters" }),
-  authorId: z.uuid(),
-});
-
-export const inputCommentClientSchema = inputCommentSchema.pick({
-  content: true,
-  postSlug: true,
-});
-
-export const deleteCommentSchema = commentSchema
-  .pick({
-    commentId: true,
-    postSlug: true,
-  })
-  .strip();
-
 export type DeletePost = z.infer<typeof deletePostSchema>;
-export type DeleteComment = z.infer<typeof deleteCommentSchema>;
-export type InputComment = z.infer<typeof inputCommentSchema>;
-export type InputCommentClient = z.infer<typeof inputCommentClientSchema>;

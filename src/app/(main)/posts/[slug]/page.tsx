@@ -3,14 +3,16 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 
 import { ChipInfo, H1, H3, Paragraph } from "@/components/ui";
 import { getCurrentUser } from "@/features/auth/server";
-import { CommentForm, PostActions } from "@/features/post/client";
-import { CommentItem, getPostBySlug } from "@/features/post/server";
+import { CommentForm } from "@/features/comment/client";
+import { CommentItem } from "@/features/comment/server";
+import { PostActions } from "@/features/post/client";
+import { getPostBySlug } from "@/features/post/server";
 
-export default async function Post({
-  params,
-}: {
+interface Props {
   params: Promise<{ slug: string }>;
-}) {
+}
+
+export default async function Post({ params }: Props) {
   const { slug } = await params;
   const user = await getCurrentUser();
   const result = getPostBySlug(slug);
