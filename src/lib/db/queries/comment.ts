@@ -2,8 +2,8 @@ import "server-only";
 import type { InputComment } from "@/features/comment/shared";
 import type { Comment, CommentId, PostSlug, UserId } from "../schemas";
 
+import { commentsSchema } from "@/features/comment/shared";
 import { db } from "../db";
-import { commentsSchema } from "../schemas";
 
 const statements = {
   insertComment: db.prepare(`

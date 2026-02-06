@@ -1,5 +1,6 @@
 import * as z from "zod";
 import { USERNAME_NOT_FOUND } from "@/lib/constants";
+import { sessionSchema } from "@/lib/shared";
 
 const loginRule = z
   .string()
@@ -35,5 +36,8 @@ export const signInSchema = z.object({
   password: z.string().min(1, { error: "Fill in your password" }),
 });
 
+export const updateSessionSchema = sessionSchema.omit({ userId: true });
+
 export type SignUp = z.infer<typeof signUpSchema>;
 export type SignIn = z.infer<typeof signInSchema>;
+export type UpdateSession = z.infer<typeof updateSessionSchema>;

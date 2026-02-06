@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { type TableUser } from "@/lib/shared";
+import { type TableUser } from "../lib/schema";
 import { UserRow } from "./UserRow";
 
 export function UserTable({ users }: { users: TableUser[] }) {

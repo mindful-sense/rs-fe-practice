@@ -1,8 +1,10 @@
 import "server-only";
-import type { Session, UpdateSession } from "../schemas";
+import type { UpdateSession } from "@/features/auth/shared";
+import type { Session } from "../schemas";
 
+import { updateSessionSchema } from "@/features/auth/shared";
 import { db } from "../db";
-import { sessionSchema, updateSessionSchema } from "../schemas";
+import { sessionSchema } from "../schemas";
 
 const statements = {
   insert: db.prepare(`

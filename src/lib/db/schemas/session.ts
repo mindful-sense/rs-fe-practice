@@ -12,9 +12,5 @@ export const sessionSchema = z.strictObject({
   }),
 });
 
-export const updateSessionSchema = sessionSchema.omit({ userId: true });
-
 export type Session = z.infer<typeof sessionSchema>;
-export type UpdateSession = z.infer<typeof updateSessionSchema>;
-
 export type SessionId = Session["sessionId"];

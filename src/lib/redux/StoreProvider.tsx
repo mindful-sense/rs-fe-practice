@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import type { SessionUser } from "@/lib/db/schemas";
+import type { SessionUser } from "@/features/users/shared";
 
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";

@@ -1,5 +1,6 @@
 import "server-only";
-import type { SessionUser, UserId } from "@/lib/shared";
+import type { SessionUser } from "@/features/users/shared";
+import type { UserId } from "@/lib/shared";
 
 import { randomBytes } from "crypto";
 import { cookies } from "next/headers";

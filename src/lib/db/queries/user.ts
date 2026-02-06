@@ -1,21 +1,18 @@
 import "server-only";
 import type {
   PublicUser,
-  RoleId,
   SessionUser,
-  SessionId,
   TableUser,
-  User,
-  UserId,
-} from "../schemas";
+} from "@/features/users/shared";
+import type { RoleId, SessionId, User, UserId } from "../schemas";
 
-import { db } from "../db";
 import {
   publicUserSchema,
   sessionUserSchema,
   tableUserSchema,
-  userSchema,
-} from "../schemas";
+} from "@/features/users/shared";
+import { db } from "../db";
+import { userSchema } from "../schemas";
 
 const statements = {
   insert: db.prepare(`

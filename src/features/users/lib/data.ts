@@ -1,6 +1,7 @@
 import "server-only";
 
-import type { PublicUser, TableUser, UserId } from "@/lib/shared";
+import type { UserId } from "@/lib/shared";
+import type { PublicUser, TableUser } from "./schema";
 
 import {
   getErrorMessage,

@@ -1,6 +1,8 @@
 import * as z from "zod";
 import { commentSchema } from "@/lib/shared";
 
+export const commentsSchema = commentSchema.array();
+
 export const inputCommentSchema = commentSchema.extend({
   content: z
     .string()

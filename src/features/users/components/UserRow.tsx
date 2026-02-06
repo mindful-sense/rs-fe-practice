@@ -1,6 +1,7 @@
 "use client";
 
-import type { RoleId, RoleName, TableUser } from "@/lib/shared";
+import type { RoleId, RoleName } from "@/lib/shared";
+import type { TableUser } from "../lib/schema";
 
 import { useState } from "react";
 import {

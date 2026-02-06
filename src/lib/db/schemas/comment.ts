@@ -9,7 +9,5 @@ export const commentSchema = z.strictObject({
   postSlug: postSlugRule,
 });
 
-export const commentsSchema = commentSchema.array();
-
 export type Comment = z.infer<typeof commentSchema>;
 export type CommentId = Comment["commentId"];
