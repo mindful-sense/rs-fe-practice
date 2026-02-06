@@ -22,9 +22,13 @@ const getRandomDateWithTime = () => {
 
 const slugify = (text) =>
   text
+    .trim()
     .toLowerCase()
-    .replace(/ /g, "-")
-    .replace(/[^\w-]+/g, "");
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
 
 const getPostId = (title) => `${slugify(title)}-${randomUUID().split("-")[0]}`;
 
@@ -705,7 +709,7 @@ const schema = `
     author_id TEXT,
     post_id TEXT NOT NULL,
     FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE SET NULL,
-    FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE ON UPDATE CASCADE
   );
 
   CREATE INDEX IF NOT EXISTS idx_users_login ON users (login);

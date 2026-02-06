@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { type PostContent } from "@/lib/shared";
 
 interface ReturnParseContent {
@@ -17,3 +18,13 @@ export const parseContent = (content: PostContent): ReturnParseContent[] =>
     const [subtitle, ...paragraphs] = lines;
     return { subtitle, paragraphs };
   });
+
+export const slugify = (text: string) =>
+  `${text
+    .trim()
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-")}-${randomUUID().split("-")[0]}`;

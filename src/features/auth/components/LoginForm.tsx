@@ -1,19 +1,17 @@
 "use client";
 
-import { LinkButton } from "@/components/ui";
+import {
+  FormError,
+  FormField,
+  FormFieldSet,
+  LinkButton,
+} from "@/components/ui";
 import { useActionForm } from "@/lib/client";
 import { ROUTE_PATHS } from "@/lib/shared";
 
 import { signin } from "../lib/actions";
 import { type SignIn, signInSchema } from "../lib/schema";
-
-import {
-  AuthFieldSet,
-  AuthForm,
-  AuthFormButtonBlock,
-  AuthFormError,
-  AuthFormField,
-} from "./ui";
+import { AuthForm, AuthFormButtonBlock } from "./ui";
 
 export function LoginForm() {
   const {
@@ -37,8 +35,8 @@ export function LoginForm() {
 
   return (
     <AuthForm action={action} onSubmit={onSubmit} noValidate>
-      <AuthFieldSet>
-        <AuthFormField
+      <FormFieldSet>
+        <FormField
           id="login"
           type="text"
           label="Username"
@@ -48,7 +46,7 @@ export function LoginForm() {
           aria-required="true"
           {...register("login")}
         />
-        <AuthFormField
+        <FormField
           id="password"
           type="password"
           label="Password"
@@ -58,7 +56,7 @@ export function LoginForm() {
           aria-required="true"
           {...register("password")}
         />
-      </AuthFieldSet>
+      </FormFieldSet>
 
       <AuthFormButtonBlock label="Sign In" isPending={isPending}>
         Don&apos;t have an account?&nbsp;
@@ -70,7 +68,7 @@ export function LoginForm() {
         />
       </AuthFormButtonBlock>
 
-      {generalError && <AuthFormError error={generalError} />}
+      {generalError && <FormError error={generalError} />}
     </AuthForm>
   );
 }

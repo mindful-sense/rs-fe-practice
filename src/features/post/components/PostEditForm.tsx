@@ -2,7 +2,13 @@
 
 import type { EditPost } from "../lib/schema";
 
-import { Button, FormArea, FormError, FormField } from "@/components/ui";
+import {
+  Button,
+  FormArea,
+  FormError,
+  FormField,
+  FormFieldSet,
+} from "@/components/ui";
 import { openModal, useActionForm, useAppDispatch } from "@/lib/client";
 
 import { savePostChanges } from "../lib/actions";
@@ -46,52 +52,54 @@ export function PostEditForm({ post, isAdmin }: Props) {
       action={action}
       onSubmit={onSubmit}
       noValidate
-      className="bg-elembg mx-auto flex w-3xl flex-col gap-4 rounded-3xl p-11"
+      className="bg-elembg mx-auto flex w-3xl flex-col gap-6 rounded-3xl p-11"
     >
       <input type="hidden" value={post.postSlug} {...register("postSlug")} />
 
-      <FormField
-        id="h1"
-        type="text"
-        label="Post title"
-        defaultValue={state.fields?.h1}
-        error={h1Error}
-        aria-required="true"
-        {...register("h1")}
-      />
-      <FormField
-        id="imageLead"
-        type="text"
-        label="Image link"
-        defaultValue={state.fields?.imageLead}
-        error={imageLeadError}
-        aria-required="true"
-        {...register("imageLead")}
-      />
-      <FormArea
-        id="lead"
-        label="Post lead"
-        defaultValue={state.fields?.lead}
-        error={leadError}
-        aria-required="true"
-        {...register("lead")}
-      />
-      <FormArea
-        id="content"
-        label="Content"
-        defaultValue={state.fields?.content}
-        error={contentError}
-        aria-required="true"
-        {...register("content")}
-      />
-      <FormArea
-        id="conclusion"
-        label="Conclusion"
-        defaultValue={state.fields?.conclusion}
-        error={conclusionError}
-        aria-required="true"
-        {...register("conclusion")}
-      />
+      <FormFieldSet>
+        <FormField
+          id="h1"
+          type="text"
+          label="Post title"
+          defaultValue={state.fields?.h1}
+          error={h1Error}
+          aria-required="true"
+          {...register("h1")}
+        />
+        <FormField
+          id="imageLead"
+          type="text"
+          label="Image link"
+          defaultValue={state.fields?.imageLead}
+          error={imageLeadError}
+          aria-required="true"
+          {...register("imageLead")}
+        />
+        <FormArea
+          id="lead"
+          label="Post lead"
+          defaultValue={state.fields?.lead}
+          error={leadError}
+          aria-required="true"
+          {...register("lead")}
+        />
+        <FormArea
+          id="content"
+          label="Content"
+          defaultValue={state.fields?.content}
+          error={contentError}
+          aria-required="true"
+          {...register("content")}
+        />
+        <FormArea
+          id="conclusion"
+          label="Conclusion"
+          defaultValue={state.fields?.conclusion}
+          error={conclusionError}
+          aria-required="true"
+          {...register("conclusion")}
+        />
+      </FormFieldSet>
 
       <div className="flex gap-2">
         {isAdmin && (

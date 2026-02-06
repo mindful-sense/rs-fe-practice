@@ -9,7 +9,7 @@ interface Props {
   roleId?: RoleId;
 }
 
-export function PostDelete({ postSlug, roleId }: Props) {
+export function PostDeleteButton({ postSlug, roleId }: Props) {
   if (roleId !== ROLES.ADMIN) return null;
 
   return (

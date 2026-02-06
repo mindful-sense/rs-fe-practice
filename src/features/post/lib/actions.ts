@@ -12,6 +12,7 @@ import { deletePost, getErrorMessage, updatePost } from "@/lib/server";
 import { ROLES, ROUTE_PATHS, delay } from "@/lib/shared";
 
 import { deletePostSchema, editPostSchema } from "./schema";
+import { slugify } from "./utils";
 
 export const removePost = async (payload: DeletePost): Promise<void> => {
   await delay();
@@ -55,7 +56,11 @@ export const savePostChanges = async (
     };
   }
 
-  const { success, error, data } = editPostSchema.safeParse(formData);
+  const { success, error, data } = editPostSchema.safeParse({
+    ...formData,
+    newPostSlug: slugify(formData.h1 as string),
+  });
+
   if (!success) {
     return {
       fields: formData,
@@ -68,5 +73,5 @@ export const savePostChanges = async (
   } catch (error) {
     return { message: getErrorMessage(error), fields: data };
   }
-  redirect(`${ROUTE_PATHS.POSTS}/${data.postSlug}`);
+  redirect(`${ROUTE_PATHS.POSTS}/${data.newPostSlug ?? data.postSlug}`);
 };

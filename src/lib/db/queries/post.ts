@@ -47,6 +47,7 @@ const statements = {
   updatePost: db.prepare(`
     UPDATE posts
     SET
+      id = @newPostSlug,
       h1 = @h1,
       lead = @lead, 
       content = @content, 
@@ -87,7 +88,13 @@ export const selectPosts = (): Post[] => {
 };
 
 export const updatePost = (post: EditPost): void => {
-  const { changes } = statements.updatePost.run(post);
+  const { newPostSlug, postSlug, ...fields } = post;
+  const { changes } = statements.updatePost.run({
+    ...fields,
+    newPostSlug: newPostSlug ?? postSlug,
+    postSlug,
+  });
+
   if (!changes) throw new Error("Couldn't update the post");
 };
 

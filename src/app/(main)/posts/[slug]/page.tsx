@@ -5,8 +5,12 @@ import { ChipInfo, H1, H3, Paragraph } from "@/components/ui";
 import { getCurrentUser } from "@/features/auth/server";
 import { CommentForm } from "@/features/comment/client";
 import { CommentItem } from "@/features/comment/server";
-import { PostDelete, PostEdit, getBlogPost } from "@/features/post/server";
-import { parseContent } from "@/features/post/shared";
+import {
+  PostDeleteButton,
+  PostEditButton,
+  getBlogPost,
+  parseContent,
+} from "@/features/post/server";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -35,8 +39,8 @@ export default async function Post({ params }: Props) {
             icon={faCalendar}
             iconstyles="-mt-0.5"
           />
-          <PostEdit roleId={user?.roleId} />
-          <PostDelete postSlug={post.postSlug} roleId={user?.roleId} />
+          <PostEditButton postSlug={post.postSlug} roleId={user?.roleId} />
+          <PostDeleteButton postSlug={post.postSlug} roleId={user?.roleId} />
         </div>
 
         <Image
