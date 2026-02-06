@@ -10,7 +10,7 @@ import {
   useAppSelector,
 } from "@/lib/client";
 
-import { MODAL_VIEW } from "../constants";
+import { MODAL_VIEW } from "../lib/constants";
 import { DeleteModal } from "./DeleteModal";
 
 export function Modal() {
@@ -38,8 +38,6 @@ export function Modal() {
             action={removePost}
           />
         );
-      case MODAL_VIEW.EDIT_POST:
-        return null;
       default:
         return null;
     }

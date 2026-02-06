@@ -16,11 +16,6 @@ type ModalState =
       isOpen: true;
       view: typeof MODAL_VIEW.DELETE_POST;
       data: DeletePost;
-    }
-  | {
-      isOpen: true;
-      view: typeof MODAL_VIEW.EDIT_POST;
-      data: undefined;
     };
 
 const initialState: ModalState = {

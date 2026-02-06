@@ -1,1 +1,1 @@
-export * from "./components/PostActions";
+export * from "./components/PostEditForm";

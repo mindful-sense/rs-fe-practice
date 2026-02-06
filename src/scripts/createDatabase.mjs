@@ -274,36 +274,8 @@ const posts = [
     id: postIds[0],
     h1: "The Quiet Revolution: Mastering Mindfulness in\u00A0a\u00A0Noisy World",
     lead: "In an era defined by constant connectivity and information overload, the ancient practice of mindfulness has transitioned from a spiritual luxury to a cognitive necessity. This guide explores how silence can become your loudest asset.",
-    content: JSON.stringify([
-      {
-        paragraphs: [
-          "For decades, meditation was viewed through a purely mystical lens, but modern neuroscience has radically shifted this perspective. MRI scans of long-term practitioners reveal increased gray matter density in the prefrontal cortex, the area responsible for executive function and emotional regulation.",
-          "Simultaneously, the practice shrinks the amygdala, the brain's \u201Cfight or flight\u201D center. This biological restructuring explains why mindfulness isn't just about feeling good in the moment; it is a fundamental training of the brain to process stress differently.",
-        ],
-      },
-      {
-        h3: "Core Techniques for Beginners",
-        paragraphs: [
-          "Starting a meditation practice does not require a retreat in the mountains or complete silence. It begins with the simple intention to pay attention. Below are the foundational pillars of a sustainable practice.",
-          "The foundational pillars of a sustainable practice include focused attention on the rhythm of the breath to anchor the mind, body scanning to release physical tension by moving awareness through the body, open monitoring to observe thoughts without judgment, and cultivating loving-kindness to dissolve feelings of isolation and anger.",
-        ],
-      },
-      {
-        h3: "Navigating Common Obstacles",
-        paragraphs: [
-          "The most common misconception is that meditation requires you to \u201Cstop thinking\u201D. This is biologically impossible and sets beginners up for failure. The goal is not to silence the mind, but to change your relationship with your thoughts.",
-          "When distraction occurs—and it will—the practice lies in the moment you notice the distraction. That split second of awareness is the \u201Crep\u201D that strengthens your mental muscle, not the duration of silence itself.",
-          "Consistency trumps intensity. Five minutes of daily practice yields better neurological results than a single hour-long session once a week. Building the habit is the primary challenge.",
-        ],
-      },
-      {
-        h3: "Integrating Awareness into Daily Life",
-        paragraphs: [
-          "True mindfulness extends beyond the cushion. It is the act of washing dishes while only washing dishes, listening to a colleague without planning your response, and tasting your food without scrolling through a phone.",
-          "By bringing this quality of attention to mundane tasks, we transform routine into ritual. This integration creates a \u201Cbuffer zone\u201D in our psyche, allowing us to respond to life's challenges with clarity rather than reacting with impulse.",
-        ],
-      },
-    ]),
+    content:
+      "For decades, meditation was viewed through a purely mystical lens, but modern neuroscience has radically shifted this perspective. MRI scans of long-term practitioners reveal increased gray matter density in the prefrontal cortex, the area responsible for executive function and emotional regulation.\n\n\nSimultaneously, the practice shrinks the amygdala, the brain's \u201Cfight or flight\u201D center. This biological restructuring explains why mindfulness isn't just about feeling good in the moment; it is a fundamental training of the brain to process stress differently.\n\n#Core Techniques for Beginners\nStarting a meditation practice does not require a retreat in the mountains or complete silence. It begins with the simple intention to pay attention. Below are the foundational pillars of a sustainable practice.\n\n\nThe foundational pillars of a sustainable practice include focused attention on the rhythm of the breath to anchor the mind, body scanning to release physical tension by moving awareness through the body, open monitoring to observe thoughts without judgment, and cultivating loving-kindness to dissolve feelings of isolation and anger.\n#Navigating Common Obstacles\n\nThe most common misconception is that meditation requires you to \u201Cstop thinking\u201D. This is biologically impossible and sets beginners up for failure. The goal is not to silence the mind, but to change your relationship with your thoughts.\nWhen distraction occurs—and it will—the practice lies in the moment you notice the distraction. That split second of awareness is the \u201Crep\u201D that strengthens your mental muscle, not the duration of silence itself.\nConsistency trumps intensity. Five minutes of daily practice yields better neurological results than a single hour-long session once a week. Building the habit is the primary challenge.\n#Integrating Awareness into Daily Life\nTrue mindfulness extends beyond the cushion. It is the act of washing dishes while only washing dishes, listening to a colleague without planning your response, and tasting your food without scrolling through a phone.\nBy bringing this quality of attention to mundane tasks, we transform routine into ritual. This integration creates a \u201Cbuffer zone\u201D in our psyche, allowing us to respond to life's challenges with clarity rather than reacting with impulse.",
     conclusion:
       "Mindfulness is not a destination of eternal bliss, but a courageous journey of returning to the here and now, again and again.",
     publishedAt: getRandomDate(),
@@ -314,35 +286,8 @@ const posts = [
     id: postIds[1],
     h1: "Unlocking Flow: How Mindfulness Fuels Peak Performance",
     lead: "In the high-stakes world of modern business and athletics, the competitive edge is no longer just physical—it is mental. Discover how silencing the noise can amplify your potential and induce the flow state.",
-    content: JSON.stringify([
-      {
-        paragraphs: [
-          "Many view meditation merely as a stress-relief tool, akin to a warm bath. While relaxation is a welcome byproduct, the primary utility of mindfulness for high performers is cognitive optimization.",
-          "By training the mind to focus on a single point of reference, we counteract the fragmentation caused by digital distractions. This creates a state of \u201Calert relaxation\u201D, which is the optimal baseline for deep work and creativity.",
-        ],
-      },
-      {
-        h3: "The Science of Cognitive Control",
-        paragraphs: [
-          "Neuroplasticity research indicates that regular mindfulness practice strengthens the anterior cingulate cortex. This brain region is pivotal for attention regulation and error detection.",
-          "When we practice returning our attention to the breath, we are essentially doing \u201Creps\u201D for our focus muscles. Over time, this results in the ability to sustain concentration for longer periods without mental fatigue.",
-          "Furthermore, reduced cortisol levels prevent the brain from shifting into survival mode, preserving energy for creative problem-solving and strategic thinking.",
-        ],
-      },
-      {
-        h3: "Actionable Protocols for Leaders",
-        paragraphs: [
-          "Integrating mindfulness into a busy schedule requires micro-habits rather than massive lifestyle overhauls. Here are effective strategies used by industry leaders to maintain clarity.",
-          "Effective strategies used by industry leaders involve taking a transition pause with three conscious breaths before new tasks, checking for email apnea to resume normal breathing, practicing walking meditation to ground awareness physically, utilizing the \u201CJust Like Me\u201D practice to build compassion, implementing a digital sunset one hour before sleep, and using gratitude bookends to shift cognitive bias towards positivity.",
-        ],
-      },
-      {
-        h3: "Sustaining the Practice",
-        paragraphs: [
-          "The journey to mindful peak performance is non-linear. There will be days of clarity and days of noise. The victory lies not in constant silence, but in the commitment to return to the present moment, regardless of the chaos around you.",
-        ],
-      },
-    ]),
+    content:
+      "Many view meditation merely as a stress-relief tool, akin to a warm bath. While relaxation is a welcome byproduct, the primary utility of mindfulness for high performers is cognitive optimization.\nBy training the mind to focus on a single point of reference, we counteract the fragmentation caused by digital distractions. This creates a state of \u201Calert relaxation\u201D, which is the optimal baseline for deep work and creativity.\n#The Science of Cognitive Control\nNeuroplasticity research indicates that regular mindfulness practice strengthens the anterior cingulate cortex. This brain region is pivotal for attention regulation and error detection.\nWhen we practice returning our attention to the breath, we are essentially doing \u201Creps\u201D for our focus muscles. Over time, this results in the ability to sustain concentration for longer periods without mental fatigue.\nFurthermore, reduced cortisol levels prevent the brain from shifting into survival mode, preserving energy for creative problem-solving and strategic thinking.\n#Actionable Protocols for Leaders\nIntegrating mindfulness into a busy schedule requires micro-habits rather than massive lifestyle overhauls. Here are effective strategies used by industry leaders to maintain clarity.\nEffective strategies used by industry leaders involve taking a transition pause with three conscious breaths before new tasks, checking for email apnea to resume normal breathing, practicing walking meditation to ground awareness physically, utilizing the \u201CJust Like Me\u201D practice to build compassion, implementing a digital sunset one hour before sleep, and using gratitude bookends to shift cognitive bias towards positivity.\n#Sustaining the Practice\nThe journey to mindful peak performance is non-linear. There will be days of clarity and days of noise. The victory lies not in constant silence, but in the commitment to return to the present moment, regardless of the chaos around you.",
     conclusion:
       "True power is not control over the external world, but mastery over your internal landscape.",
     publishedAt: getRandomDate(),
@@ -353,35 +298,8 @@ const posts = [
     id: postIds[2],
     h1: "The Inner Fortress: Emotional Resilience Through Mindfulness",
     lead: "In a world characterized by rapid change and uncertainty, emotional resilience is the definitive skill of the 21st century. Mindfulness offers not just a refuge, but a rigorous training ground for the mind to withstand and grow from adversity.",
-    content: JSON.stringify([
-      {
-        paragraphs: [
-          "Most of us live in a state of constant reactivity. An email triggers anxiety; a comment sparks anger. This stimulus-response loop is biologically hardwired for survival, yet in the modern world, it often leads to chronic stress and burnout.",
-          "Mindfulness introduces a critical wedge of awareness between the trigger and the reaction. Viktor Frankl famously called this the \u201Cspace\u201D where our freedom lies. By cultivating this space, we transition from being victims of circumstance to architects of our emotional experience.",
-        ],
-      },
-      {
-        h3: "The Anatomy of Resilience",
-        paragraphs: [
-          "Resilience is often mistaken for toughness or the suppression of emotion. True resilience, however, is the ability to bounce back—to feel deeply but recover quickly. A mindful approach to emotional health involves several key components.",
-          "The anatomy of resilience is built upon emotional granularity to name feelings, non-judgmental observation of emotions as passing weather, acceptance of reality to create a foundation for action, and self-compassion to accelerate recovery, supported by micro-habits such as a sixty-second reset, mindful listening, and daily gratitude journaling.",
-        ],
-      },
-      {
-        h3: "Micro-Habits for Mental Strength",
-        paragraphs: [
-          "Building resilience doesn't require hours of silence. It is built through small, consistent acts of awareness throughout the day.",
-          "Once a day, stop everything for one minute. Close your eyes and focus solely on the sensation of air entering your nostrils. In your next conversation, listen to understand rather than to reply. Notice when your mind drifts to your own agenda and gently bring it back. Write down three things that went well today. This trains the brain to scan the environment for positives, counteracting our natural negativity bias.",
-        ],
-      },
-      {
-        h3: "The Long-Term Shift",
-        paragraphs: [
-          "Over time, these practices physically alter the brain's structure. The connection between the prefrontal cortex and the emotional centers becomes stronger, allowing for better top-down regulation of feelings.",
-          "This doesn't mean life stops being difficult. It means you stop adding unnecessary suffering to the inevitable pain of life. You become the mountain, grounded and unshakeable, regardless of the weather passing around you.",
-        ],
-      },
-    ]),
+    content:
+      "Most of us live in a state of constant reactivity. An email triggers anxiety; a comment sparks anger. This stimulus-response loop is biologically hardwired for survival, yet in the modern world, it often leads to chronic stress and burnout.\nMindfulness introduces a critical wedge of awareness between the trigger and the reaction. Viktor Frankl famously called this the \u201Cspace\u201D where our freedom lies. By cultivating this space, we transition from being victims of circumstance to architects of our emotional experience.\n#The Anatomy of Resilience\nResilience is often mistaken for toughness or the suppression of emotion. True resilience, however, is the ability to bounce back—to feel deeply but recover quickly. A mindful approach to emotional health involves several key components.\nThe anatomy of resilience is built upon emotional granularity to name feelings, non-judgmental observation of emotions as passing weather, acceptance of reality to create a foundation for action, and self-compassion to accelerate recovery, supported by micro-habits such as a sixty-second reset, mindful listening, and daily gratitude journaling.\n#Micro-Habits for Mental Strength\nBuilding resilience doesn't require hours of silence. It is built through small, consistent acts of awareness throughout the day.\nOnce a day, stop everything for one minute. Close your eyes and focus solely on the sensation of air entering your nostrils. In your next conversation, listen to understand rather than to reply. Notice when your mind drifts to your own agenda and gently bring it back. Write down three things that went well today. This trains the brain to scan the environment for positives, counteracting our natural negativity bias.\n#The Long-Term Shift\nOver time, these practices physically alter the brain's structure. The connection between the prefrontal cortex and the emotional centers becomes stronger, allowing for better top-down regulation of feelings.\nThis doesn't mean life stops being difficult. It means you stop adding unnecessary suffering to the inevitable pain of life. You become the mountain, grounded and unshakeable, regardless of the weather passing around you.",
     conclusion:
       "Resilience is a practice, not a personality trait. Start where you are, breathe, and begin again.",
     publishedAt: getRandomDate(),
@@ -392,37 +310,8 @@ const posts = [
     id: postIds[3],
     h1: "Silence in\u00A0the\u00A0Static: Mindfulness Strategies for\u00A0Anxiety Relief",
     lead: "In an age of perpetual uncertainty, anxiety has become a silent epidemic. Mindfulness offers a proven antidote, not by eliminating stress, but by fundamentally altering our physiological and psychological response to it.",
-    content: JSON.stringify([
-      {
-        paragraphs: [
-          "Anxiety is often described as a mental state, but it is primarily a physiological event. When the amygdala perceives a threat—real or imagined—it floods the body with cortisol and adrenaline. This ancient survival mechanism, designed to outrun predators, is now triggered by email notifications and deadline pressures.",
-          "Mindfulness acts as a manual override for this system. By consciously directing attention to the breath or bodily sensations, we engage the parasympathetic nervous system. This signals to the brain that the immediate danger has passed, allowing the heart rate to slow and clarity to return.",
-        ],
-      },
-      {
-        h3: "Immediate Grounding Techniques",
-        paragraphs: [
-          "When anxiety spikes, abstract philosophy is useless. You need concrete, somatic tools to anchor yourself back in the present reality.",
-          "Immediate grounding involves the 5-4-3-2-1 method to engage the senses, box breathing to downregulate the nervous system, and tactile anchoring to shock the system out of panic loops, while a non-anxious lifestyle is cultivated through caffeine consciousness, news rationing, nature immersion, and prioritizing sleep as a non-negotiable need.",
-        ],
-      },
-      {
-        h3: "Cognitive Defusion: You Are Not Your Thoughts",
-        paragraphs: [
-          "A core tenet of mindfulness is the realization that thoughts are mental events, not facts. Anxiety thrives on fusion—the belief that the catastrophic story your mind is telling is absolute truth.",
-          "Through practice, we learn to observe these thoughts with detachment, much like watching clouds drift across the sky. We note them—\u201CThere is a worry about the future\u201D—without boarding the train of that thought. This distance prevents the spiral from taking hold.",
-          "This shift from \u201CI am anxious\u201D to \u201CI am experiencing a feeling of anxiety\u201D is subtle but transformative. It creates a container large enough to hold the emotion without being consumed by it.",
-        ],
-      },
-      {
-        h3: "Cultivating a Non-Anxious Lifestyle",
-        paragraphs: [
-          "Prevention is more effective than cure. Specific lifestyle adjustments can lower your baseline arousal levels, making you less susceptible to triggers.",
-          "Be aware that caffeine mimics the symptoms of anxiety (racing heart, jitters). Reducing intake can significantly lower physiological noise. Limit consumption of news to specific windows. Constant exposure to global crises keeps the amygdala in a state of hyper-vigilance.",
-          "Spending 20 minutes in a green space has been clinically shown to lower cortisol levels and restore attention span. Prioritize sleep as a non-negotiable biological need. A sleep-deprived brain is significantly more reactive to negative stimuli.",
-        ],
-      },
-    ]),
+    content:
+      "Anxiety is often described as a mental state, but it is primarily a physiological event. When the amygdala perceives a threat—real or imagined—it floods the body with cortisol and adrenaline. This ancient survival mechanism, designed to outrun predators, is now triggered by email notifications and deadline pressures.\nMindfulness acts as a manual override for this system. By consciously directing attention to the breath or bodily sensations, we engage the parasympathetic nervous system. This signals to the brain that the immediate danger has passed, allowing the heart rate to slow and clarity to return.\n#Immediate Grounding Techniques\nWhen anxiety spikes, abstract philosophy is useless. You need concrete, somatic tools to anchor yourself back in the present reality.\nImmediate grounding involves the 5-4-3-2-1 method to engage the senses, box breathing to downregulate the nervous system, and tactile anchoring to shock the system out of panic loops, while a non-anxious lifestyle is cultivated through caffeine consciousness, news rationing, nature immersion, and prioritizing sleep as a non-negotiable need.\n#Cognitive Defusion: You Are Not Your Thoughts\nA core tenet of mindfulness is the realization that thoughts are mental events, not facts. Anxiety thrives on fusion—the belief that the catastrophic story your mind is telling is absolute truth.\nThrough practice, we learn to observe these thoughts with detachment, much like watching clouds drift across the sky. We note them—\u201CThere is a worry about the future\u201D—without boarding the train of that thought. This distance prevents the spiral from taking hold.\nThis shift from \u201CI am anxious\u201D to \u201CI am experiencing a feeling of anxiety\u201D is subtle but transformative. It creates a container large enough to hold the emotion without being consumed by it.\n#Cultivating a Non-Anxious Lifestyle\nPrevention is more effective than cure. Specific lifestyle adjustments can lower your baseline arousal levels, making you less susceptible to triggers.\nBe aware that caffeine mimics the symptoms of anxiety (racing heart, jitters). Reducing intake can significantly lower physiological noise. Limit consumption of news to specific windows. Constant exposure to global crises keeps the amygdala in a state of hyper-vigilance.\nSpending 20 minutes in a green space has been clinically shown to lower cortisol levels and restore attention span. Prioritize sleep as a non-negotiable biological need. A sleep-deprived brain is significantly more reactive to negative stimuli.",
     conclusion:
       "Anxiety may be a part of the human experience, but it does not have to be the driver. With mindfulness, we reclaim the steering wheel.",
     publishedAt: getRandomDate(),
@@ -433,36 +322,8 @@ const posts = [
     id: postIds[4],
     h1: "From Chaos to\u00A0Clarity: Mindfulness as\u00A0a\u00A0Catalyst for\u00A0Creativity",
     lead: "In a world obsessed with relentless productivity, true innovation often requires the courage to pause. Mindfulness is not just a tool for relaxation; it is the ultimate hack for unlocking the latent creative potential within the human mind.",
-    content: JSON.stringify([
-      {
-        paragraphs: [
-          "Creativity is often romanticized as a mystical strike of lightning, but neurologically, it relies on the brain's ability to make novel connections between disparate ideas. Stress and mental clutter inhibit this process by keeping the brain in a high-beta wave state, focused on immediate survival and execution.",
-          "Mindfulness shifts the brain into an alpha wave state, associated with relaxation and daydreaming. It quiets the \u201CDefault Mode Network\u201D—the inner critic that constantly edits and judges our thoughts—allowing wild, unconventional ideas to bubble up to the surface without premature censorship.",
-        ],
-      },
-      {
-        h3: "Breaking the Autopilot Loop",
-        paragraphs: [
-          "Most of our daily lives are spent in cognitive autopilot, reacting to stimuli based on past patterns. While efficient for survival, this is the enemy of creativity, which demands seeing the familiar in a new light. Mindfulness disrupts these automatic patterns through specific cognitive shifts.",
-          "Disrupting autopilot requires de-automating perception, embracing ambiguity, enhancing divergent thinking, and reducing cognitive rigidity, aided by rituals such as open monitor sessions, mindful walking, sensory grounding before work, non-judgmental brainstorming, and deep listening to instrumental music.",
-        ],
-      },
-      {
-        h3: "Cultivating \u201CShoshin\u201D (Beginner's Mind)",
-        paragraphs: [
-          "In Zen Buddhism, \u201CShoshin\u201D refers to the \u201Cbeginner's mind\u201D—an attitude of openness and eagerness, and lack of preconceptions. The expert asks: \u201CDoes this work?\u201D The beginner asks: \u201CWhat is this?\u201D",
-          "Mindfulness trains us to return to this state of wonder. By stripping away our expertise and expectations, we can approach a blank canvas, a coding problem, or a business strategy with fresh eyes, seeing possibilities that experience often blinds us to.",
-        ],
-      },
-      {
-        h3: "Practical Rituals for Creative Flow",
-        paragraphs: [
-          "You do not need to be a monk to harness this power. Integrating simple mindfulness rituals into your creative workflow can act as a trigger for the flow state.",
-          "Sit for five minutes and simply observe sounds and thoughts as they pass, without latching onto them. This clears the mental cache. Take a walk without a destination or a phone. Focus solely on the rhythm of your gait. Many great thinkers, from Nietzsche to Jobs, swore by this for idea generation. Before starting work, spend one minute feeling the texture of your desk or the weight of your body in the chair to anchor your focus.",
-          "Practice generating ideas while explicitly suspending the critical voice. Write down everything, no matter how absurd, to bypass the internal editor. Listen to a piece of instrumental music, tracking a single instrument. This hones the muscle of sustained attention required for deep work.",
-        ],
-      },
-    ]),
+    content:
+      "Creativity is often romanticized as a mystical strike of lightning, but neurologically, it relies on the brain's ability to make novel connections between disparate ideas. Stress and mental clutter inhibit this process by keeping the brain in a high-beta wave state, focused on immediate survival and execution.\nMindfulness shifts the brain into an alpha wave state, associated with relaxation and daydreaming. It quiets the \u201CDefault Mode Network\u201D—the inner critic that constantly edits and judges our thoughts—allowing wild, unconventional ideas to bubble up to the surface without premature censorship.\n#Breaking the Autopilot Loop\nMost of our daily lives are spent in cognitive autopilot, reacting to stimuli based on past patterns. While efficient for survival, this is the enemy of creativity, which demands seeing the familiar in a new light. Mindfulness disrupts these automatic patterns through specific cognitive shifts.\nDisrupting autopilot requires de-automating perception, embracing ambiguity, enhancing divergent thinking, and reducing cognitive rigidity, aided by rituals such as open monitor sessions, mindful walking, sensory grounding before work, non-judgmental brainstorming, and deep listening to instrumental music.\n#Cultivating \u201CShoshin\u201D (Beginner's Mind)\nIn Zen Buddhism, \u201CShoshin\u201D refers to the \u201Cbeginner's mind\u201D—an attitude of openness and eagerness, and lack of preconceptions. The expert asks: \u201CDoes this work?\u201D The beginner asks: \u201CWhat is this?\u201D\nMindfulness trains us to return to this state of wonder. By stripping away our expertise and expectations, we can approach a blank canvas, a coding problem, or a business strategy with fresh eyes, seeing possibilities that experience often blinds us to.\n#Practical Rituals for Creative Flow\nYou do not need to be a monk to harness this power. Integrating simple mindfulness rituals into your creative workflow can act as a trigger for the flow state.\nSit for five minutes and simply observe sounds and thoughts as they pass, without latching onto them. This clears the mental cache. Take a walk without a destination or a phone. Focus solely on the rhythm of your gait. Many great thinkers, from Nietzsche to Jobs, swore by this for idea generation. Before starting work, spend one minute feeling the texture of your desk or the weight of your body in the chair to anchor your focus.\nPractice generating ideas while explicitly suspending the critical voice. Write down everything, no matter how absurd, to bypass the internal editor. Listen to a piece of instrumental music, tracking a single instrument. This hones the muscle of sustained attention required for deep work.",
     conclusion:
       "Creativity is a whisper that can only be heard when the noise stops. Mindfulness provides the silence.",
     publishedAt: getRandomDate(),
@@ -473,44 +334,8 @@ const posts = [
     id: postIds[5],
     h1: "The\u00A0Age of\u00A0Connection: Mindfulness and\u00A0Detachment",
     lead: "We live in a world that demands our constant availability. But true connection—to ourselves and others—requires the ability to disconnect. Here is how mindfulness serves as the ultimate digital shield.",
-    content: JSON.stringify([
-      {
-        paragraphs: [
-          "In the attention economy, your focus is the product. Every notification, ping, and infinite scroll is engineered to fragment your awareness. The result is a state of \u201Ccontinuous partial attention\u201D, where we are present everywhere digitally, but nowhere physically.",
-          "Mindfulness stands in direct opposition to this algorithmic design. It is the radical act of reclaiming your cognitive sovereignty. By training the mind to notice when it has been hijacked by a screen, we move from compulsive consumption to conscious choice.",
-        ],
-      },
-      {
-        h3: "Recognizing Digital Fatigue",
-        paragraphs: [
-          "The impact of screen dependency is not just psychological; it is physiological. Recognizing the symptoms is the first step toward reclaiming your health.",
-          "Symptoms of digital fatigue including phantom vibrations, screen apnea, doomscrolling, and morning urgency are mitigated by protocols like grayscale mode, no-phone zones, the 20-20-20 rule for optical reset, single-tasking during deep work, batching notifications, and observing analog weekends.",
-        ],
-      },
-      {
-        h3: "Rewiring Dopamine Pathways",
-        paragraphs: [
-          "Social media platforms utilize variable reward schedules—the same mechanism found in slot machines—to release dopamine. This creates a loop of anticipation and seeking that overrides our higher executive functions.",
-          "Mindfulness breaks this loop by introducing a pause. When the urge to check arises, we observe the craving without acting on it. This \u201Curge surfing\u201D weakens the neural pathway of addiction over time.",
-          "Crucially, this practice teaches us to sit with boredom. Boredom is not a defect; it is the fertile soil from which creativity and self-reflection grow. When we numb boredom with screens, we kill our potential for depth.",
-        ],
-      },
-      {
-        h3: "Protocols for Mindful Tech Usage",
-        paragraphs: [
-          "Digital detachment does not mean becoming a Luddite. It means using technology as a tool rather than a pacifier. Here are practical boundaries to establish.",
-          "Switch your phone to black and white. Removing color makes the screen less stimulating and reduces the dopamine hit. Designate specific areas, such as the bedroom or the dining table, as sacred spaces where devices are physically banned. Every 20 minutes, look at something 20 feet away for 20 seconds to reset your optical focus and mental perspective.",
-          "Commit to having only one browser tab open at a time during deep work sessions. Configure apps to deliver notifications only at set times during the day, rather than in real-time. Commit to a 24-hour period once a week where you disconnect completely to reset your baseline stimulation levels.",
-        ],
-      },
-      {
-        h3: "The Return to Reality",
-        paragraphs: [
-          "As the digital fog lifts, the richness of the physical world returns. Conversations become deeper, food tastes better, and the anxiety of \u201Cmissing out\u201D is replaced by the joy of missing out (JOMO).",
-          "This is the ultimate promise of digital mindfulness: to be fully alive in a real world, rather than half-alive in a virtual one.",
-        ],
-      },
-    ]),
+    content:
+      "In the attention economy, your focus is the product. Every notification, ping, and infinite scroll is engineered to fragment your awareness. The result is a state of \u201Ccontinuous partial attention\u201D, where we are present everywhere digitally, but nowhere physically.\nMindfulness stands in direct opposition to this algorithmic design. It is the radical act of reclaiming your cognitive sovereignty. By training the mind to notice when it has been hijacked by a screen, we move from compulsive consumption to conscious choice.\n#Recognizing Digital Fatigue\nThe impact of screen dependency is not just psychological; it is physiological. Recognizing the symptoms is the first step toward reclaiming your health.\nSymptoms of digital fatigue including phantom vibrations, screen apnea, doomscrolling, and morning urgency are mitigated by protocols like grayscale mode, no-phone zones, the 20-20-20 rule for optical reset, single-tasking during deep work, batching notifications, and observing analog weekends.\n#Rewiring Dopamine Pathways\nSocial media platforms utilize variable reward schedules—the same mechanism found in slot machines—to release dopamine. This creates a loop of anticipation and seeking that overrides our higher executive functions.\nMindfulness breaks this loop by introducing a pause. When the urge to check arises, we observe the craving without acting on it. This \u201Curge surfing\u201D weakens the neural pathway of addiction over time.\nCrucially, this practice teaches us to sit with boredom. Boredom is not a defect; it is the fertile soil from which creativity and self-reflection grow. When we numb boredom with screens, we kill our potential for depth.\n#Protocols for Mindful Tech Usage\nDigital detachment does not mean becoming a Luddite. It means using technology as a tool rather than a pacifier. Here are practical boundaries to establish.\nSwitch your phone to black and white. Removing color makes the screen less stimulating and reduces the dopamine hit. Designate specific areas, such as the bedroom or the dining table, as sacred spaces where devices are physically banned. Every 20 minutes, look at something 20 feet away for 20 seconds to reset your optical focus and mental perspective.\nCommit to having only one browser tab open at a time during deep work sessions. Configure apps to deliver notifications only at set times during the day, rather than in real-time. Commit to a 24-hour period once a week where you disconnect completely to reset your baseline stimulation levels.\n#The Return to Reality\nAs the digital fog lifts, the richness of the physical world returns. Conversations become deeper, food tastes better, and the anxiety of \u201Cmissing out\u201D is replaced by the joy of missing out (JOMO).\nThis is the ultimate promise of digital mindfulness: to be fully alive in a real world, rather than half-alive in a virtual one.",
     conclusion:
       "The device in your pocket is a portal to the world, but don't let it become a barrier to your soul.",
     publishedAt: getRandomDate(),
@@ -521,29 +346,8 @@ const posts = [
     id: postIds[6],
     h1: "The Sleep Sanctuary: Mindfulness for\u00A0Restorative Rest",
     lead: "Sleep is not merely the absence of waking; it is a complex biological restoration. In a culture of burnout, mindfulness bridges the gap between a racing mind and the deep surrender required for true rest.",
-    content: JSON.stringify([
-      {
-        paragraphs: [
-          "Modern insomnia is rarely about an inability to sleep; it is about an inability to stop trying to sleep. The brain, stuck in a loop of problem-solving and anticipation, views the pillow as another task to be managed.",
-          "Mindfulness dismantles this loop by shifting the objective. Instead of striving for unconsciousness—which is a paradox, as you cannot \u201Ctry\u201D to relax—we aim simply to rest the body. We give up the battle for sleep and accept the offer of rest.",
-          "This surrender sends a powerful safety signal to the parasympathetic nervous system. When we stop fighting the wakefulness, the adrenaline spike subsides, and sleep often follows naturally as a byproduct of peace.",
-        ],
-      },
-      {
-        h3: "Designing the Pre-Sleep Ritual",
-        paragraphs: [
-          "The transition from the high-beta waves of the workday to the delta waves of deep sleep requires a buffer zone. A mindful evening routine is a series of cues that tell the body it is safe to power down.",
-          "This ritual is not a chore list, but a sacred deceleration. It involves engaging the senses to ground the mind in the physical present, away from the abstract worries of tomorrow.",
-        ],
-      },
-      {
-        h3: "Emergency Protocols for Night Waking",
-        paragraphs: [
-          "Waking up at 3 AM is a common phenomenon known as \u201Cmaintenance insomnia\u201D. The key is to avoid the panic spiral that usually ensues.",
-          "A restorative evening ritual consists of a digital twilight period, journaling to externalize worries, thermal regulation through warm baths, utilizing scent association for sleep cues, and reflecting on gratitude, while night waking is managed through the twenty-minute rule, cognitive shuffling, and non-sleep deep rest techniques.",
-        ],
-      },
-    ]),
+    content:
+      "Modern insomnia is rarely about an inability to sleep; it is about an inability to stop trying to sleep. The brain, stuck in a loop of problem-solving and anticipation, views the pillow as another task to be managed.\nMindfulness dismantles this loop by shifting the objective. Instead of striving for unconsciousness—which is a paradox, as you cannot \u201Ctry\u201D to relax—we aim simply to rest the body. We give up the battle for sleep and accept the offer of rest.\nThis surrender sends a powerful safety signal to the parasympathetic nervous system. When we stop fighting the wakefulness, the adrenaline spike subsides, and sleep often follows naturally as a byproduct of peace.\n#Designing the Pre-Sleep Ritual\nThe transition from the high-beta waves of the workday to the delta waves of deep sleep requires a buffer zone. A mindful evening routine is a series of cues that tell the body it is safe to power down.\nThis ritual is not a chore list, but a sacred deceleration. It involves engaging the senses to ground the mind in the physical present, away from the abstract worries of tomorrow.\n#Emergency Protocols for Night Waking\nWaking up at 3 AM is a common phenomenon known as \u201Cmaintenance insomnia\u201D. The key is to avoid the panic spiral that usually ensues.\nA restorative evening ritual consists of a digital twilight period, journaling to externalize worries, thermal regulation through warm baths, utilizing scent association for sleep cues, and reflecting on gratitude, while night waking is managed through the twenty-minute rule, cognitive shuffling, and non-sleep deep rest techniques.",
     conclusion:
       "Rest is a biological imperative, not a negotiation. By respecting the transition into darkness, we reclaim our days.",
     publishedAt: getRandomDate(),
@@ -554,37 +358,8 @@ const posts = [
     id: postIds[7],
     h1: "Transforming Relationships Through Mindful Communication",
     lead: "In an era of digital noise, the quality of our attention has become the ultimate currency of love. Mindful communication moves us from transactional exchanges to transformative connections.",
-    content: JSON.stringify([
-      {
-        paragraphs: [
-          "Most of us do not listen with the intent to understand; we listen with the intent to reply. We are constantly drafting our rebuttal or advice while the other person is still speaking, effectively severing the connection before it even begins.",
-          "Mindful listening requires a radical suspension of the self. It means dropping your agenda, your judgments, and your need to be right, creating a vacuum of space where the other person can truly be heard and felt.",
-        ],
-      },
-      {
-        h3: "The Sacred Pause",
-        paragraphs: [
-          "Between a stimulus (what is said) and your response lies a moment of choice. Cultivating this pause is the difference between a constructive dialogue and a destructive argument.",
-          "Cultivating the sacred pause involves the three-second rule before responding, performing a somatic check-in to relax tension, mirroring to validate the speaker, and anchoring focus with eye contact, while conflict is navigated using 'I' statements, avoiding absolutes, validating perspectives, making repair attempts, seeking compassionate closure, and maintaining silent presence.",
-        ],
-      },
-      {
-        h3: "Speaking with Intention",
-        paragraphs: [
-          "Mindful speech is not about being passive; it is about being precise. It filters impulsive reactions through the gate of wisdom.",
-          "Before speaking, apply the ancient filter: Is it true? Is it necessary? Is it kind? If it fails these tests, silence is often the more powerful contribution.",
-          "This discipline prevents the leakage of toxic energy that often occurs when we vent without awareness, protecting the emotional safety of the relationship.",
-        ],
-      },
-      {
-        h3: "Navigating Conflict with Grace",
-        paragraphs: [
-          "Conflict is inevitable, but combat is optional. Mindfulness allows us to disagree without becoming disagreeable.",
-          "Use \u201CI\u201D statements (\u201CI feel overwhelmed\u201D) rather than accusatory \u201CYou\u201D statements (\u201CYou are messy\u201D), which trigger defensiveness. Eliminate words like \u201Calways\u201D and \u201Cnever\u201D from your vocabulary. They are rarely factually true and always escalate tension. Acknowledge the other person's perspective as valid for them, even if you disagree with their conclusion.",
-          "Learn to recognize when a conversation has gone off the rails and have the courage to say, \u201CCan we start over?\u201D. End difficult conversations with an affirmation of the relationship's value, ensuring the connection survives the conflict. Sometimes the most profound communication happens in shared silence, holding space for emotions that words cannot contain.",
-        ],
-      },
-    ]),
+    content:
+      "Most of us do not listen with the intent to understand; we listen with the intent to reply. We are constantly drafting our rebuttal or advice while the other person is still speaking, effectively severing the connection before it even begins.\nMindful listening requires a radical suspension of the self. It means dropping your agenda, your judgments, and your need to be right, creating a vacuum of space where the other person can truly be heard and felt.\n#The Sacred Pause\nBetween a stimulus (what is said) and your response lies a moment of choice. Cultivating this pause is the difference between a constructive dialogue and a destructive argument.\nCultivating the sacred pause involves the three-second rule before responding, performing a somatic check-in to relax tension, mirroring to validate the speaker, and anchoring focus with eye contact, while conflict is navigated using 'I' statements, avoiding absolutes, validating perspectives, making repair attempts, seeking compassionate closure, and maintaining silent presence.\n#Speaking with Intention\nMindful speech is not about being passive; it is about being precise. It filters impulsive reactions through the gate of wisdom.\nBefore speaking, apply the ancient filter: Is it true? Is it necessary? Is it kind? If it fails these tests, silence is often the more powerful contribution.\nThis discipline prevents the leakage of toxic energy that often occurs when we vent without awareness, protecting the emotional safety of the relationship.\n#Navigating Conflict with Grace\nConflict is inevitable, but combat is optional. Mindfulness allows us to disagree without becoming disagreeable.\nUse \u201CI\u201D statements (\u201CI feel overwhelmed\u201D) rather than accusatory \u201CYou\u201D statements (\u201CYou are messy\u201D), which trigger defensiveness. Eliminate words like \u201Calways\u201D and \u201Cnever\u201D from your vocabulary. They are rarely factually true and always escalate tension. Acknowledge the other person's perspective as valid for them, even if you disagree with their conclusion.\nLearn to recognize when a conversation has gone off the rails and have the courage to say, \u201CCan we start over?\u201D. End difficult conversations with an affirmation of the relationship's value, ensuring the connection survives the conflict. Sometimes the most profound communication happens in shared silence, holding space for emotions that words cannot contain.",
     conclusion:
       "Communication is the bridge between souls. Build it with the bricks of presence and the mortar of kindness.",
     publishedAt: getRandomDate(),
@@ -916,7 +691,7 @@ const schema = `
     id TEXT PRIMARY KEY,
     h1 TEXT NOT NULL,
     lead TEXT NOT NULL,
-    content BLOB NOT NULL,
+    content STRING NOT NULL,
     conclusion TEXT NOT NULL,
     published_at TEXT NOT NULL,
     image_preview TEXT NOT NULL,
@@ -953,7 +728,7 @@ const statements = {
   `),
   insertPost: db.prepare(`
     INSERT INTO posts (id, h1, lead, content, conclusion, published_at, image_preview, image_lead)
-    VALUES (@id, @h1, @lead, jsonb(@content), @conclusion, @publishedAt, @imagePreview, @imageLead);
+    VALUES (@id, @h1, @lead, @content, @conclusion, @publishedAt, @imagePreview, @imageLead);
   `),
   insertComment: db.prepare(`
     INSERT INTO comments (id, content, commented_at, author_id, post_id)

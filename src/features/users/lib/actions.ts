@@ -21,7 +21,7 @@ const handleAdminActions = async (action: () => void): Promise<void> => {
   revalidatePath(ROUTE_PATHS.USERS);
 };
 
-export const saveChanges = async (
+export const saveUserChanges = async (
   userId: UserId,
   roleId: RoleId,
 ): Promise<void> => handleAdminActions(() => updateRole(userId, roleId));

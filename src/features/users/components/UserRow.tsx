@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { ChipButton } from "@/components/ui";
 import { ROLES, ROLE_NAMES, truncateMiddle } from "@/lib/shared";
-import { removeUser, saveChanges } from "../lib/actions";
+import { removeUser, saveUserChanges } from "../lib/actions";
 
 interface Props extends TableUser {
   isDropdownOpen: boolean;
@@ -101,7 +101,7 @@ export function UserRow({
             rounded="semi"
             icon={faFloppyDisk}
             disabled={currentRole.id === roleId}
-            onClick={() => saveChanges(userId, currentRole.id)}
+            onClick={() => saveUserChanges(userId, currentRole.id)}
           />
           <ChipButton
             border="none"

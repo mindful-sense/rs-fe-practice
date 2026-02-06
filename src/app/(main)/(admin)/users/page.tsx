@@ -7,7 +7,7 @@ export default function Users() {
 
   return (
     <>
-      <H2 className="mt-8 mb-10">User Management Table</H2>
+      <H2>User Management Table</H2>
 
       <main className="bg-elembg relative mx-auto mb-24 w-4xl rounded-3xl p-6">
         {"error" in result ? (

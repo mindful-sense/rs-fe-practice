@@ -5,8 +5,8 @@ import { ChipInfo, H1, H3, Paragraph } from "@/components/ui";
 import { getCurrentUser } from "@/features/auth/server";
 import { CommentForm } from "@/features/comment/client";
 import { CommentItem } from "@/features/comment/server";
-import { PostActions } from "@/features/post/client";
-import { getPostBySlug } from "@/features/post/server";
+import { PostDelete, PostEdit, getBlogPost } from "@/features/post/server";
+import { parseContent } from "@/features/post/shared";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -15,13 +15,14 @@ interface Props {
 export default async function Post({ params }: Props) {
   const { slug } = await params;
   const user = await getCurrentUser();
-  const result = getPostBySlug(slug);
+  const result = getBlogPost(slug);
 
   if ("error" in result) {
     return <p className="mt-12 text-center">{result.error}</p>;
   }
 
   const { post, comments } = result;
+  const postContent = parseContent(post.content);
 
   return (
     <main className="flex flex-col items-center gap-20 pt-20">
@@ -34,7 +35,8 @@ export default async function Post({ params }: Props) {
             icon={faCalendar}
             iconstyles="-mt-0.5"
           />
-          <PostActions postSlug={post.postSlug} roleId={user?.roleId} />
+          <PostEdit roleId={user?.roleId} />
+          <PostDelete postSlug={post.postSlug} roleId={user?.roleId} />
         </div>
 
         <Image
@@ -50,13 +52,13 @@ export default async function Post({ params }: Props) {
       <div className="flex w-full max-w-xl flex-col gap-10">
         <p className="text-2xl font-semibold">{post.lead}</p>
 
-        {post.content.map(({ h3, paragraphs }, index) => (
-          <section key={index} className="flex flex-col gap-6">
-            {h3 && <H3>{h3}</H3>}
+        {postContent.map(({ subtitle, paragraphs }, sectionId) => (
+          <section key={sectionId} className="flex flex-col gap-6">
+            {subtitle && <H3>{subtitle}</H3>}
 
             <div className="flex flex-col gap-3">
-              {paragraphs.map((text, index) => (
-                <Paragraph key={index} text={text} />
+              {paragraphs.map((paragraph, paragraphId) => (
+                <Paragraph key={paragraphId} text={paragraph} />
               ))}
             </div>
           </section>
